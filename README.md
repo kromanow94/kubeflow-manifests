@@ -1,4 +1,4 @@
-# Kubeflow Manifests
+# Kubeflow Manifests (WIP)
 
 ## Table of Contents
 
@@ -8,7 +8,6 @@
 - [Kubeflow components versions](#kubeflow-components-versions)
 - [Installation](#installation)
   - [Prerequisites](#prerequisites)
-- [Frequently Asked Questions](#frequently-asked-questions)
 
 <!-- tocstop -->
 
@@ -26,6 +25,15 @@ This repository is meant to be used as Git Submodule inside the [Kubeflow-Platfo
 ## Kubeflow components versions
 
 ### Kubeflow Version: latest
+
+Use the following git tag `tag=latest` when referencing this repository from Kustomize/ArgoCD application resources:
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://code.roche.com/kubeflow/manifests?ref=latest
+```
 
 This repo periodically syncs all official Kubeflow components from their respective upstream repos. The following matrix shows the git version that we include for each component:
 
