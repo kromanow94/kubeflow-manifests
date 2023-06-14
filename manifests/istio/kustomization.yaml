@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/kubeflow/manifests/common/istio-1-16/istio-crds/base
+  - github.com/kubeflow/manifests/common/istio-1-16/istio-namespace/base
+  - github.com/kubeflow/manifests/common/istio-1-16/istio-install/base

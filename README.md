@@ -1,92 +1,67 @@
-# manifests
+# Kubeflow Manifests
 
+## Table of Contents
 
+<!-- toc -->
 
-## Getting started
+- [Overview](#overview)
+- [Kubeflow components versions](#kubeflow-components-versions)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+- [Frequently Asked Questions](#frequently-asked-questions)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+<!-- tocstop -->
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Overview
 
-## Add your files
+This repo is owned by the [Roche Kubeflow Working Group](https://code.roche.com/kubeflow/).
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+The Kubeflow Manifests repository is organized in such a way that there will at least two (2) major releases supported by their official EOL and [Roadmap](https://github.com/kubeflow/kubeflow/blob/master/ROADMAP.md).
 
-```
-cd existing_repo
-git remote add origin https://code.roche.com/kubeflow/manifests.git
-git branch -M main
-git push -uf origin main
-```
+The main application structure includes manifests referenced from upstream [kubeflow/manifests](https://github.com/kubeflow/manifests/) repository.
+The update frequency should match upstream release timelines, thus keeping pace with updates and fixes.
 
-## Integrate with your tools
+This repository is meant to be used as Git Submodule inside the [Kubeflow-Platform-Template](https://code.roche.com/kubeflow/platform-template) repo, acting as placeholder for upstream kubeflow common components.
 
-- [ ] [Set up project integrations](https://code.roche.com/kubeflow/manifests/-/settings/integrations)
+## Kubeflow components versions
 
-## Collaborate with your team
+### Kubeflow Version: latest
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+This repo periodically syncs all official Kubeflow components from their respective upstream repos. The following matrix shows the git version that we include for each component:
 
-## Test and Deploy
+| Component                 | Remote Manifests Path                            | Upstream Revision                                                                                                    |
+| ------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Training Operator         | apps/training-operator/upstream                  | [v1.6.0-rc.0](https://github.com/kubeflow/training-operator/tree/v1.6.0-rc.0/manifests)                              |
+| Notebook Controller       | apps/jupyter/notebook-controller/upstream        | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/notebook-controller/config)           |
+| Tensorboard Controller    | apps/tensorboard/tensorboard-controller/upstream | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/tensorboard-controller/config)        |
+| Central Dashboard         | apps/centraldashboard/upstream                   | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/centraldashboard/manifests)           |
+| Profiles + KFAM           | apps/profiles/upstream                           | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/profile-controller/config)            |
+| PodDefaults Webhook       | apps/admission-webhook/upstream                  | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/admission-webhook/manifests)          |
+| Jupyter Web App           | apps/jupyter/jupyter-web-app/upstream            | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/jupyter/manifests)      |
+| Tensorboards Web App      | apps/tensorboard/tensorboards-web-app/upstream   | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/tensorboards/manifests) |
+| Volumes Web App           | apps/volumes-web-app/upstream                    | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/volumes/manifests)      |
+| Katib                     | apps/katib/upstream                              | [v0.15.0-rc.0](https://github.com/kubeflow/katib/tree/v0.15.0-rc.0/manifests/v1beta1)                                |
+| KServe                    | contrib/kserve/kserve                            | [v0.10.0](https://github.com/kserve/kserve/tree/v0.10.0/install/v0.10.0)                                             |
+| KServe Models Web App     | contrib/kserve/models-web-app                    | [v0.10.0](https://github.com/kserve/models-web-app/tree/v0.10.0/config)                                              |
+| Kubeflow Pipelines        | apps/pipeline/upstream                           | [2.0.0-alpha.7](https://github.com/kubeflow/pipelines/tree/2.0.0-alpha.7/manifests/kustomize)                        |
+| Kubeflow Tekton Pipelines | apps/kfp-tekton/upstream                         | [v1.5.1](https://github.com/kubeflow/kfp-tekton/tree/v1.5.1/manifests/kustomize)                                     |
 
-Use the built-in continuous integration in GitLab.
+The following is also a matrix with versions from common components that are
+used from the different projects of Kubeflow:
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+| Component    | Remote Manifests Path                                                 | Upstream Revision                                                                                                                                       |
+| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Istio        | common/istio-1-16                                                     | [1.16.0](https://github.com/istio/istio/releases/tag/1.16.0)                                                                                            |
+| Knative      | common/knative/knative-serving <br /> common/knative/knative-eventing | [1.8.1](https://github.com/knative/serving/releases/tag/knative-v1.8.1) <br /> [1.8.1](https://github.com/knative/eventing/releases/tag/knative-v1.8.1) |
+| Cert Manager | common/cert-manager                                                   | [1.10.1](https://github.com/cert-manager/cert-manager/releases/tag/v1.10.1)                                                                             |
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+The deployment pattern described here assumes you are deploying all resources on top of a already configured Kubernetes cluster, using this repo as a Submodule. It should be referenced using an explicit **release version tag**.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Prerequisites
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- `Kubernetes` (up to `1.25`) with a default [StorageClass](https://kubernetes.io/docs/concepts/storage/storage-classes/)
+- `kustomize` [5.0.0](https://github.com/kubernetes-sigs/kustomize/releases/tag/kustomize%2Fv5.0.0)
+  - :warning: Kubeflow is not compatible with earlier versions of Kustomize. This is because we need the [`sortOptions`](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/sortoptions/) field, which is only available in Kustomize 5 and onwards https://github.com/kubeflow/manifests/issues/2388.
+- `kubectl`

@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - github.com/kubeflow/manifests/common/knative/knative-serving/overlays/gateways
+  - github.com/kubeflow/manifests/common/knative/knative-eventing/base
+  - github.com/kubeflow/manifests/common/istio-1-16/cluster-local-gateway/base
