@@ -24,9 +24,9 @@ This repository is meant to be used as Git Submodule inside the [Kubeflow-Platfo
 
 ## Kubeflow components versions
 
-### Kubeflow Version: latest
+### Kubeflow Version: v1.6.1
 
-Use the following git tag `tag=latest` when referencing this repository from Kustomize/ArgoCD application resources:
+Use the following git tag `tag=v1.6` when referencing this repository from Kustomize/ArgoCD application resources:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
