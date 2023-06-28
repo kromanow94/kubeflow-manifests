@@ -37,31 +37,31 @@ resources:
 
 This repo periodically syncs all official Kubeflow components from their respective upstream repos. The following matrix shows the git version that we include for each component:
 
-| Component                 | Remote Manifests Path                            | Upstream Revision                                                                                                    |
-| ------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| Training Operator         | apps/training-operator/upstream                  | [v1.6.0-rc.0](https://github.com/kubeflow/training-operator/tree/v1.6.0-rc.0/manifests)                              |
-| Notebook Controller       | apps/jupyter/notebook-controller/upstream        | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/notebook-controller/config)           |
-| Tensorboard Controller    | apps/tensorboard/tensorboard-controller/upstream | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/tensorboard-controller/config)        |
-| Central Dashboard         | apps/centraldashboard/upstream                   | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/centraldashboard/manifests)           |
-| Profiles + KFAM           | apps/profiles/upstream                           | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/profile-controller/config)            |
-| PodDefaults Webhook       | apps/admission-webhook/upstream                  | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/admission-webhook/manifests)          |
-| Jupyter Web App           | apps/jupyter/jupyter-web-app/upstream            | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/jupyter/manifests)      |
-| Tensorboards Web App      | apps/tensorboard/tensorboards-web-app/upstream   | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/tensorboards/manifests) |
-| Volumes Web App           | apps/volumes-web-app/upstream                    | [v1.7.0-rc.0](https://github.com/kubeflow/kubeflow/tree/v1.7.0-rc.0/components/crud-web-apps/volumes/manifests)      |
-| Katib                     | apps/katib/upstream                              | [v0.15.0-rc.0](https://github.com/kubeflow/katib/tree/v0.15.0-rc.0/manifests/v1beta1)                                |
-| KServe                    | contrib/kserve/kserve                            | [v0.10.0](https://github.com/kserve/kserve/tree/v0.10.0/install/v0.10.0)                                             |
-| KServe Models Web App     | contrib/kserve/models-web-app                    | [v0.10.0](https://github.com/kserve/models-web-app/tree/v0.10.0/config)                                              |
-| Kubeflow Pipelines        | apps/pipeline/upstream                           | [2.0.0-alpha.7](https://github.com/kubeflow/pipelines/tree/2.0.0-alpha.7/manifests/kustomize)                        |
-| Kubeflow Tekton Pipelines | apps/kfp-tekton/upstream                         | [v1.5.1](https://github.com/kubeflow/kfp-tekton/tree/v1.5.1/manifests/kustomize)                                     |
+| Component                 | Remote Manifests Path                            | Upstream Revision                                                                                            |
+| ------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Training Operator         | apps/training-operator/upstream                  | [v1.5.0](https://github.com/kubeflow/training-operator/tree/v1.5.0/manifests)                                |
+| Notebook Controller       | apps/jupyter/notebook-controller/upstream        | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/notebook-controller/config)             |
+| Tensorboard Controller    | apps/tensorboard/tensorboard-controller/upstream | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/tensorboard-controller/config)          |
+| Central Dashboard         | apps/centraldashboard/upstream                   | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/centraldashboard/manifests)             |
+| Profiles + KFAM           | apps/profiles/upstream                           | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/profile-controller/config)              |
+| PodDefaults Webhook       | apps/admission-webhook/upstream                  | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/admission-webhook/manifests)            |
+| Jupyter Web App           | apps/jupyter/jupyter-web-app/upstream            | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/crud-web-apps/jupyter/manifests)        |
+| Tensorboards Web App      | apps/tensorboard/tensorboards-web-app/upstream   | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/crud-web-apps/tensorboards/manifests)   |
+| Volumes Web App           | apps/volumes-web-app/upstream                    | [v1.6.1](https://github.com/kubeflow/kubeflow/tree/v1.6.1/components/crud-web-apps/volumes/manifests)        |
+| Katib                     | apps/katib/upstream                              | [v0.14.0-rc.0](https://github.com/kubeflow/katib/tree/v0.14.0-rc.0/manifests/v1beta1)                        |
+| KServe                    | contrib/kserve/kserve                            | [release-0.8](https://github.com/kserve/kserve/tree/8079f375cbcedc4d45a1b4aade2e2308ea6f9ae8/install/v0.8.0) |
+| KServe Models Web App     | contrib/kserve/models-web-app                    | [v0.8.1](https://github.com/kserve/models-web-app/tree/v0.8.1/config)                                        |
+| Kubeflow Pipelines        | apps/pipeline/upstream                           | [2.0.0-alpha.5](https://github.com/kubeflow/pipelines/tree/2.0.0-alpha.5/manifests/kustomize)                |
+| Kubeflow Tekton Pipelines | apps/kfp-tekton/upstream                         | [v1.2.1](https://github.com/kubeflow/kfp-tekton/tree/v1.2.1/manifests/kustomize)                             |
 
 The following is also a matrix with versions from common components that are
 used from the different projects of Kubeflow:
 
-| Component    | Remote Manifests Path                                                 | Upstream Revision                                                                                                                                       |
-| ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Istio        | common/istio-1-14                                                     | [1.14.0](https://github.com/istio/istio/releases/tag/1.14.0)                                                                                            |
-| Knative      | common/knative/knative-serving <br /> common/knative/knative-eventing | [1.8.1](https://github.com/knative/serving/releases/tag/knative-v1.8.1) <br /> [1.8.1](https://github.com/knative/eventing/releases/tag/knative-v1.8.1) |
-| Cert Manager | common/cert-manager                                                   | [1.10.1](https://github.com/cert-manager/cert-manager/releases/tag/v1.10.1)                                                                             |
+| Component    | Remote Manifests Path | Upstream Revision                                                         |
+| ------------ | --------------------- | ------------------------------------------------------------------------- |
+| Istio        | common/istio-1-14     | [1.14.1](https://github.com/istio/istio/releases/tag/1.14.1)              |
+| Knative      | common/knative        | [1.2.5](https://github.com/knative/serving/releases/tag/knative-v1.2.5)   |
+| Cert Manager | common/cert-manager   | [1.5.0](https://github.com/cert-manager/cert-manager/releases/tag/v1.5.0) |
 
 ## Installation
 
