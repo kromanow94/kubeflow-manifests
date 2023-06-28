@@ -59,7 +59,7 @@ used from the different projects of Kubeflow:
 
 | Component    | Remote Manifests Path                                                 | Upstream Revision                                                                                                                                       |
 | ------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Istio        | common/istio-1-16                                                     | [1.16.0](https://github.com/istio/istio/releases/tag/1.16.0)                                                                                            |
+| Istio        | common/istio-1-14                                                     | [1.14.0](https://github.com/istio/istio/releases/tag/1.14.0)                                                                                            |
 | Knative      | common/knative/knative-serving <br /> common/knative/knative-eventing | [1.8.1](https://github.com/knative/serving/releases/tag/knative-v1.8.1) <br /> [1.8.1](https://github.com/knative/eventing/releases/tag/knative-v1.8.1) |
 | Cert Manager | common/cert-manager                                                   | [1.10.1](https://github.com/cert-manager/cert-manager/releases/tag/v1.10.1)                                                                             |
 

@@ -2,4 +2,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - github.com/kubeflow/manifests/common/user-namespace/base
+  - github.com/kubeflow/manifests/common/user-namespace/base?ref=v1.6.1
