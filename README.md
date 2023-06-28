@@ -32,7 +32,7 @@ Use the following git tag `tag=v1.6` when referencing this repository from Kusto
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - https://code.roche.com/kubeflow/manifests?ref=latest
+  - https://code.roche.com/kubeflow/manifests?ref=v1.6
 ```
 
 This repo periodically syncs all official Kubeflow components from their respective upstream repos. The following matrix shows the git version that we include for each component:
