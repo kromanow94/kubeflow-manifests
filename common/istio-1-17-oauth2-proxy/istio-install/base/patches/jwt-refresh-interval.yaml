@@ -1,0 +1,17 @@
+# By default, istio refreshes the jwks public keys for RequestAuthentication
+# every 20 minutes. For installation it's better to configure for 1 minute
+# because istio may start running before dex is available. It this happen, istio
+# will return an error saying that the JWKS Keys don't match.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: istiod
+  namespace: istio-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: discovery
+        env:
+        - name: PILOT_JWT_PUB_KEY_REFRESH_INTERVAL
+          value: "1m"

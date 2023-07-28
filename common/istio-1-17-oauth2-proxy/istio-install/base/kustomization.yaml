@@ -12,7 +12,8 @@ resources:
 
 patchesStrategicMerge:
 - patches/service.yaml
-- patches/istio-configmap-disable-tracing.yaml
+- patches/istio-configmap-disable-tracing-enable-oauth2-proxy.yaml
+- patches/jwt-refresh-interval.yaml
 - patches/disable-debugging.yaml
 # Disable this patch until we upgrade to kustomize to v4+ 
 # see https://github.com/kubeflow/manifests/issues/2325#issuecomment-1323909056
