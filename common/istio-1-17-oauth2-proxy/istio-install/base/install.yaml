@@ -1497,6 +1497,25 @@ data:
         zipkin:
           address: zipkin.istio-system:9411
     enablePrometheusMerge: true
+    extensionProviders:
+    - envoyExtAuthzHttp:
+        headersToDownstreamOnDeny:
+        - content-type
+        - set-cookie
+        headersToUpstreamOnAllow:
+        - authorization
+        - path
+        - x-auth-request-email
+        - x-auth-request-groups
+        - x-auth-request-preferred-username
+        - x-auth-request-user
+        - x-auth-request-user-groups
+        includeRequestHeadersInCheck:
+        - authorization
+        - cookie
+        port: 80
+        service: oauth2-proxy.oauth2-proxy.svc.cluster.local
+      name: oauth2-proxy
     rootNamespace: istio-system
     tcpKeepalive:
       interval: 5s
