@@ -1,0 +1,181 @@
+## To see all values, execute:
+## $ helm repo add bitnami https://charts.bitnami.com/bitnami
+## $ helm repo update bitnami
+## $ helm show values bitnami/oauth2-proxy --version 3.7.7
+
+global:
+  imageRegistry: ""
+clusterDomain: cluster.local
+## @section Traffic Exposure Parameters
+##
+
+## OAuth2 Proxy service parameters
+##
+service:
+  type: ClusterIP
+  port: 80
+
+
+image:
+  registry: quay.io
+  repository: oauth2-proxy/oauth2-proxy
+  tag: v7.4.0
+  digest: ""
+  pullPolicy: IfNotPresent
+
+## @section OAuth2 Proxy configuration parameters
+##
+
+## Configuration section
+##
+configuration:
+  ## @param configuration.clientID OAuth client ID
+  ##
+  # clientID: "XXXXXXX"
+  clientID: "kubeflow-oauth2-proxy"
+  ## @param configuration.clientSecret OAuth client secret
+  ##
+  # clientSecret: "XXXXXXXX"
+  clientSecret: "pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok"
+  ## Create a new secret with the following command openssl rand -base64 32 | head -c 32 | base64
+  ## Use an existing secret for OAuth2 credentials (see secret.yaml for required fields)
+  ##
+  ## @param configuration.cookieSecret OAuth cookie secret
+  ##
+  # cookieSecret: "XXXXXXXXXXXXXXXX"
+  # random secret generated with:
+  # $ dd if=/dev/urandom bs=32 count=1 status=none | base64 -w 0 | tr -- '+/' '-_'; echo
+  cookieSecret: "9Iwygw1OUlqWNLHIiabfBTEhYNADUt2tJ767Iz23lgw="
+  ## @param configuration.existingSecret Secret with the client ID, secret and cookie secret
+  ##
+  existingSecret: ""
+
+  ## Custom configuration file: oauth2_proxy.cfg
+  ## content: |
+  ##   pass_basic_auth = false
+  ##   pass_access_token = true
+  ##
+  ## @param configuration.content [string] Default configuration
+  ##
+  content: |
+    provider = "oidc"
+    # oidc_issuer_url = "https://vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com/dex"
+    oidc_issuer_url = "https://eks.uat.rdigtm.roche.com/dex"
+    insecure_oidc_allow_unverified_email = true
+    insecure_oidc_skip_issuer_verification = true
+    reverse_proxy = true
+    scope = "profile email openid"
+    skip_provider_button = true
+    # ---
+    email_domains = [ "*" ]
+    # upstreams = [ "file:///dev/null" ]
+    upstreams = "static://200"
+    # for x-auth-request-user, x-auth-request-groups, x-auth-request-email
+    set_xauthrequest = true
+    # ---
+    cookie_name = "oauth2_proxy_kubeflow"
+    cookie_samesite = "lax"
+    # ---
+    # NOTE(romanok1): This can be then forwarded with istio
+    # RequestAuthentication forwardOriginalToken
+    set_authorization_header = true
+    # ---
+    cookie_domains = [ ".vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com" ]
+    whitelist_domains = [ ".vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com" ]
+    # ---
+    cookie_expire = "24h"
+    cookie_refresh = 0
+    # ---
+    code_challenge_method = "S256"
+
+
+## @section OAuth2 Proxy deployment parameters
+##
+
+##
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 5
+  successThreshold: 1
+## @param readinessProbe.enabled Enable readinessProbe on OAuth2 Proxy nodes
+## @param readinessProbe.initialDelaySeconds Initial delay seconds for readinessProbe
+## @param readinessProbe.periodSeconds Period seconds for readinessProbe
+## @param readinessProbe.timeoutSeconds Timeout seconds for readinessProbe
+## @param readinessProbe.failureThreshold Failure threshold for readinessProbe
+## @param readinessProbe.successThreshold Success threshold for readinessProbe
+##
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 1
+  failureThreshold: 5
+  successThreshold: 1
+## @param customStartupProbe Custom startupProbe that overrides the default one
+##
+## OAuth2 Proxy resource requests and limits
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources.limits The resources limits for the OAuth2 Proxy containers
+## @param resources.requests The requested resources for the OAuth2 Proxy containers
+##
+resources:
+  limits:
+    cpu: 100m
+    memory: 512Mi
+  requests:
+    cpu: 10m
+    memory: 128Mi
+
+## Limits the number of pods of the replicated application that are down simultaneously from voluntary disruptions
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions
+pdb:
+  create: true
+  minAvailable: 1
+  maxUnavailable: ""
+
+## Configure Pods Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+podSecurityContext:
+  enabled: true
+  fsGroup: 1001
+
+## Configure Container Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+containerSecurityContext:
+  enabled: true
+  runAsUser: 1001
+
+updateStrategy:
+  ## StrategyType
+  ## Can be set to RollingUpdate or OnDelete
+  ##
+  type: RollingUpdate
+
+
+## ServiceAccount configuration
+##
+serviceAccount:
+  create: true
+  automountServiceAccountToken: true
+
+## @section Redis&reg; sub-chart parameters
+##
+redis:
+  enabled: true
+  architecture: "standalone"
+  replica:
+    ## @param redis.replica.replicaCount Number of Redis&reg; replicas
+    ##
+    replicaCount: 3
+  auth:
+    enabled: true
+    # Password can be in plain text because we're specifying
+    # the istio authorizationpolicy so only the oauth2-proxy can access the
+    # redis service.
+    # See authorizationpolicy.audience-redis.yaml for details.
+    # Specifying password omits this specific Helm Chart mechanism to generate
+    # new password on every change.
+    password: redis

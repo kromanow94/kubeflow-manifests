@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline
+spec:
+  template:
+    spec:
+      containers:
+        - name: ml-pipeline-api-server
+          env:
+            - name: KUBEFLOW_USERID_HEADER
+              value: x-auth-request-email
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: ml-pipeline
+  namespace: kubeflow
+spec:
+  selector:
+    matchLabels:
+      app: ml-pipeline
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/kubeflow/sa/ml-pipeline
+              - cluster.local/ns/kubeflow/sa/ml-pipeline-ui
+              - cluster.local/ns/kubeflow/sa/ml-pipeline-persistenceagent
+              - cluster.local/ns/kubeflow/sa/ml-pipeline-scheduledworkflow
+              - cluster.local/ns/kubeflow/sa/ml-pipeline-viewer-crd-service-account
+              - cluster.local/ns/kubeflow/sa/kubeflow-pipelines-cache
+    # For user workloads, which cannot user http headers for authentication
+    - when:
+        - key: request.headers[x-auth-request-email]
+          notValues: ["*"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-persistenceagent
+spec:
+  template:
+    spec:
+      containers:
+        - env:
+            - name: KUBEFLOW_USERID_HEADER
+              value: x-auth-request-email
+          name: ml-pipeline-persistenceagent
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ml-pipeline-ui
+  namespace: kubeflow
+spec:
+  template:
+    spec:
+      containers:
+      - name: ml-pipeline-ui
+        env:
+        - name: KUBEFLOW_USERID_HEADER
+          value: x-auth-request-email

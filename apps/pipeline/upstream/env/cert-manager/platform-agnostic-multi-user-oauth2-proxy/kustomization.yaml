@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../platform-agnostic-multi-user
+  
+resources:
+  - oauth2-proxy.authorizationpolicy.yaml
+
+# Delete the cache deployer as we use the cert-manager instead 
+patchesStrategicMerge:
+  - patches/change-userid-header.yaml

@@ -1,0 +1,9 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: redis-headless
+spec:
+  host: oauth2-proxy-redis-headless
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL

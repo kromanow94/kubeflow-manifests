@@ -1,0 +1,9 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: dex-jwt
+  namespace: istio-system
+spec:
+  jwtRules:
+  - forwardOriginalToken: true
+    issuer: $(dex_issuer)

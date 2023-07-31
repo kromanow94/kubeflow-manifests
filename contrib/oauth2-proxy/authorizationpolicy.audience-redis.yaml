@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: audience-redis
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis
+  rules:
+    - from:
+      - source:
+          principals:
+            - cluster.local/ns/oauth2-proxy/sa/oauth2-proxy-redis
+            - cluster.local/ns/oauth2-proxy/sa/oauth2-proxy

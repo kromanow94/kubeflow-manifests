@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: user-krzysztof-romanowski-kr3-roche-com
+  namespace: kubeflow-user-example-com
+spec:
+  rules:
+  - when:
+    - key: request.headers[x-auth-request-email]
+      values:
+      - krzysztof.romanowski.kr3@roche.com

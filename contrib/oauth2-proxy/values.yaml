@@ -1,0 +1,98 @@
+# NOTE(romanok1): go to
+# https://github.com/bitnami/charts/tree/main/bitnami/oauth2-proxy/
+# and
+# https://github.com/bitnami/charts/tree/main/bitnami/redis
+# to see all configuration options with their description.
+
+service:
+  type: ClusterIP
+  port: 80
+
+serviceAccount:
+  create: true
+  name: oauth2-proxy
+
+image:
+  registry: quay.io
+  repository: oauth2-proxy/oauth2-proxy
+  tag: v7.4.0
+  digest: ""
+  pullPolicy: IfNotPresent
+
+## Configuration section
+##
+configuration:
+  # NOTE(romanok1): secret should have following keys defined
+  # https://github.com/bitnami/charts/blob/b95989761f3feccc073f6739d4df62bf59ae34b7/bitnami/oauth2-proxy/templates/secret.yaml
+  existingSecret: oidc-secret
+
+  ## Custom configuration file: oauth2_proxy.cfg
+  content: |
+    provider = "oidc"
+    oidc_issuer_url = "https://eks.uat.rdigtm.roche.com/dex"
+    scope = "profile email groups openid"
+    skip_provider_button = true
+    # ---
+    email_domains = [ "*" ]
+    upstreams = "static://200"
+    # for x-auth-request-user, x-auth-request-groups, x-auth-request-email
+    set_xauthrequest = true
+    # ---
+    cookie_name = "oauth2_proxy_kubeflow"
+    cookie_samesite = "lax"
+    # ---
+    # NOTE(romanok1): This can be then forwarded with istio
+    # RequestAuthentication forwardOriginalToken
+    set_authorization_header = true
+    # ---
+    cookie_domains = [ ".eks.uat.rdigtm.roche.com" ]
+    whitelist_domains = [ ".eks.uat.rdigtm.roche.com" ]
+    # ---
+    cookie_expire = "24h"
+    cookie_refresh = 0
+    # ---
+    code_challenge_method = "S256"
+
+  ## @param configuration.existingConfigmap Configmap with the OAuth2 Proxy configuration
+  ##
+  existingConfigmap: ""
+
+## OAuth2 Proxy resource requests and limits
+resources:
+  limits: {}
+  requests:
+    cpu: 10m
+    memory: 100Mi
+
+## Limits the number of pods of the replicated application that are down simultaneously from voluntary disruptions
+pdb:
+  create: true
+  minAvailable: 1
+  maxUnavailable: ""
+
+# extraVolumeMounts:
+#   - mountPath: /mnt/oidc-secret-spc
+#     name: oidc-secret-spc
+
+# extraVolumes:
+#   - name: oidc-secret-spc
+#     csi:
+#       driver: secrets-store.csi.k8s.io
+#       readOnly: true
+#       volumeAttributes:
+#         secretProviderClass: oidc-secret
+
+## @section Redis&reg; sub-chart parameters
+##
+redis:
+  enabled: true
+  architecture: "standalone"
+  auth:
+    enabled: true
+    # NOTE(romanok1): Password can be in plain text because we're specifying
+    # the istio authorizationpolicy so only the oauth2-proxy can access the
+    # redis service.
+    # See authorizationpolicy.audience-redis.yaml for details.
+    # Specifying password omits this specific Helm Chart mechanism to generate
+    # new password on every change.
+    password: redis

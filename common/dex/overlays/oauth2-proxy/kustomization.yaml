@@ -1,8 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: auth
+
 resources:
 - ../../base
+- virtual-service.yaml
 
 patchesStrategicMerge:
 - config-map.yaml
@@ -13,43 +15,58 @@ configMapGenerator:
   # behavior: merge
   envs:
   - params.env
+
 generatorOptions:
   disableNameSuffixHash: true
+
 vars:
-- name: ldap_host
+- name: issuer
   objref:
     kind: ConfigMap
     name: dex-parameters
     apiVersion: v1
   fieldref:
-    fieldpath: data.ldap_host
-- name: ldap_bind_dn
+    fieldpath: data.issuer
+
+- name: application_client_id
   objref:
     kind: ConfigMap
     name: dex-parameters
     apiVersion: v1
   fieldref:
-    fieldpath: data.ldap_bind_dn
-- name: ldap_bind_pw
+    fieldpath: data.application_client_id
+
+- name: application_client_secret
   objref:
     kind: ConfigMap
     name: dex-parameters
     apiVersion: v1
   fieldref:
-    fieldpath: data.ldap_bind_pw
-- name: ldap_user_base_dn
+    fieldpath: data.application_client_secret
+
+- name: oidc_redirect_uris
   objref:
     kind: ConfigMap
     name: dex-parameters
     apiVersion: v1
   fieldref:
-    fieldpath: data.ldap_user_base_dn
-- name: ldap_group_base_dn
+    fieldpath: data.oidc_redirect_uris
+
+- name: DEX_SERVICE
   objref:
-    kind: ConfigMap
-    name: dex-parameters
+    kind: Service
+    name: dex
     apiVersion: v1
   fieldref:
-    fieldpath: data.ldap_group_base_dn
+    fieldpath: metadata.name
+
+- name: DEX_NAMESPACE
+  objref:
+    kind: Service
+    name: dex
+    apiVersion: v1
+  fieldref:
+    fieldpath: metadata.namespace
+
 configurations:
 - params.yaml
