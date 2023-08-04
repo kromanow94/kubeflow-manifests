@@ -6,4 +6,6 @@ metadata:
 spec:
   jwtRules:
   - forwardOriginalToken: true
-    issuer: https://vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com/dex
+    issuer: https://vcluster-romanok1-dex.user-apps.eks.uat.rdigtm.roche.com
+    # issuer: https://vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com/dex
+    # issuer: https://eks.uat.rdigtm.roche.com/dex

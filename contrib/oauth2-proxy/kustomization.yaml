@@ -18,3 +18,4 @@ helmCharts:
     namespace: oauth2-proxy
     # valuesFile: values.yaml
     valuesFile: values.3.7.7.yaml
+
