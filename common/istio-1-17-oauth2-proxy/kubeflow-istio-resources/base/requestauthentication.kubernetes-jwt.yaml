@@ -1,8 +1,7 @@
 apiVersion: security.istio.io/v1
 kind: RequestAuthentication
 metadata:
-  generation: 1
-  name: kubernetes
+  name: kubernetes-jwt
   namespace: istio-system
 spec:
   jwtRules:
@@ -10,4 +9,8 @@ spec:
       issuer: https://oidc.eks.eu-central-1.amazonaws.com/id/8E574425478FFFA048D9BAA12C3ABBCD
       outputClaimToHeaders:
         - header: kubeflow-userid
+          claim: sub
+        - header: x-auth-request-email
+          claim: sub
+        - header: x-auth-request-user
           claim: sub

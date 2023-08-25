@@ -3,3 +3,31 @@ kind: Kustomization
 
 bases:
   - ../../../istio-1-17/kubeflow-istio-resources/base
+
+resources:
+  - requestauthentication.dex-jwt.yaml
+  - requestauthentication.kubernetes-jwt.yaml
+  - authorizationpolicy.oauth2-proxy-istio-ingressgateway.yaml
+
+patchesStrategicMerge:
+  - patches/gateway.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: kubeflow-istio-resources-parameters
+  envs:
+  - params.env
+
+vars:
+- name: dex_issuer
+  objref:
+    kind: ConfigMap
+    name: kubeflow-istio-resources-parameters
+    apiVersion: v1
+  fieldref:
+    fieldpath: data.issuer
+
+configurations:
+- params.yaml

@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: kubeflow-gateway
+  # namespace: kubeflow
+spec:
+  servers:
+    - hosts:
+        - "vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com"
+      port:
+        name: http
+        number: 80
+        protocol: HTTP

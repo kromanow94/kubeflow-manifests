@@ -52,7 +52,8 @@ resources:
 # Kubeflow Roles
 - ../../common/kubeflow-roles/base
 # Kubeflow Istio Resources
-- ../../common/istio-1-17/kubeflow-istio-resources/base
+# - ../../common/istio-1-17/kubeflow-istio-resources/base
+- ../../common/istio-1-17-oauth2-proxy/kubeflow-istio-resources/base
 
 
 # Kubeflow Pipelines

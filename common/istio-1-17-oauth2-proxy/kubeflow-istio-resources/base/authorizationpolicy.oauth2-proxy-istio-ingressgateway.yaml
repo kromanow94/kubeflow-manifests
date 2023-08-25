@@ -1,0 +1,31 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: oauth2-proxy-istio-ingressgateway
+  namespace: istio-system
+spec:
+  action: CUSTOM
+  provider:
+    name: oauth2-proxy
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+  rules:
+  - {}
+  # - to:
+  #   - operation:
+  #       # methods: ["GET"]
+  #       # hosts: ["vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com", "vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com:*"]
+  #       hosts: ["dupa", "dupa:*"]
+  #       notPaths: ["/dex*"]
+  #       # paths: [""]
+  # # - when:
+  # #   - key: request.headers[User-Agent]
+  # #     values: ["curl/*", "Mozilla/*"]
+  # # - when:
+  # #   - key: request.headers[Sec-Ch-Ua-Platform]
+  # #     values: ["windows", "Windows"]
+  # # - to:
+  # #   - operation:
+  # #       hosts: ["httpbin.httpbin.svc.cluster.local", "httpbin.httpbin.svc.cluster.local:*"]
+  # #       notPaths: ["/dex*"]

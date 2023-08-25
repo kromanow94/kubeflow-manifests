@@ -4,30 +4,6 @@ kind: Kustomization
 bases:
   - ../../../istio-1-17/istio-install/base
 
-resources:
-  - requestauthentication.dex.yaml
-  - requestauthentication.kubernetes.yaml
-
 patchesStrategicMerge:
 - patches/istio-configmap-disable-tracing-enable-oauth2-proxy.yaml
 - patches/jwt-refresh-interval.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true
-
-configMapGenerator:
-- name: istio-parameters
-  envs:
-  - params.env
-
-vars:
-- name: dex_issuer
-  objref:
-    kind: ConfigMap
-    name: istio-parameters
-    apiVersion: v1
-  fieldref:
-    fieldpath: data.issuer
-
-configurations:
-- params.yaml
