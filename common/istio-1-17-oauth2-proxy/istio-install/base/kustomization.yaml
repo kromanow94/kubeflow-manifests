@@ -5,7 +5,8 @@ bases:
   - ../../../istio-1-17/istio-install/base
 
 resources:
-  - dex-requestauthentication.yaml
+  - requestauthentication.dex.yaml
+  - requestauthentication.kubernetes.yaml
 
 patchesStrategicMerge:
 - patches/istio-configmap-disable-tracing-enable-oauth2-proxy.yaml

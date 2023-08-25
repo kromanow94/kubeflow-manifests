@@ -8,7 +8,6 @@ resources:
   - authorizationpolicy.audience-redis.yaml
   - destinationrule.redis-headless.yaml
   - destinationrule.redis-master.yaml
-  - requestauthentication.kubernetes.yaml
 
 helmCharts:
   - name: oauth2-proxy

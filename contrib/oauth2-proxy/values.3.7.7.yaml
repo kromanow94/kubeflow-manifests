@@ -59,11 +59,9 @@ configuration:
   ##
   content: |
     provider = "oidc"
-    # oidc_issuer_url = "http://dex.auth.svc.cluster.local:5556/dex"
-    oidc_issuer_url = "https://vcluster-romanok1-dex.user-apps.eks.uat.rdigtm.roche.com"
-    # oidc_issuer_url = "https://vcluster-romanok1.user-apps.eks.uat.rdigtm.roche.com/dex"
-    # oidc_issuer_url = "https://eks.uat.rdigtm.roche.com/dex"
-    insecure_oidc_allow_unverified_email = true
+    oidc_issuer_url = "http://dex.auth.svc.cluster.local:5556/dex"
+    # oidc_issuer_url = "https://vcluster-romanok1-dex.user-apps.eks.uat.rdigtm.roche.com"
+    # insecure_oidc_allow_unverified_email = true
     # insecure_oidc_skip_issuer_verification = true
     reverse_proxy = true
     scope = "profile email openid"
@@ -77,8 +75,13 @@ configuration:
     # insecure_oidc_skip_issuer_verification = true
     # pass_authorization_header = true
     # ---
+    skip_oidc_discovery = true
+    login_url = "/dex/auth"
+    redeem_url = "http://dex.auth.svc.cluster.local:5556/dex/token"
+    oidc_jwks_url = "http://dex.auth.svc.cluster.local:5556/dex/keys"
+    # ---
     proxy_prefix = "/kubeoauth2"
-    # skip_auth_routes = [ "/dex*" ]
+    skip_auth_routes = [ "/dex*" ]
     # ---
     email_domains = [ "*" ]
     # upstreams = [ "file:///dev/null" ]

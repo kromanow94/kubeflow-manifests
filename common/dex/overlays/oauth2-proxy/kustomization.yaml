@@ -4,7 +4,7 @@ namespace: auth
 
 resources:
 - ../../base
-# - virtual-service.yaml
+- virtual-service.yaml
 
 patchesStrategicMerge:
 - config-map.yaml
