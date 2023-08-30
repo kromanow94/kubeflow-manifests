@@ -57,13 +57,14 @@ resources:
 
 
 # Kubeflow Pipelines
-# - ../../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
-- ../../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user-oauth2-proxy
+- ../../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
+# - ../../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user-oauth2-proxy
 # Katib
 - ../../apps/katib/upstream/installs/katib-with-kubeflow
 # Central Dashboard
 # - ../../apps/centraldashboard/upstream/overlays/kserve
-- ../../apps/centraldashboard/upstream/overlays/oauth2-proxy
+- ../../apps/centraldashboard/upstream/overlays/istio
+# - ../../apps/centraldashboard/upstream/overlays/oauth2-proxy
 # Admission Webhook
 - ../../apps/admission-webhook/upstream/overlays/cert-manager
 # Jupyter Web App
@@ -71,8 +72,8 @@ resources:
 # Notebook Controller
 - ../../apps/jupyter/notebook-controller/upstream/overlays/kubeflow
 # Profiles + KFAM
-# - ../../apps/profiles/upstream/overlays/kubeflow
-- ../../apps/profiles/upstream/overlays/oauth2-proxy
+- ../../apps/profiles/upstream/overlays/kubeflow
+# - ../../apps/profiles/upstream/overlays/oauth2-proxy
 # Volumes Web App
 - ../../apps/volumes-web-app/upstream/overlays/istio
 # Tensorboards Controller

@@ -5,11 +5,10 @@ metadata:
 spec:
   action: ALLOW
   rules:
-    - {}
-    # - from:
-    #     - source:
-    #         principals:
-    #           - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
   selector:
     matchLabels:
       app: centraldashboard

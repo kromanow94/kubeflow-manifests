@@ -68,8 +68,8 @@ configuration:
     skip_provider_button = true
     #---
     skip_jwt_bearer_tokens = true
-    # extra_jwt_issuers = "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
-    extra_jwt_issuers = "https://oidc.eks.eu-central-1.amazonaws.com/id/8E574425478FFFA048D9BAA12C3ABBCD=https://kubernetes.default.svc"
+    extra_jwt_issuers = "https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local"
+    # extra_jwt_issuers = "https://oidc.eks.eu-central-1.amazonaws.com/id/8E574425478FFFA048D9BAA12C3ABBCD=https://kubernetes.default.svc"
     # ssl_insecure_skip_verify = true
     # ssl_upstream_insecure_skip_verify = true
     # insecure_oidc_skip_issuer_verification = true
