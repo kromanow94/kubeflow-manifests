@@ -48,6 +48,16 @@
   {{- end -}}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.autoscaling.maxReplicas" -}}
+{{- $componentAutoscaling := .Values.centraldashboard.autoscaling -}}
+{{- $defaultAutoscaling := .Values.defaults.autoscaling -}}
+  {{- if $componentAutoscaling -}}
+    {{- default $defaultAutoscaling.maxReplicas $componentAutoscaling.maxReplicas }}
+  {{- else -}}
+    {{- $defaultAutoscaling.maxReplicas }}
+  {{- end -}}
+{{- end }}
+
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- if .Values.centraldashboard.serviceAccount.create }}
 {{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}
