@@ -67,6 +67,14 @@ app.kubernetes.io/component: {{ . }}
 {{- end }}
 
 {{/*
+START Experimental section
+*/}}
+
+{{/*
+END Experimental section
+*/}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "kubeflow.serviceAccountName" -}}
@@ -76,15 +84,3 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{/*
-Common component names
-*/}}
-{{- define "kubeflow.centraldashboard.name" -}}
-{{- printf "centraldashboard" -}}
-{{- end }}
-
-{{/*
-Component autoscaling enabled
-{{- define "kubeflow.component.autoscaling.enabled"-}}
-*/}}

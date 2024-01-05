@@ -1,9 +1,12 @@
+{{- $componentName := include "kubeflow.centraldashboard.name" . -}}
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app: centraldashboard
-  name: centraldashboard
+    {{- include "kubeflow.common.labels" . | nindent 4 }}
+    {{- include "kubeflow.component.labels" $componentName | nindent 4 }}
+  name: {{ $componentName }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

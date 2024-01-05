@@ -2,10 +2,12 @@ defaults:
   image:
     # NOTE: Forward slash is important because a registry prefix
     # could be defined without a forward slash.
-    registry: docker.io/kubeflownotebookswg/
+    # TODO: check if possible to verify if trailing forward slash exists...
+    # registry: docker.io/kubeflownotebookswg/
+    registry: docker.io
     # tag: "v1.8.0-rc.0"
     tag: "latest"
-    imagePullPolicy: IfNotPresent
+    pullPolicy: IfNotPresent
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled: false
@@ -20,17 +22,20 @@ centraldashboard:
   #   settings: ...?
   #   parameters: ...?
   image:
-    repository: centraldashboard
-    registryOverwrite: ""
-    tagOverwrite: 
-    imagePullPolicyOverwrite: ""
+    repository: kubeflownotebookswg/centraldashboard
+    registryOverwrite:
+    tagOverwrite:
+    pullPolicyOverwrite:
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     # Setting empty value will instruct to take the default value from defaults.autoscaling.enabled.
     enabled:
-    # minReplicas: 1
-    # maxReplicas: 5
-    # targetCPUUtilizationPercentage: 70
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+  serviceAccount:
+    create: true
+    name:
 
 istioIntegration:
   enabled: true

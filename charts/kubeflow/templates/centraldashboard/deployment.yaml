@@ -1,59 +1,41 @@
 {{- $componentName := include "kubeflow.centraldashboard.name" . -}}
-{{- $componentAutoscalingDefined := ne (.Values.centraldashboard.autoscaling.enabled | quote | default "N/A") "N/A" -}}
-{{- $autoscalingEnabled := or (and $componentAutoscalingDefined .Values.centraldashboard.autoscaling.enabled) (and (not $componentAutoscalingDefined) .Values.defaults.autoscaling.enabled) -}}
-{{- $replicas := default .Values.defaults.autoscaling.minReplicas .Values.centraldashboard.autoscaling.minReplicas -}}
+{{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
+{{- $minReplicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    {{- include "kubeflow.common.labels" . | nindent 4 }}
-    {{- include "kubeflow.component.labels" $componentName | nindent 4 }}
+    {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
   name: {{ $componentName }}
 spec:
-  {{- if $autoscalingEnabled }}
-  replicas: {{ $replicas }}
+  {{- if (eq $autoscalingEnabled "false") }}
+  replicas: {{ $minReplicas }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "kubeflow.common.selectorLabels" . | nindent 6 }}
-      {{- include "kubeflow.component.selectorLabels" $componentName | nindent 6 }}
+      {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ $componentName }}
-        {{- include "kubeflow.common.selectorLabels" . | nindent 8 }}
-        {{- include "kubeflow.component.selectorLabels" $componentName | nindent 8 }}
+        {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - name: {{ $componentName }}
-        image: >-
-          {{ if .Values.centraldashboard.image.registryOverwrite -}}
-          {{- .Values.centraldashboard.image.registryOverwrite -}}
-          {{- else -}}
-          {{- .Values.defaults.image.registry -}}
-          {{- end -}}
-          {{- .Values.centraldashboard.image.repository -}}:
-          {{- if .Values.centraldashboard.image.tagOverwrite -}}
-          {{- .Values.centraldashboard.image.tagOverwrite -}}
-          {{- else -}}
-          {{- .Values.defaults.image.tag -}}
-          {{- end }}
-        imagePullPolicy: >-
-          {{ if .Values.centraldashboard.image.imagePullPolicyOverwrite -}}
-          {{- .Values.centraldashboard.image.imagePullPolicyOverwrite -}}
-          {{- else -}}
-          {{- .Values.defaults.image.imagePullPolicy -}}
-          {{- end }}
+        image: {{ include "kubeflow.centraldashboard.image" . }}
+        imagePullPolicy: {{ include "kubeflow.centraldashboard.imagePullPolicy" . }}
+
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8082
           initialDelaySeconds: 30
           periodSeconds: 30
+
         ports:
         - containerPort: 8082
           protocol: TCP
+
         env:
         - name: USERID_HEADER
           value: {{ .Values.auth.userHeaderName }}
@@ -77,4 +59,5 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-      serviceAccountName: centraldashboard
+
+      serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
