@@ -1,6 +1,6 @@
 {{- $componentName := include "kubeflow.centraldashboard.name" . -}}
 {{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
-{{- $minReplicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
+{{- $replicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
 
 apiVersion: apps/v1
 kind: Deployment
@@ -10,7 +10,7 @@ metadata:
   name: {{ $componentName }}
 spec:
   {{- if (eq $autoscalingEnabled "false") }}
-  replicas: {{ $minReplicas }}
+  replicas: {{ $replicas }}
   {{- end }}
   selector:
     matchLabels:
