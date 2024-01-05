@@ -1,5 +1,5 @@
 {{- define "kubeflow.centraldashboard.name" -}}
-{{- printf "centraldashboarda" }}
+{{- printf "centraldashboard" }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.labels" -}}
@@ -51,7 +51,13 @@
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- if .Values.centraldashboard.serviceAccount.create }}
 {{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.centraldashboard.serviceAccount.name -}}
 {{- end }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.clusterRoleName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.config.name" -}}
