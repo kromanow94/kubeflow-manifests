@@ -17,9 +17,6 @@ defaults:
 
 centraldashboard:
   # This enables the automatic profile creation.
-  # config:
-  #   settings: ...?
-  #   parameters: ...?
   image:
     repository: kubeflownotebookswg/centraldashboard
     registryOverwrite:
@@ -27,11 +24,11 @@ centraldashboard:
     pullPolicyOverwrite:
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-    # Setting empty value will instruct to take the default value from defaults.autoscaling.enabled.
     enabled:
     minReplicas:
     maxReplicas:
     targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
   serviceAccount:
     create: true
     name:
@@ -41,6 +38,7 @@ centraldashboard:
     logoutURL: '/authservice/logout'
     forceIFrame: true
     links:
+      externalLinks:
       menuLinks:
       - type: item
         link: /jupyter/
@@ -86,7 +84,6 @@ centraldashboard:
         link: /pipeline/#/executions
         text: Executions
         icon: av:play-arrow
-      externalLinks:
       quickLinks:
       - text: Upload a pipeline
         desc: Pipelines

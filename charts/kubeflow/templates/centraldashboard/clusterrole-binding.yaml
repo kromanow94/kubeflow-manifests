@@ -3,7 +3,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.centraldashboard.name" . }}
+  name: {{ include "kubeflow.centraldashboard.clusterRoleBindingName" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

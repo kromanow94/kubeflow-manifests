@@ -66,7 +66,19 @@
 {{- end }}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.roleName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.roleBindingName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
 {{- define "kubeflow.centraldashboard.clusterRoleName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.clusterRoleBindingName" -}}
 {{- include "kubeflow.centraldashboard.name" . }}
 {{- end }}
 

@@ -1,28 +1,35 @@
-{{- if .Values.autoscaling.enabled }}
+{{- $componentName := include "kubeflow.centraldashboard.name" . -}}
+{{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
+{{- $minReplicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
+{{- $maxReplicas := include "kubeflow.centraldashboard.autoscaling.maxReplicas" . -}}
+{{- $targetCPUUtilizationPercentage := .Values.centraldashboard.autoscaling.targetCPUUtilizationPercentage -}}
+{{- $targetMemoryUtilizationPercentage := .Values.centraldashboard.autoscaling.targetMemoryUtilizationPercentage -}}
+
+{{- if $autoscalingEnabled }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "kubeflow.fullname" . }}
+  name: {{ $componentName }}
   labels:
-    {{- include "kubeflow.labels" . | nindent 4 }}
+    {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "kubeflow.fullname" . }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+    name: {{ $componentName }}
+  minReplicas: {{ $minReplicas }}
+  maxReplicas: {{ $maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if $targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+        targetAverageUtilization: {{ $targetCPUUtilizationPercentage }}
     {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if $targetMemoryUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.autoscaling.targetMemoryUtilizationPercentage }}
+        targetAverageUtilization: {{ $targetMemoryUtilizationPercentage }}
     {{- end }}
 {{- end }}
