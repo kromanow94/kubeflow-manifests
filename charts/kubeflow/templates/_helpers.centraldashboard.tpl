@@ -51,9 +51,12 @@
   {{- end -}}
 {{- end }}
 
-
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- if .Values.centraldashboard.serviceAccount.create }}
 {{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.config.name" -}}
+{{ printf "%s-config" (include "kubeflow.centraldashboard.name" .) }}
 {{- end }}

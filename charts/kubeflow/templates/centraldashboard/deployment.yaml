@@ -44,16 +44,16 @@ spec:
           value: {{ .Values.auth.userIdPrefix | quote }}
 
         - name: PROFILES_KFAM_SERVICE_HOST
-          value: profiles-kfam.kubeflow
+          value: {{ printf "profiles-kfam.%s" .Release.Namespace }}
 
         - name: REGISTRATION_FLOW
-          value: {{ .Values.centraldashboard.enableRegistrationFlow | quote }}
+          value: {{ .Values.centraldashboard.config.enableRegistrationFlow | quote }}
 
         - name: DASHBOARD_LINKS_CONFIGMAP
-          value: centraldashboard-config
+          value: {{ include "kubeflow.centraldashboard.config.name" . }}
 
         - name: LOGOUT_URL
-          value: '/authservice/logout'
+          value: {{ .Values.centraldashboard.config.logoutURL }}
 
         - name: POD_NAMESPACE
           valueFrom:

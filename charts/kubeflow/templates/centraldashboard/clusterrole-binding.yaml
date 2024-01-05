@@ -4,8 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    {{- include "kubeflow.common.labels" . | nindent 4 }}
-    {{- include "kubeflow.component.labels" $componentName | nindent 4 }}
+    {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
   name: {{ $componentName }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -13,5 +12,5 @@ roleRef:
   name: centraldashboard
 subjects:
 - kind: ServiceAccount
-  name: centraldashboard
-  namespace: kubeflow
+  name: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
