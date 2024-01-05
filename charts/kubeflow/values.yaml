@@ -35,6 +35,7 @@ centraldashboard:
   serviceAccount:
     create: true
     name:
+    annotations:
   config:
     enableRegistrationFlow: false
     logoutURL: '/authservice/logout'

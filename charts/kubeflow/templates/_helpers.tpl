@@ -43,16 +43,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Component specific labels
-app.kubernetes.io/component: {{ . }}
-*/}}
-{{- define "kubeflow.component.labels" -}}
-{{ include "kubeflow.component.selectorLabels" . }}
-{{- end }}
-
-
-{{/*
-Selector labels
+Common selector labels
 */}}
 {{- define "kubeflow.common.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "kubeflow.name" . }}
@@ -60,27 +51,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Component specific labels
+*/}}
+{{- define "kubeflow.component.labels" -}}
+{{ include "kubeflow.component.selectorLabels" . }}
+{{- end }}
+
+{{/*
 Component specific selector labels
 */}}
 {{- define "kubeflow.component.selectorLabels" -}}
 app.kubernetes.io/component: {{ . }}
-{{- end }}
-
-{{/*
-START Experimental section
-*/}}
-
-{{/*
-END Experimental section
-*/}}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "kubeflow.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "kubeflow.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}

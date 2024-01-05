@@ -1,5 +1,5 @@
 {{- define "kubeflow.centraldashboard.name" -}}
-{{- printf "centraldashboard" -}}
+{{- printf "centraldashboarda" }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.labels" -}}
@@ -10,9 +10,6 @@
 {{- define "kubeflow.centraldashboard.selectorLabels" -}}
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.centraldashboard.name" .) }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.selectorLabels" -}}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.image" -}}
