@@ -1,16 +1,22 @@
+{{- if .Values.centraldashboard.service.create }}
 apiVersion: v1
 kind: Service
 metadata:
+  {{- with .Values.centraldashboard.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
   name: {{ include "kubeflow.centraldashboard.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
+  {{- with .Values.centraldashboard.service.ports }}
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8082
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
-  type: ClusterIP
+  type: {{ .Values.centraldashboard.service.type }}
+{{- end }}

@@ -21,12 +21,26 @@ defaults:
     targetCPUUtilizationPercentage: 80
 
 centraldashboard:
-  # This enables the automatic profile creation.
   image:
     repository: kubeflownotebookswg/centraldashboard
     registryOverwrite:
     tagOverwrite:
     pullPolicyOverwrite:
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: 8082
+    initialDelaySeconds: 30
+    periodSeconds: 30
+  service:
+    create: true
+    annotations:
+    type: ClusterIP
+    ports:
+      - name: http
+        port: 80
+        protocol: TCP
+        targetPort: 8082
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled:
@@ -34,97 +48,99 @@ centraldashboard:
     maxReplicas:
     targetCPUUtilizationPercentage:
     targetMemoryUtilizationPercentage:
+  podDisruptionBudget: {}
   serviceAccount:
     create: true
     name:
     annotations:
   config:
+    # This enables the automatic profile creation.
     enableRegistrationFlow: false
-    logoutURL: '/authservice/logout'
+    logoutURL: "/authservice/logout"
     forceIFrame: true
     links:
       externalLinks:
       menuLinks:
-      - type: item
-        link: /jupyter/
-        text: Notebooks
-        icon: book
-      - type: item
-        link: /tensorboards/
-        text: Tensorboards
-        icon: assessment
-      - type: item
-        link: /volumes/
-        text: Volumes
-        icon: device:storage
-      - type: item
-        link: /models/
-        text: Endpoints
-        icon: kubeflow:models
-      - type: item
-        link: /katib/
-        text: Experiments (AutoML)
-        icon: kubeflow:katib
-      - type: item
-        text: Experiments (KFP)
-        link: /pipeline/#/experiments
-        icon: done-all
-      - type: item
-        link: /pipeline/#/pipelines
-        text: Pipelines
-        icon: kubeflow:pipeline-centered
-      - type: item
-        link: /pipeline/#/runs
-        text: Runs
-        icon: maps:directions-run
-      - type: item
-        link: /pipeline/#/recurringruns
-        text: Recurring Runs
-        icon: device:access-alarm
-      - type: item
-        link: /pipeline/#/artifacts
-        text: Artifacts
-        icon: editor:bubble-chart
-      - type: item
-        link: /pipeline/#/executions
-        text: Executions
-        icon: av:play-arrow
+        - type: item
+          link: /jupyter/
+          text: Notebooks
+          icon: book
+        - type: item
+          link: /tensorboards/
+          text: Tensorboards
+          icon: assessment
+        - type: item
+          link: /volumes/
+          text: Volumes
+          icon: device:storage
+        - type: item
+          link: /models/
+          text: Endpoints
+          icon: kubeflow:models
+        - type: item
+          link: /katib/
+          text: Experiments (AutoML)
+          icon: kubeflow:katib
+        - type: item
+          text: Experiments (KFP)
+          link: /pipeline/#/experiments
+          icon: done-all
+        - type: item
+          link: /pipeline/#/pipelines
+          text: Pipelines
+          icon: kubeflow:pipeline-centered
+        - type: item
+          link: /pipeline/#/runs
+          text: Runs
+          icon: maps:directions-run
+        - type: item
+          link: /pipeline/#/recurringruns
+          text: Recurring Runs
+          icon: device:access-alarm
+        - type: item
+          link: /pipeline/#/artifacts
+          text: Artifacts
+          icon: editor:bubble-chart
+        - type: item
+          link: /pipeline/#/executions
+          text: Executions
+          icon: av:play-arrow
       quickLinks:
-      - text: Upload a pipeline
-        desc: Pipelines
-        link: /pipeline/
-      - text: View all pipeline runs
-        desc: Pipelines
-        link: /pipeline/#/runs
-      - text: Create a new Notebook server
-        desc: Notebook Servers
-        # NOTE(kromanow94): it's probably not needed to add namespace here...
-        # at least in multi user mode.
-        # TODO(kromanow94): check if this is needed...
-        # link: /jupyter/new?namespace=kubeflow
-        link: /jupyter/new
-      - text: View Katib Experiments
-        desc: Katib
-        link: /katib/
+        - text: Upload a pipeline
+          desc: Pipelines
+          link: /pipeline/
+        - text: View all pipeline runs
+          desc: Pipelines
+          link: /pipeline/#/runs
+        - text: Create a new Notebook server
+          desc: Notebook Servers
+          # NOTE(kromanow94): it's probably not needed to add namespace here...
+          # at least in multi user mode.
+          # TODO(kromanow94): check if this is needed...
+          # link: /jupyter/new?namespace=kubeflow
+          link: /jupyter/new
+        - text: View Katib Experiments
+          desc: Katib
+          link: /katib/
       documentationItems:
-      - text: Getting Started with Kubeflow
-        desc: Get your machine-learning workflow up and running on Kubeflow
-        link: https://www.kubeflow.org/docs/started/getting-started/
-      - text: MiniKF
-        desc: A fast and easy way to deploy Kubeflow locally
-        link: https://www.kubeflow.org/docs/distributions/minikf/
-      - text: Microk8s for Kubeflow
-        desc: Quickly get Kubeflow running locally on native hypervisors
-        link: https://www.kubeflow.org/docs/distributions/microk8s/kubeflow-on-microk8s/
-      - text: Kubeflow on GCP
-        desc: Running Kubeflow on Kubernetes Engine and Google Cloud Platform
-        link: https://www.kubeflow.org/docs/gke/
-      - text: Kubeflow on AWS
-        desc: Running Kubeflow on Elastic Container Service and Amazon Web Services
-        link: https://www.kubeflow.org/docs/aws/
-      - text: Requirements for Kubeflow
-        desc: Get more detailed information about using Kubeflow and its components
-        link: https://www.kubeflow.org/docs/started/requirements/
+        - text: Getting Started with Kubeflow
+          desc: Get your machine-learning workflow up and running on Kubeflow
+          link: https://www.kubeflow.org/docs/started/getting-started/
+        - text: MiniKF
+          desc: A fast and easy way to deploy Kubeflow locally
+          link: https://www.kubeflow.org/docs/distributions/minikf/
+        - text: Microk8s for Kubeflow
+          desc: Quickly get Kubeflow running locally on native hypervisors
+          link: https://www.kubeflow.org/docs/distributions/microk8s/kubeflow-on-microk8s/
+        - text: Kubeflow on GCP
+          desc: Running Kubeflow on Kubernetes Engine and Google Cloud Platform
+          link: https://www.kubeflow.org/docs/gke/
+        - text: Kubeflow on AWS
+          desc: Running Kubeflow on Elastic Container Service and Amazon Web Services
+          link: https://www.kubeflow.org/docs/aws/
+        - text: Requirements for Kubeflow
+          desc: Get more detailed information about using Kubeflow and its components
+          link: https://www.kubeflow.org/docs/started/requirements/
 
 istioIntegration:
   enabled: true
@@ -133,9 +149,7 @@ auth:
   userHeaderName: kubeflow-userid
   userIdPrefix: ""
 
-
 clusterDomain: cluster.local
-
 
 # --- below values are the default created by helm create
 
@@ -166,10 +180,12 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -184,7 +200,8 @@ service:
 ingress:
   enabled: false
   className: ""
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -197,7 +214,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

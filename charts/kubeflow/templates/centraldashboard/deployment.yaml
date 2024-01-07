@@ -27,15 +27,7 @@ spec:
         imagePullPolicy: {{ include "kubeflow.centraldashboard.imagePullPolicy" . }}
 
         livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8082
-          initialDelaySeconds: 30
-          periodSeconds: 30
-
-        ports:
-        - containerPort: 8082
-          protocol: TCP
+          {{- toYaml .Values.centraldashboard.livenessProbe | nindent 10 }}
 
         env:
         - name: USERID_HEADER
