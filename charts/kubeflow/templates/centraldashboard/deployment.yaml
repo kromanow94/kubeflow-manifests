@@ -27,7 +27,14 @@ spec:
         imagePullPolicy: {{ include "kubeflow.centraldashboard.imagePullPolicy" . }}
 
         livenessProbe:
-          {{- toYaml .Values.centraldashboard.livenessProbe | nindent 10 }}
+          httpGet:
+            path: /healthz
+            port: 8082
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        ports:
+        - containerPort: 8082
+          protocol: TCP
 
         env:
         - name: USERID_HEADER
@@ -54,3 +61,28 @@ spec:
               fieldPath: metadata.namespace
 
       serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
+
+      {{- with .Values.centraldashboard.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.centraldashboard.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.centraldashboard.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.centraldashboard.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.centraldashboard.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -26,21 +26,10 @@ centraldashboard:
     registryOverwrite:
     tagOverwrite:
     pullPolicyOverwrite:
-  livenessProbe:
-    httpGet:
-      path: /healthz
-      port: 8082
-    initialDelaySeconds: 30
-    periodSeconds: 30
   service:
     create: true
     annotations:
     type: ClusterIP
-    ports:
-      - name: http
-        port: 80
-        protocol: TCP
-        targetPort: 8082
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled:
@@ -53,6 +42,12 @@ centraldashboard:
     create: true
     name:
     annotations:
+  nodeSelector:
+  affinity:
+  tolerations:
+  topologySpreadConstraints:
+  # Pod Security Context
+  securityContext:
   config:
     # This enables the automatic profile creation.
     enableRegistrationFlow: false
@@ -144,6 +139,18 @@ centraldashboard:
 
 istioIntegration:
   enabled: true
+  envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
+  gateway:
+    name: kubeflow-gateway
+    selector:
+      istio: ingressgateway
+    servers:
+      - hosts:
+          - "*"
+        port:
+          number: 80
+          name: http
+          protocol: HTTP
 
 auth:
   userHeaderName: kubeflow-userid

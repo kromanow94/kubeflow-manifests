@@ -85,3 +85,15 @@
 {{- define "kubeflow.centraldashboard.config.name" -}}
 {{ printf "%s-config" (include "kubeflow.centraldashboard.name" .) }}
 {{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.name" -}}
+{{ print (include "kubeflow.centraldashboard.name" .) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.host" -}}
+{{ printf "%s.%s.svc.%s"
+  (include "kubeflow.centraldashboard.svc.name" .)
+  (include "kubeflow.namespace" .)
+  .Values.clusterDomain
+}}
+{{- end }}
