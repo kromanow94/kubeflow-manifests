@@ -63,3 +63,16 @@ Component specific selector labels
 {{- define "kubeflow.component.selectorLabels" -}}
 app.kubernetes.io/component: {{ . }}
 {{- end }}
+
+{{/*
+Namespace for all resources to be installed into
+If not defined in values file then the helm release namespace is used
+By default this is not set so the helm release namespace will be used
+
+This gets around an problem within helm discussed here
+https://github.com/helm/helm/issues/5358
+{{- default .Values.namespace .Release.Namespace }}
+*/}}
+{{- define "kubeflow.namespace" -}}
+{{- default .Release.Namespace .Values.namespace }}
+{{- end -}}

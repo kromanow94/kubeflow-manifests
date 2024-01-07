@@ -1,3 +1,8 @@
+# This namespace allows you to define where the services will be installed into
+# if not set then they will use the namespace of the release
+# This is helpful when installing Kubeflow as a chart dependency (sub chart).
+namespace: ""
+
 defaults:
   image:
     # NOTE: Forward slash is important because a registry prefix
@@ -93,7 +98,11 @@ centraldashboard:
         link: /pipeline/#/runs
       - text: Create a new Notebook server
         desc: Notebook Servers
-        link: /jupyter/new?namespace=kubeflow
+        # NOTE(kromanow94): it's probably not needed to add namespace here...
+        # at least in multi user mode.
+        # TODO(kromanow94): check if this is needed...
+        # link: /jupyter/new?namespace=kubeflow
+        link: /jupyter/new
       - text: View Katib Experiments
         desc: Katib
         link: /katib/

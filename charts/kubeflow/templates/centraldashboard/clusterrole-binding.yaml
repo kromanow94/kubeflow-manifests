@@ -11,4 +11,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ include "kubeflow.namespace" . }}

@@ -2,14 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: centraldashboard
-  name: centraldashboard
+    {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.centraldashboard.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8082
   selector:
-    app: centraldashboard
+    {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP

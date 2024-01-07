@@ -8,6 +8,7 @@ metadata:
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
   name: {{ $componentName }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   {{- if (eq $autoscalingEnabled "false") }}
   replicas: {{ $replicas }}

@@ -9,9 +9,10 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $componentName }}
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
+  name: {{ $componentName }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
