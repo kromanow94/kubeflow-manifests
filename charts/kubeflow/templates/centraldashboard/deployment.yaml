@@ -38,7 +38,7 @@ spec:
 
         env:
         - name: USERID_HEADER
-          value: {{ .Values.auth.userHeaderName }}
+          value: {{ .Values.auth.userHeaderName | quote }}
 
         - name: USERID_PREFIX
           value: {{ .Values.auth.userIdPrefix | quote }}
@@ -60,7 +60,13 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
 
+        {{- with .Values.centraldashboard.containerSecurityContext }}
+        securityContext:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+
       serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
+
 
       {{- with .Values.centraldashboard.nodeSelector }}
       nodeSelector:
@@ -79,10 +85,5 @@ spec:
 
       {{- with .Values.centraldashboard.topologySpreadConstraints }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-
-      {{- with .Values.centraldashboard.securityContext }}
-      securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}

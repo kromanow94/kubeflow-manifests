@@ -46,8 +46,8 @@ centraldashboard:
   affinity:
   tolerations:
   topologySpreadConstraints:
-  # Pod Security Context
-  securityContext:
+  # Container Security Context
+  containerSecurityContext:
   config:
     # This enables the automatic profile creation.
     enableRegistrationFlow: false

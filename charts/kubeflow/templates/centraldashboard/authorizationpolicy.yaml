@@ -1,6 +1,8 @@
 # NOTE(kromanow94): this AuthorizationPolicy forces traffic through ext authz
 # http extension so we don't have to provide configuration to allow traffic only
-# from istio-ingressgateway.
+# from istio-ingressgateway. The .spec.rules.to.operations.notPaths is configured
+# for CloudFlare integration and allows only static, non-secret assets to be
+# accessible without the Istio Auth.
 
 {{- if .Values.istioIntegration.enabled }}
 apiVersion: security.istio.io/v1beta1
