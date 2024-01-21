@@ -76,3 +76,39 @@ https://github.com/helm/helm/issues/5358
 {{- define "kubeflow.namespace" -}}
 {{- default .Release.Namespace .Values.namespace }}
 {{- end -}}
+
+
+{{- define "kubeflow.component.autoscaling.enabled" -}}
+{{- $defaultAutoscaling := index . 0 -}}
+{{- $componentAutoscaling := index . 1 -}}
+{{- if $componentAutoscaling -}}
+  {{- if eq nil $componentAutoscaling.enabled -}}
+      {{- $defaultAutoscaling.enabled }}
+  {{- else -}}
+      {{- $componentAutoscaling.enabled }}
+  {{- end -}}
+{{- else -}}
+  {{- $defaultAutoscaling.enabled }}
+{{- end -}}
+{{- end }}
+
+
+{{- define "kubeflow.component.autoscaling.minReplicas" -}}
+{{- $defaultAutoscaling := index . 0 -}}
+{{- $componentAutoscaling := index . 1 -}}
+{{- if $componentAutoscaling -}}
+  {{- default $defaultAutoscaling.minReplicas $componentAutoscaling.minReplicas }}
+{{- else -}}
+  {{- $defaultAutoscaling.minReplicas }}
+{{- end -}}
+{{- end }}
+
+{{- define "kubeflow.component.autoscaling.maxReplicas" -}}
+{{- $defaultAutoscaling := index . 0 -}}
+{{- $componentAutoscaling := index . 1 -}}
+{{- if $componentAutoscaling -}}
+  {{- default $defaultAutoscaling.maxReplicas $componentAutoscaling.maxReplicas }}
+{{- else -}}
+  {{- $defaultAutoscaling.maxReplicas }}
+{{- end -}}
+{{- end }}

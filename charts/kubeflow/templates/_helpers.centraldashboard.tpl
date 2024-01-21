@@ -25,38 +25,17 @@
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.autoscaling.enabled" -}}
-{{- $componentAutoscaling := .Values.centraldashboard.autoscaling -}}
-{{- $defaultAutoscaling := .Values.defaults.autoscaling -}}
-  {{- if $componentAutoscaling -}}
-    {{- if eq nil $componentAutoscaling.enabled -}}
-        {{- $defaultAutoscaling.enabled }}
-    {{- else -}}
-        {{- $componentAutoscaling.enabled }}
-    {{- end -}}
-  {{- else -}}
-    {{- $defaultAutoscaling.enabled }}
-  {{- end -}}
+{{ include "kubeflow.component.autoscaling.enabled" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.autoscaling.minReplicas" -}}
-{{- $componentAutoscaling := .Values.centraldashboard.autoscaling -}}
-{{- $defaultAutoscaling := .Values.defaults.autoscaling -}}
-  {{- if $componentAutoscaling -}}
-    {{- default $defaultAutoscaling.minReplicas $componentAutoscaling.minReplicas }}
-  {{- else -}}
-    {{- $defaultAutoscaling.minReplicas }}
-  {{- end -}}
+{{ include "kubeflow.component.autoscaling.minReplicas" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.autoscaling.maxReplicas" -}}
-{{- $componentAutoscaling := .Values.centraldashboard.autoscaling -}}
-{{- $defaultAutoscaling := .Values.defaults.autoscaling -}}
-  {{- if $componentAutoscaling -}}
-    {{- default $defaultAutoscaling.maxReplicas $componentAutoscaling.maxReplicas }}
-  {{- else -}}
-    {{- $defaultAutoscaling.maxReplicas }}
-  {{- end -}}
+{{ include "kubeflow.component.autoscaling.maxReplicas" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
+
 
 {{- define "kubeflow.centraldashboard.nodeSelector" -}}
 {{- if .Values.centraldashboard.nodeSelector -}}
