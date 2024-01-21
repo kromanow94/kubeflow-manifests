@@ -13,15 +13,11 @@
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.image" -}}
-{{- $registry := default .Values.defaults.image.registry .Values.centraldashboard.image.registryOverwrite -}}
-{{- $repository :=  .Values.centraldashboard.image.repository -}}
-{{- $tag := default .Values.defaults.image.tag .Values.centraldashboard.image.tagOverwrite -}}
-{{- printf "%s/%s:%s" $registry $repository $tag }}
+{{ include "kubeflow.component.image" (list .Values.defaults.image .Values.centraldashboard.image) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.imagePullPolicy" -}}
-{{- $pullPolicy := default .Values.defaults.image.pullPolicy .Values.centraldashboard.image.pullPolicyOverwrite -}}
-{{- $pullPolicy }}
+{{ include "kubeflow.component.imagePullPolicy" (list .Values.defaults.image .Values.centraldashboard.image) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.autoscaling.enabled" -}}
@@ -77,12 +73,9 @@
 {{- end }}
 {{- end }}
 
+
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
-{{- if .Values.centraldashboard.serviceAccount.create }}
-{{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.centraldashboard.serviceAccount.name -}}
-{{- end }}
+{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.roleName" -}}

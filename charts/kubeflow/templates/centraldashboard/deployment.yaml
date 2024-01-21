@@ -1,3 +1,5 @@
+{{- if .Values.centraldashboard.enabled -}}
+
 {{- $componentName := include "kubeflow.centraldashboard.name" . -}}
 {{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
@@ -13,13 +15,16 @@ spec:
   {{- if (eq $autoscalingEnabled "false") }}
   replicas: {{ $replicas }}
   {{- end }}
+
   selector:
     matchLabels:
       {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 6 }}
+
   template:
     metadata:
       labels:
         {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 8 }}
+
     spec:
       containers:
       - name: {{ $componentName }}
@@ -41,8 +46,10 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
 
+        {{- with .Values.centraldashboard.resources }}
         resources:
-          {{- toYaml .Values.centraldashboard.resources | nindent 10 }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
 
         env:
         - name: USERID_HEADER
@@ -61,7 +68,7 @@ spec:
           value: {{ include "kubeflow.centraldashboard.config.name" . }}
 
         - name: LOGOUT_URL
-          value: {{ .Values.centraldashboard.config.logoutURL }}
+          value: {{ .Values.centraldashboard.config.logoutURL | quote }}
 
         - name: POD_NAMESPACE
           valueFrom:
@@ -94,3 +101,5 @@ spec:
       topologySpreadConstraints:
         {{- . | nindent 8 }}
       {{- end }}
+
+{{- end }}

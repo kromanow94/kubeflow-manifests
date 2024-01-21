@@ -26,6 +26,7 @@ defaults:
   containerSecurityContext:
 
 centraldashboard:
+  enabled: true
   image:
     repository: kubeflownotebookswg/centraldashboard
     registryOverwrite:
@@ -149,6 +150,66 @@ centraldashboard:
         - text: Requirements for Kubeflow
           desc: Get more detailed information about using Kubeflow and its components
           link: https://www.kubeflow.org/docs/started/requirements/
+
+notebooks:
+  enabled: true
+  jupyterWebApp:
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    image:
+      repository: kubeflownotebookswg/jupyter-web-app
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    resources:
+    urlPrefix: /jupyter
+    uiFlavor: default
+    secureCookies: true
+  controller:
+  # image:
+  #   repository: kubeflownotebookswg/centraldashboard
+  #   registryOverwrite:
+  #   tagOverwrite:
+  #   pullPolicyOverwrite:
+  # resources:
+  #   {}
+  #   # limits:
+  #   #   cpu: 100m
+  #   #   memory: 128Mi
+  #   # requests:
+  #   #   cpu: 100m
+  #   #   memory: 128Mi
+  # service:
+  #   create: true
+  #   annotations:
+  #   type: ClusterIP
+  # autoscaling:
+  #   # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+  #   enabled:
+  #   minReplicas:
+  #   maxReplicas:
+  #   targetCPUUtilizationPercentage:
+  #   targetMemoryUtilizationPercentage:
+  # podDisruptionBudget: {}
+  # serviceAccount:
+  #   create: true
+  #   name:
+  #   annotations:
+  # nodeSelector:
+  # tolerations:
+  # affinity:
+  # topologySpreadConstraints:
+  # # Container Security Context
+  # containerSecurityContext:
 
 istioIntegration:
   enabled: true
