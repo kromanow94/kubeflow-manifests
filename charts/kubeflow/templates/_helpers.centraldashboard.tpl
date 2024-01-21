@@ -129,3 +129,8 @@
   .Values.clusterDomain
 }}
 {{- end }}
+
+{{- define "kubeflow.centraldashboard.authorizationPolicyExtAuthName" -}}
+{{- $providerName := .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
+{{ printf "%s-%s" (include "kubeflow.centraldashboard.name" .) $providerName }}
+{{- end }}

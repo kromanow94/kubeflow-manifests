@@ -4,18 +4,21 @@
 # for CloudFlare integration and allows only static, non-secret assets to be
 # accessible without the Istio Auth.
 
+{{- $providerName := .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
+{{- $objectName := include "kubeflow.centraldashboard.authorizationPolicyExtAuthName" . -}}
+
 {{- if .Values.istioIntegration.enabled }}
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.centraldashboard.name" . }}
+  name: {{ $objectName }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   action: CUSTOM
   provider:
-    name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+    name: {{ $providerName }}
   rules:
     - to:
       - operation:
