@@ -58,6 +58,38 @@
   {{- end -}}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.nodeSelector" -}}
+{{- if .Values.centraldashboard.nodeSelector -}}
+  {{- toYaml .Values.centraldashboard.nodeSelector }}
+{{- else if .Values.defaults.nodeSelector -}}
+  {{- toYaml .Values.defaults.nodeSelector }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.tolerations" -}}
+{{- if .Values.centraldashboard.tolerations -}}
+  {{- toYaml .Values.centraldashboard.tolerations }}
+{{- else if .Values.defaults.tolerations -}}
+  {{- toYaml .Values.defaults.tolerations }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.affinity" -}}
+{{- if .Values.centraldashboard.affinity -}}
+  {{- toYaml .Values.centraldashboard.affinity }}
+{{- else if .Values.defaults.affinity -}}
+  {{- toYaml .Values.defaults.affinity }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.topologySpreadConstraints" -}}
+{{- if .Values.centraldashboard.topologySpreadConstraints -}}
+  {{- toYaml .Values.centraldashboard.topologySpreadConstraints }}
+{{- else if .Values.defaults.topologySpreadConstraints -}}
+  {{- toYaml .Values.defaults.topologySpreadConstraints }}
+{{- end }}
+{{- end }}
+
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- if .Values.centraldashboard.serviceAccount.create }}
 {{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}

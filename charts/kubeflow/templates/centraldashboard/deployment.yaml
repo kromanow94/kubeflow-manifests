@@ -67,23 +67,22 @@ spec:
 
       serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
 
-
-      {{- with .Values.centraldashboard.nodeSelector }}
+      {{- with include "kubeflow.centraldashboard.nodeSelector" . }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
 
-      {{- with .Values.centraldashboard.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-
-      {{- with .Values.centraldashboard.tolerations }}
+      {{- with include "kubeflow.centraldashboard.tolerations" . }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
 
-      {{- with .Values.centraldashboard.topologySpreadConstraints }}
+      {{- with include "kubeflow.centraldashboard.affinity" . }}
+      affinity:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.centraldashboard.topologySpreadConstraints" . }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}

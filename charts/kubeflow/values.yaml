@@ -19,6 +19,10 @@ defaults:
     minReplicas: 1
     maxReplicas: 3
     targetCPUUtilizationPercentage: 80
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints:
 
 centraldashboard:
   image:
@@ -43,8 +47,8 @@ centraldashboard:
     name:
     annotations:
   nodeSelector:
-  affinity:
   tolerations:
+  affinity:
   topologySpreadConstraints:
   # Container Security Context
   containerSecurityContext:
@@ -233,16 +237,3 @@ resources:
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
