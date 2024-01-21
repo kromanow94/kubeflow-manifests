@@ -3,6 +3,10 @@
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
 namespace: ""
 
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
 defaults:
   image:
     registry: docker.io
@@ -19,6 +23,7 @@ defaults:
   tolerations: []
   affinity: {}
   topologySpreadConstraints:
+  containerSecurityContext:
 
 centraldashboard:
   image:
@@ -168,32 +173,7 @@ clusterDomain: cluster.local
 
 # --- below values are the default created by helm create
 
-# Default values for kubeflow.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
 podAnnotations: {}
-
-podSecurityContext:
-  {}
-  # fsGroup: 2000
-
-securityContext:
-  {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false

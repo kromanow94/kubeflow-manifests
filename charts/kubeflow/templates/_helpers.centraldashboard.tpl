@@ -90,6 +90,14 @@
 {{- end }}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.containerSecurityContext" -}}
+{{- if .Values.centraldashboard.containerSecurityContext -}}
+  {{- toYaml .Values.centraldashboard.containerSecurityContext }}
+{{- else if .Values.defaults.containerSecurityContext -}}
+  {{- toYaml .Values.defaults.containerSecurityContext }}
+{{- end }}
+{{- end }}
+
 {{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- if .Values.centraldashboard.serviceAccount.create }}
 {{- default (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount.name }}

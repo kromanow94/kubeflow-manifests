@@ -36,8 +36,14 @@ spec:
         - containerPort: 8082
           protocol: TCP
 
+        {{- with .Values.imagePullSecrets }}
+        imagePullSecrets:
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+
         resources:
           {{- toYaml .Values.centraldashboard.resources | nindent 10 }}
+
         env:
         - name: USERID_HEADER
           value: {{ .Values.auth.userHeaderName | quote }}
@@ -62,9 +68,9 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
 
-        {{- with .Values.centraldashboard.containerSecurityContext }}
+        {{- with include "kubeflow.centraldashboard.containerSecurityContext" . }}
         securityContext:
-          {{- toYaml . | nindent 8 }}
+          {{- . | nindent 10 }}
         {{- end }}
 
       serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
