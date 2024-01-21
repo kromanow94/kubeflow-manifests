@@ -5,7 +5,7 @@
 {{- $targetCPUUtilizationPercentage := .Values.centraldashboard.autoscaling.targetCPUUtilizationPercentage -}}
 {{- $targetMemoryUtilizationPercentage := .Values.centraldashboard.autoscaling.targetMemoryUtilizationPercentage -}}
 
-{{- if $autoscalingEnabled }}
+{{- if (eq $autoscalingEnabled "true") }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
