@@ -1,3 +1,5 @@
+{{- if .Values.centraldashboard.enabled -}}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,3 +14,5 @@ data:
     }
   links: |-
     {{- .Values.centraldashboard.config.links | toJson | nindent 4 }}
+
+{{- end }}

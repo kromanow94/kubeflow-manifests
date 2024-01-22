@@ -1,4 +1,5 @@
-{{- if .Values.istioIntegration.enabled }}
+{{- if and .Values.centraldashboard.enabled .Values.istioIntegration.enabled }}
+
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
@@ -22,4 +23,5 @@ spec:
         host: {{ include "kubeflow.centraldashboard.svc.host" . }}
         port:
           number: 80
+
 {{- end }}

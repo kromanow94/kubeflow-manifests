@@ -1,3 +1,5 @@
+{{- if .Values.centraldashboard.enabled -}}
+
 {{- $componentName := include "kubeflow.centraldashboard.name" . -}}
 {{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
 {{- $minReplicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
@@ -33,4 +35,6 @@ spec:
         name: memory
         targetAverageUtilization: {{ $targetMemoryUtilizationPercentage }}
     {{- end }}
+{{- end }}
+
 {{- end }}
