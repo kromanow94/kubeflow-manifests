@@ -41,5 +41,10 @@
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.logosConfigName" -}}
-{{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "logos" }}
+{{- $customConfigMap := .Values.notebooks.jupyterWebApp.logos.customConfigMap -}}
+{{- if $customConfigMap -}}
+    {{- print $customConfigMap }}
+{{- else -}}
+    {{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "logos" }}
+{{- end -}}
 {{- end }}
