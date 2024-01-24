@@ -48,3 +48,38 @@
     {{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "logos" }}
 {{- end -}}
 {{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.mainClusterRoleName" -}}
+{{- include "kubeflow.notebooks.jupyterWebApp.name" . }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.mainClusterRoleBindingName" -}}
+{{- include "kubeflow.notebooks.jupyterWebApp.name" . }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiAdminClusterRoleName" -}}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-admin" }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiEditClusterRoleName" -}}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-edit" }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiViewClusterRoleName" -}}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-view" }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" -}}
+{{- and .Values.notebooks.enabled .Values.notebooks.jupyterWebApp.rbac.create }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.rbac.createServiceAccount" -}}
+{{- and
+    (include "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" . | eq "true")
+    .Values.notebooks.jupyterWebApp.rbac.serviceAccount.create
+}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" -}}
+{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.notebooks.jupyterWebApp.name" .) .Values.notebooks.jupyterWebApp.rbac.serviceAccount) }}
+{{- end }}

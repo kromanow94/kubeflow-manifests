@@ -52,6 +52,7 @@ centraldashboard:
     targetCPUUtilizationPercentage:
     targetMemoryUtilizationPercentage:
   podDisruptionBudget: {}
+  # TODO: embed into 'rbac' section
   serviceAccount:
     create: true
     name:
@@ -166,10 +167,12 @@ notebooks:
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
-    serviceAccount:
+    rbac:
       create: true
-      name:
-      annotations:
+      serviceAccount:
+        create: true
+        name:
+        annotations:
     resources:
     urlPrefix: /jupyter
     uiFlavor: default
