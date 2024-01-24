@@ -77,11 +77,11 @@ spec:
       serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.serviceAccountName" . }}
 
       volumes:
-      - configMap:
-          name: config
-        name: config-volume
-      - configMap:
-          name: jupyter-web-app-logos
-        name: logos-volume
+      - name: config-volume
+        configMap:
+          name: {{ include "kubeflow.notebooks.jupyterWebApp.appConfigName" . }}
+      - name: logos-volume
+        configMap:
+          name: {{ include "kubeflow.notebooks.jupyterWebApp.logosConfigName" . }}
 
 {{- end }}

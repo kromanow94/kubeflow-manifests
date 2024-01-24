@@ -35,3 +35,11 @@
 {{- define "kubeflow.notebooks.jupyterWebApp.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.notebooks.jupyterWebApp.name" .) .Values.notebooks.jupyterWebApp.serviceAccount) }}
 {{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.appConfigName" -}}
+{{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "config" }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.logosConfigName" -}}
+{{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "logos" }}
+{{- end }}
