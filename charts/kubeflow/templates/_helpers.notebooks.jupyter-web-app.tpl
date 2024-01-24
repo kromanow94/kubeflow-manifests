@@ -36,7 +36,7 @@
 {{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.notebooks.jupyterWebApp.name" .) .Values.notebooks.jupyterWebApp.serviceAccount) }}
 {{- end }}
 
-{{- define "kubeflow.notebooks.jupyterWebApp.appConfigName" -}}
+{{- define "kubeflow.notebooks.jupyterWebApp.spawnerUIConfigName" -}}
 {{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "config" }}
 {{- end }}
 

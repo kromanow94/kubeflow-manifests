@@ -1,0 +1,13 @@
+{{- if .Values.notebooks.enabled  -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "kubeflow.notebooks.jupyterWebApp.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.logosConfigName" . }}
+data:
+  spawner_ui_config.yaml: |
+    {{- toYaml .Values.notebooks.jupyterWebApp.spawnerFormDefaults | nindent 4 }}
+
+{{- end }}
