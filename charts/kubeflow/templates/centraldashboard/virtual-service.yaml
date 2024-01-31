@@ -1,4 +1,4 @@
-{{- if and .Values.centraldashboard.enabled .Values.istioIntegration.enabled }}
+{{- if (include "kubeflow.centraldashboard.createIstioIntegrationObjects" . | eq "true") -}}
 
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService

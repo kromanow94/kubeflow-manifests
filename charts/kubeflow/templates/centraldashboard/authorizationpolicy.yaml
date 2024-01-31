@@ -1,4 +1,4 @@
-{{- if and .Values.centraldashboard.enabled .Values.istioIntegration.enabled -}}
+{{- if (include "kubeflow.centraldashboard.createIstioIntegrationObjects" . | eq "true") -}}
 
 # NOTE: this AuthorizationPolicy forces traffic through ext authz http extension
 # so we don't have to provide configuration to allow traffic only from

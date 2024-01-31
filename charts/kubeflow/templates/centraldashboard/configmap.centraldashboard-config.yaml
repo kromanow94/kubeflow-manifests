@@ -1,4 +1,4 @@
-{{- if .Values.centraldashboard.enabled -}}
+{{- if (include "kubeflow.centraldashboard.enabled" . | eq "true") -}}
 
 apiVersion: v1
 kind: ConfigMap

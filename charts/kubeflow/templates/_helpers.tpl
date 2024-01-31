@@ -113,6 +113,26 @@ https://github.com/helm/helm/issues/5358
 {{- end -}}
 {{- end }}
 
+{{- define "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" -}}
+{{- $defaultAutoscaling := index . 0 -}}
+{{- $componentAutoscaling := index . 1 -}}
+{{- if $componentAutoscaling -}}
+  {{- default $defaultAutoscaling.targetCPUUtilizationPercentage $componentAutoscaling.targetCPUUtilizationPercentage }}
+{{- else -}}
+  {{- $defaultAutoscaling.targetCPUUtilizationPercentage }}
+{{- end -}}
+{{- end }}
+
+{{- define "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" -}}
+{{- $defaultAutoscaling := index . 0 -}}
+{{- $componentAutoscaling := index . 1 -}}
+{{- if $componentAutoscaling -}}
+  {{- default $defaultAutoscaling.targetMemoryUtilizationPercentage $componentAutoscaling.targetMemoryUtilizationPercentage }}
+{{- else -}}
+  {{- $defaultAutoscaling.targetMemoryUtilizationPercentage }}
+{{- end -}}
+{{- end }}
+
 
 {{- define "kubeflow.component.image" -}}
 {{- $defaultImage := index . 0 -}}

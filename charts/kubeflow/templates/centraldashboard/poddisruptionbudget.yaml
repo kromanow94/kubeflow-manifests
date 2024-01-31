@@ -1,4 +1,4 @@
-{{- if and .Values.centraldashboard.enabled .Values.centraldashboard.podDisruptionBudget }}
+{{- if (include "kubeflow.centraldashboard.createPDB" . | eq "true") -}}
 
 apiVersion: policy/v1
 kind: PodDisruptionBudget

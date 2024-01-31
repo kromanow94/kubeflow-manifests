@@ -1,13 +1,11 @@
-{{- if .Values.centraldashboard.enabled -}}
+{{- if (include "kubeflow.centraldashboard.autoscaling.enabled" . | eq "true") -}}
 
 {{- $componentName := include "kubeflow.centraldashboard.name" . -}}
-{{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
 {{- $minReplicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
 {{- $maxReplicas := include "kubeflow.centraldashboard.autoscaling.maxReplicas" . -}}
-{{- $targetCPUUtilizationPercentage := .Values.centraldashboard.autoscaling.targetCPUUtilizationPercentage -}}
-{{- $targetMemoryUtilizationPercentage := .Values.centraldashboard.autoscaling.targetMemoryUtilizationPercentage -}}
+{{- $targetCPUUtilizationPercentage := include "kubeflow.centraldashboard.autoscaling.targetCPUUtilizationPercentage" . -}}
+{{- $targetMemoryUtilizationPercentage := include "kubeflow.centraldashboard.autoscaling.targetMemoryUtilizationPercentage" . -}}
 
-{{- if (eq $autoscalingEnabled "true") }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -35,6 +33,4 @@ spec:
         name: memory
         targetAverageUtilization: {{ $targetMemoryUtilizationPercentage }}
     {{- end }}
-{{- end }}
-
 {{- end }}

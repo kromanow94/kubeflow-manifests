@@ -1,5 +1,9 @@
-{{- define "kubeflow.centraldashboard.name" -}}
+{{- define "kubeflow.centraldashboard.baseName" -}}
 {{- printf "centraldashboard" }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.name" -}}
+{{ include "kubeflow.centraldashboard.baseName" . }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.labels" -}}
@@ -30,6 +34,14 @@
 
 {{- define "kubeflow.centraldashboard.autoscaling.maxReplicas" -}}
 {{ include "kubeflow.component.autoscaling.maxReplicas" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.autoscaling.targetCPUUtilizationPercentage" -}}
+{{ include "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.autoscaling.targetMemoryUtilizationPercentage" -}}
+{{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
 
 
@@ -116,4 +128,34 @@
     (include "kubeflow.centraldashboard.name" .)
     .Values.istioIntegration
 )}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.enabled" -}}
+{{- .Values.centraldashboard.enabled }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.createIstioIntegrationObjects" -}}
+{{- and
+  (include "kubeflow.centraldashboard.enabled" . | eq "true" )
+  .Values.istioIntegration.enabled }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.rbac.createRoles" -}}
+{{- and
+    (include "kubeflow.centraldashboard.enabled" . | eq "true")
+    .Values.centraldashboard.rbac.create }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.rbac.createServiceAccount" -}}
+{{- and
+    (include "kubeflow.centraldashboard.enabled" . | eq "true")
+    (include "kubeflow.centraldashboard.rbac.createRoles" . | eq "true")
+    .Values.centraldashboard.rbac.serviceAccount.create
+}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.createPDB" -}}
+{{- and
+  .Values.centraldashboard.enabled
+  .Values.centraldashboard.podDisruptionBudget }}
 {{- end }}
