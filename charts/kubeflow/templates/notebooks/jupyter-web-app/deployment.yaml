@@ -1,6 +1,5 @@
-{{- if .Values.notebooks.enabled -}}
+{{- if (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true") -}}
 
-{{- $componentName := include "kubeflow.notebooks.jupyterWebApp.name" . -}}
 {{- $autoscalingEnabled := include "kubeflow.notebooks.jupyterWebApp.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.notebooks.jupyterWebApp.autoscaling.minReplicas" . -}}
 
@@ -9,7 +8,7 @@ kind: Deployment
 metadata:
   labels:
     {{- include "kubeflow.notebooks.jupyterWebApp.labels" . | nindent 4 }}
-  name: {{ $componentName }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   {{- if (eq $autoscalingEnabled "false") }}
@@ -27,7 +26,7 @@ spec:
 
     spec:
       containers:
-      - name: {{ $componentName }}
+      - name: {{ include "kubeflow.notebooks.jupyterWebApp.baseName" . }}
         image: {{ include "kubeflow.notebooks.jupyterWebApp.image" . }}
         imagePullPolicy: {{ include "kubeflow.notebooks.jupyterWebApp.imagePullPolicy" . }}
 
@@ -74,7 +73,7 @@ spec:
         - name: APP_SECURE_COOKIES
           value: {{ .Values.notebooks.jupyterWebApp.secureCookies | quote }}
 
-      serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" . }}
 
       volumes:
       - name: config-volume
@@ -82,6 +81,6 @@ spec:
           name: {{ include "kubeflow.notebooks.jupyterWebApp.spawnerUIConfigName" . }}
       - name: logos-volume
         configMap:
-          name: {{ include "kubeflow.notebooks.jupyterWebApp.logosConfigName" . }}
+          name: {{ include "kubeflow.notebooks.jupyterWebApp.logos.configMapName" . }}
 
 {{- end }}

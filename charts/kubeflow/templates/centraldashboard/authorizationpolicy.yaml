@@ -1,25 +1,22 @@
 {{- if and .Values.centraldashboard.enabled .Values.istioIntegration.enabled -}}
 
-# NOTE(kromanow94): this AuthorizationPolicy forces traffic through ext authz
-# http extension so we don't have to provide configuration to allow traffic only
-# from istio-ingressgateway. The .spec.rules.to.operations.notPaths is configured
-# for CloudFlare integration and allows only static, non-secret assets to be
+# NOTE: this AuthorizationPolicy forces traffic through ext authz http extension
+# so we don't have to provide configuration to allow traffic only from
+# istio-ingressgateway. The .spec.rules.to.operations.notPaths is configured for
+# CloudFlare integration and allows only static, non-secret assets to be
 # accessible without the Istio Auth.
-
-{{- $providerName := .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
-{{- $objectName := include "kubeflow.centraldashboard.authorizationPolicyExtAuthName" . -}}
 
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
-  name: {{ $objectName }}
+  name: {{ include "kubeflow.centraldashboard.authorizationPolicyExtAuthName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   action: CUSTOM
   provider:
-    name: {{ $providerName }}
+    name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
   rules:
     - to:
       - operation:

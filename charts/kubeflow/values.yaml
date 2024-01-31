@@ -53,10 +53,12 @@ centraldashboard:
     targetMemoryUtilizationPercentage:
   podDisruptionBudget: {}
   # TODO: embed into 'rbac' section
-  serviceAccount:
+  rbac:
     create: true
-    name:
-    annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
   nodeSelector:
   tolerations:
   affinity:
@@ -155,6 +157,24 @@ centraldashboard:
 notebooks:
   enabled: true
   jupyterWebApp:
+    enabled: true
+    image:
+      repository: kubeflownotebookswg/jupyter-web-app
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
       enabled:
@@ -162,18 +182,13 @@ notebooks:
       maxReplicas:
       targetCPUUtilizationPercentage:
       targetMemoryUtilizationPercentage:
-    image:
-      repository: kubeflownotebookswg/jupyter-web-app
-      registryOverwrite:
-      tagOverwrite:
-      pullPolicyOverwrite:
+    podDisruptionBudget: {}
     rbac:
       create: true
       serviceAccount:
         create: true
         name:
         annotations:
-    resources:
     urlPrefix: /jupyter
     uiFlavor: default
     secureCookies: true

@@ -80,7 +80,7 @@ spec:
           {{- . | nindent 10 }}
         {{- end }}
 
-      serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.centraldashboard.rbac.serviceAccountName" . }}
 
       {{- with include "kubeflow.centraldashboard.nodeSelector" . }}
       nodeSelector:

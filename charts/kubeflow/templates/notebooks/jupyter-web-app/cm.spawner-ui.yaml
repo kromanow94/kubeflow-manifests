@@ -1,11 +1,12 @@
-{{- if .Values.notebooks.enabled  -}}
+{{- if (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true" ) -}}
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
     {{- include "kubeflow.notebooks.jupyterWebApp.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.notebooks.jupyterWebApp.logosConfigName" . }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.logos.configMapName" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 data:
   spawner_ui_config.yaml: |
     {{- toYaml .Values.notebooks.jupyterWebApp.spawnerFormDefaults | nindent 4 }}

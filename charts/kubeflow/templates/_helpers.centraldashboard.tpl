@@ -74,8 +74,8 @@
 {{- end }}
 
 
-{{- define "kubeflow.centraldashboard.serviceAccountName" -}}
-{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.serviceAccount) }}
+{{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
+{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.rbac.serviceAccount) }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.roleName" -}}
@@ -111,6 +111,9 @@
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.authorizationPolicyExtAuthName" -}}
-{{- $providerName := .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
-{{ printf "%s-%s" (include "kubeflow.centraldashboard.name" .) $providerName }}
+{{ include "kubeflow.component.authorizationPolicyExtAuthName" (
+    list
+    (include "kubeflow.centraldashboard.name" .)
+    .Values.istioIntegration
+)}}
 {{- end }}

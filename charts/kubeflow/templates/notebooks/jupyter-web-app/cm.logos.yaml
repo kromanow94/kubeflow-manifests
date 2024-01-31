@@ -1,4 +1,4 @@
-{{- if (and .Values.notebooks.enabled (not .Values.notebooks.jupyterWebApp.logos.customConfigMap)) -}}
+{{- if (include "kubeflow.notebooks.jupyterWebApp.logos.createConfigMap" . | eq "true" ) -}}
 
 {{- $jupyterIconSvg := .Values.notebooks.jupyterWebApp.logos.icons.jupyterIconSvg -}}
 {{- $jupyterLabLogoSvg := .Values.notebooks.jupyterWebApp.logos.icons.jupyterLabLogoSvg -}}
@@ -12,7 +12,8 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "kubeflow.notebooks.jupyterWebApp.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.notebooks.jupyterWebApp.logosConfigName" . }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.logos.configMapName" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 data:
   jupyter-icon.svg: |
     {{- if $jupyterIconSvg }}

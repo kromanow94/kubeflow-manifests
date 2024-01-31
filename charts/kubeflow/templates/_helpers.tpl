@@ -139,3 +139,10 @@ https://github.com/helm/helm/issues/5358
   {{- default "default" $componentSA.name -}}
 {{- end }}
 {{- end }}
+
+{{- define "kubeflow.component.authorizationPolicyExtAuthName" -}}
+{{- $componentName := index . 0 -}}
+{{- $istioIntegration := index . 1 -}}
+{{- $providerName := $istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
+{{ printf "%s-%s" $componentName $providerName }}
+{{- end }}

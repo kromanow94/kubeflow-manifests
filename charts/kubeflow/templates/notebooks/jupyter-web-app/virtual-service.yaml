@@ -1,24 +1,31 @@
+{{- if (include "kubeflow.notebooks.jupyterWebApp.createIstioIntegrationObjects" . | eq "true") -}}
+
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: jupyter-web-app-jupyter-web-app
+  labels:
+    {{- include "kubeflow.notebooks.jupyterWebApp.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   gateways:
-  - kubeflow-gateway
+  - {{ .Values.istioIntegration.gateway.name }}
   hosts:
   - '*'
   http:
-  - headers:
-      request:
-        add:
-          x-forwarded-prefix: /jupyter
-    match:
+  - match:
     - uri:
-        prefix: /jupyter/
+        prefix: {{ .Values.notebooks.jupyterWebApp.urlPrefix }}/
     rewrite:
       uri: /
     route:
     - destination:
-        host: jupyter-web-app-service.$(JWA_NAMESPACE).svc.$(JWA_CLUSTER_DOMAIN)
+        host: {{ include "kubeflow.notebooks.jupyterWebApp.svc.host" . }}
         port:
           number: 80
+    headers:
+      request:
+        add:
+          x-forwarded-prefix: {{ .Values.notebooks.jupyterWebApp.urlPrefix }}
+
+{{- end }}
