@@ -1,6 +1,5 @@
 {{- if (include "kubeflow.centraldashboard.enabled" . | eq "true") -}}
 
-{{- $componentName := include "kubeflow.centraldashboard.name" . -}}
 {{- $autoscalingEnabled := include "kubeflow.centraldashboard.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.centraldashboard.autoscaling.minReplicas" . -}}
 
@@ -9,7 +8,7 @@ kind: Deployment
 metadata:
   labels:
     {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
-  name: {{ $componentName }}
+  name: {{ include "kubeflow.centraldashboard.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   {{- if (eq $autoscalingEnabled "false") }}
@@ -27,7 +26,7 @@ spec:
 
     spec:
       containers:
-      - name: {{ $componentName }}
+      - name: {{ include "kubeflow.centraldashboard.baseName" . }}
         image: {{ include "kubeflow.centraldashboard.image" . }}
         imagePullPolicy: {{ include "kubeflow.centraldashboard.imagePullPolicy" . }}
 

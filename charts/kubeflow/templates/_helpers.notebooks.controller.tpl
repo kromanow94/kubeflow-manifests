@@ -1,5 +1,9 @@
-{{- define "kubeflow.notebooks.controller.name" -}}
+{{- define "kubeflow.notebooks.controller.baseName" -}}
 {{- printf "notebook-controller" }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.controller.name" -}}
+{{ include "kubeflow.notebooks.controller.baseName" . }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.labels" -}}

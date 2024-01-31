@@ -73,6 +73,11 @@ spec:
         - name: APP_SECURE_COOKIES
           value: {{ .Values.notebooks.jupyterWebApp.secureCookies | quote }}
 
+        {{- with include "kubeflow.notebooks.jupyterWebApp.containerSecurityContext" . }}
+        securityContext:
+          {{- . | nindent 10 }}
+        {{- end }}
+
       serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" . }}
 
       volumes:

@@ -124,3 +124,11 @@
     .Values.istioIntegration
 )}}
 {{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.containerSecurityContext" -}}
+{{ include "kubeflow.component.containerSecurityContext" (
+    list
+    .Values.defaults.containerSecurityContext
+    .Values.notebooks.jupyterWebApp.containerSecurityContext
+)}}
+{{- end }}

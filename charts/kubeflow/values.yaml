@@ -53,7 +53,6 @@ centraldashboard:
     targetCPUUtilizationPercentage:
     targetMemoryUtilizationPercentage:
   podDisruptionBudget: {}
-  # TODO: embed into 'rbac' section
   rbac:
     create: true
     serviceAccount:
@@ -190,6 +189,13 @@ notebooks:
         create: true
         name:
         annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    # Container Security Context
+    containerSecurityContext:
+    # TODO: embed into config
     urlPrefix: /jupyter
     uiFlavor: default
     secureCookies: true
@@ -514,6 +520,12 @@ notebooks:
         readOnly: false
         value: {}
   controller:
+    enabled: true
+    image:
+      repository: kubeflownotebookswg/jupyter-web-app
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
   # image:
   #   repository: kubeflownotebookswg/centraldashboard
   #   registryOverwrite:

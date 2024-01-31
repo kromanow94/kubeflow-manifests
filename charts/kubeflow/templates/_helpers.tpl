@@ -166,3 +166,13 @@ https://github.com/helm/helm/issues/5358
 {{- $providerName := $istioIntegration.envoyExtAuthzHttpExtensionProviderName -}}
 {{ printf "%s-%s" $componentName $providerName }}
 {{- end }}
+
+{{- define "kubeflow.component.containerSecurityContext" -}}
+{{- $defaultContext := index . 0 -}}
+{{- $componentContext := index . 1 -}}
+{{- if $componentContext -}}
+  {{- toYaml $componentContext }}
+{{- else if $defaultContext -}}
+  {{- toYaml $defaultContext }}
+{{- end }}
+{{- end }}

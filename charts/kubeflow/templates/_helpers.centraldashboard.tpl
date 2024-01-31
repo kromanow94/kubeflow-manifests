@@ -78,11 +78,11 @@
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.containerSecurityContext" -}}
-{{- if .Values.centraldashboard.containerSecurityContext -}}
-  {{- toYaml .Values.centraldashboard.containerSecurityContext }}
-{{- else if .Values.defaults.containerSecurityContext -}}
-  {{- toYaml .Values.defaults.containerSecurityContext }}
-{{- end }}
+{{ include "kubeflow.component.containerSecurityContext" (
+    list
+    .Values.defaults.containerSecurityContext
+    .Values.centraldashboard.containerSecurityContext
+)}}
 {{- end }}
 
 
