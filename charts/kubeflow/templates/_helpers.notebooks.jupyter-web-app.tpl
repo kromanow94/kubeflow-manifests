@@ -1,9 +1,16 @@
+{{/*
+Kubeflow Notebooks Jupyter Web App object names.
+*/}}
 {{- define "kubeflow.notebooks.jupyterWebApp.baseName" -}}
 {{- printf "jupyter-web-app" }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.name" -}}
-{{ include "kubeflow.notebooks.jupyterWebApp.baseName" . }}
+{{- include "kubeflow.component.name" (
+    list
+    (include "kubeflow.notebooks.jupyterWebApp.baseName" .)
+    .
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.labels" -}}

@@ -1,11 +1,57 @@
+{{/*
+Kubeflow Centraldashboard object names.
+*/}}
 {{- define "kubeflow.centraldashboard.baseName" -}}
 {{- printf "centraldashboard" }}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.name" -}}
-{{ include "kubeflow.centraldashboard.baseName" . }}
+{{- include "kubeflow.component.name" (
+    list
+    (include "kubeflow.centraldashboard.baseName" .)
+    .
+)}}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
+{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.rbac.serviceAccount) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.roleName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.roleBindingName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.clusterRoleName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.clusterRoleBindingName" -}}
+{{- include "kubeflow.centraldashboard.name" . }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.config.name" -}}
+{{ printf "%s-config" (include "kubeflow.centraldashboard.name" .) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.name" -}}
+{{ print (include "kubeflow.centraldashboard.name" .) }}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.authorizationPolicyExtAuthName" -}}
+{{ include "kubeflow.component.authorizationPolicyExtAuthName" (
+    list
+    (include "kubeflow.centraldashboard.name" .)
+    .Values.istioIntegration
+)}}
+{{- end }}
+
+{{/*
+Kubeflow Centraldashboard object labels.
+*/}}
 {{- define "kubeflow.centraldashboard.labels" -}}
 {{ include "kubeflow.common.labels" . }}
 {{ include "kubeflow.component.labels" (include "kubeflow.centraldashboard.name" .) }}
@@ -16,6 +62,9 @@
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.centraldashboard.name" .) }}
 {{- end }}
 
+{{/*
+Kubeflow Centraldashboard container image settings.
+*/}}
 {{- define "kubeflow.centraldashboard.image" -}}
 {{ include "kubeflow.component.image" (list .Values.defaults.image .Values.centraldashboard.image) }}
 {{- end }}
@@ -24,6 +73,9 @@
 {{ include "kubeflow.component.imagePullPolicy" (list .Values.defaults.image .Values.centraldashboard.image) }}
 {{- end }}
 
+{{/*
+Kubeflow Centraldashboard Autoscaling and Availability.
+*/}}
 {{- define "kubeflow.centraldashboard.autoscaling.enabled" -}}
 {{ include "kubeflow.component.autoscaling.enabled" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
@@ -44,8 +96,17 @@
 {{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (list .Values.defaults.autoscaling .Values.centraldashboard.autoscaling) }}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.pdb.values" -}}
+{{- include "kubeflow.component.pdb.values" (
+    list
+    .Values.defaults.podDisruptionBudget
+    .Values.centraldashboard.podDisruptionBudget
+)}}
+{{- end }}
 
-
+{{/*
+Kubeflow Centraldashboard Security Context.
+*/}}
 {{- define "kubeflow.centraldashboard.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
     list
@@ -54,6 +115,9 @@
 )}}
 {{- end }}
 
+{{/*
+Kubeflow Centraldashboard Scheduling.
+*/}}
 {{- define "kubeflow.centraldashboard.topologySpreadConstraints" -}}
 {{ include "kubeflow.component.topologySpreadConstraints" (
     list
@@ -86,34 +150,10 @@
 )}}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
-{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.rbac.serviceAccount) }}
-{{- end }}
 
-{{- define "kubeflow.centraldashboard.roleName" -}}
-{{- include "kubeflow.centraldashboard.name" . }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.roleBindingName" -}}
-{{- include "kubeflow.centraldashboard.name" . }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.clusterRoleName" -}}
-{{- include "kubeflow.centraldashboard.name" . }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.clusterRoleBindingName" -}}
-{{- include "kubeflow.centraldashboard.name" . }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.config.name" -}}
-{{ printf "%s-config" (include "kubeflow.centraldashboard.name" .) }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.svc.name" -}}
-{{ print (include "kubeflow.centraldashboard.name" .) }}
-{{- end }}
-
+{{/*
+Kubeflow Centraldashboard Service Host FQDN.
+*/}}
 {{- define "kubeflow.centraldashboard.svc.host" -}}
 {{ printf "%s.%s.svc.%s"
   (include "kubeflow.centraldashboard.svc.name" .)
@@ -122,14 +162,9 @@
 }}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.authorizationPolicyExtAuthName" -}}
-{{ include "kubeflow.component.authorizationPolicyExtAuthName" (
-    list
-    (include "kubeflow.centraldashboard.name" .)
-    .Values.istioIntegration
-)}}
-{{- end }}
-
+{{/*
+Kubeflow Centraldashboard enable and create toggles.
+*/}}
 {{- define "kubeflow.centraldashboard.enabled" -}}
 {{- .Values.centraldashboard.enabled }}
 {{- end }}
@@ -158,14 +193,6 @@
 {{- include "kubeflow.component.pdb.create" (
     list
     (include "kubeflow.centraldashboard.enabled" .)
-    .Values.defaults.podDisruptionBudget
-    .Values.centraldashboard.podDisruptionBudget
-)}}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.pdb.values" -}}
-{{- include "kubeflow.component.pdb.values" (
-    list
     .Values.defaults.podDisruptionBudget
     .Values.centraldashboard.podDisruptionBudget
 )}}

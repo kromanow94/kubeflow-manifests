@@ -523,45 +523,47 @@ notebooks:
   controller:
     enabled: true
     image:
-      repository: kubeflownotebookswg/jupyter-web-app
+      repository: kubeflownotebookswg/notebook-controller
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
-  # image:
-  #   repository: kubeflownotebookswg/centraldashboard
-  #   registryOverwrite:
-  #   tagOverwrite:
-  #   pullPolicyOverwrite:
-  # resources:
-  #   {}
-  #   # limits:
-  #   #   cpu: 100m
-  #   #   memory: 128Mi
-  #   # requests:
-  #   #   cpu: 100m
-  #   #   memory: 128Mi
-  # service:
-  #   create: true
-  #   annotations:
-  #   type: ClusterIP
-  # autoscaling:
-  #   # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-  #   enabled:
-  #   minReplicas:
-  #   maxReplicas:
-  #   targetCPUUtilizationPercentage:
-  #   targetMemoryUtilizationPercentage:
-  # podDisruptionBudget: {}
-  # serviceAccount:
-  #   create: true
-  #   name:
-  #   annotations:
-  # nodeSelector:
-  # tolerations:
-  # affinity:
-  # topologySpreadConstraints:
-  # # Container Security Context
-  # containerSecurityContext:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    # Container Security Context
+    containerSecurityContext:
+    config:
+      culling:
+        enabled: false
+        idleTimeMinutes: 1440
+        idleCheckPeriodMinutes: 1
 
 istioIntegration:
   enabled: true

@@ -1,5 +1,13 @@
-{{- define "kubeflow.istio-integration.name" -}}
+{{- define "kubeflow.istio-integration.baseName" -}}
 {{- print "istio-integration" }}
+{{- end }}
+
+{{- define "kubeflow.istio-integration.name" -}}
+{{- include "kubeflow.component.name" (
+    list
+    (include "kubeflow.istio-integration.baseName" .)
+    .
+)}}
 {{- end }}
 
 {{- define "kubeflow.istio-integration.labels" -}}

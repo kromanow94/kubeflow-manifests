@@ -51,6 +51,18 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Kubeflow Component Names.
+
+Changing this function will reflect on all component and subcomponent names.
+*/}}
+{{- define "kubeflow.component.name" -}}
+{{- $componentName := index . 0 -}}
+{{- $context := index . 1 -}}
+{{- $componentName }}
+{{- end }}
+
+
+{{/*
 Component specific labels
 */}}
 {{- define "kubeflow.component.labels" -}}
@@ -167,6 +179,9 @@ https://github.com/helm/helm/issues/5358
 {{ printf "%s-%s" $componentName $providerName }}
 {{- end }}
 
+{{/*
+Kubeflow Component Security Context.
+*/}}
 {{- define "kubeflow.component.containerSecurityContext" -}}
 {{- $defaultContext := index . 0 -}}
 {{- $componentContext := index . 1 -}}
@@ -177,6 +192,16 @@ https://github.com/helm/helm/issues/5358
 {{- end }}
 {{- end }}
 
+{{/*
+Kubeflow Component Scheduling.
+
+TODO: investigate if this can be simply used like:
+{{- include "mychart.affinity" . | nindent 8 }}
+{{- include "mychart.nodeSelector" . | nindent 8 }}
+{{- include "mychart.tolerations" . | nindent 8 }}
+{{- include "mychart.topologySpreadConstraints" . | nindent 8 }}
+https://chat.openai.com/share/c66d86ba-3b98-4942-a605-56b98889a313
+*/}}
 {{- define "kubeflow.component.topologySpreadConstraints" -}}
 {{- $defaultConstraints := index . 0 -}}
 {{- $componentConstraints := index . 1 -}}

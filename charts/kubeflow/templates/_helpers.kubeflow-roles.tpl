@@ -1,5 +1,13 @@
-{{- define "kubeflow.roles.name" -}}
+{{- define "kubeflow.roles.baseName" -}}
 {{- print "kubeflow-roles" }}
+{{- end }}
+
+{{- define "kubeflow.roles.name" -}}
+{{- include "kubeflow.component.name" (
+    list
+    (include "kubeflow.roles.baseName" .)
+    .
+)}}
 {{- end }}
 
 {{- define "kubeflow.kubeflow-roles.labels" -}}
