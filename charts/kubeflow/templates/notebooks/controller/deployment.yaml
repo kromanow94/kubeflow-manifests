@@ -7,7 +7,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    {{- include "kubeflow.centraldashboard.labels" . | nindent 4 }}
+    {{- include "kubeflow.notebooks.controller.labels" . | nindent 4 }}
   name: {{ include "kubeflow.notebooks.controller.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
@@ -23,6 +23,7 @@ spec:
     metadata:
       labels:
         {{- include "kubeflow.notebooks.controller.selectorLabels" . | nindent 8 }}
+
     spec:
       containers:
       - name: {{ include "kubeflow.notebooks.controller.baseName" . }}
@@ -59,6 +60,10 @@ spec:
           - name: IDLENESS_CHECK_PERIOD
             value: {{ .Values.notebooks.controller.config.culling.idleCheckPeriodMinutes | quote }}
 
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ include "kubeflow.notebooks.controller.rbac.serviceAccountName" . }}
 
 {{- end }}

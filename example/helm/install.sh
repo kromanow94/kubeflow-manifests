@@ -4,6 +4,7 @@ set -ex
 kubectl create ns istio-system || true
 kubectl create ns istio-ingress || true
 kubectl create ns kubeflow || true
+kubectl label namespace kubeflow istio-injection=enabled --overwrite
 
 helm upgrade --install \
 	istio-base \

@@ -565,6 +565,78 @@ notebooks:
         idleTimeMinutes: 1440
         idleCheckPeriodMinutes: 1
 
+profilesController:
+  enabled: true
+  kfam:
+    image:
+      repository: kubeflownotebookswg/kfam
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    config:
+      urlPrefix: /kfam
+  manager:
+    image:
+      repository: kubeflownotebookswg/profile-controller
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled:
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
+  podDisruptionBudget: {}
+  rbac:
+    create: true
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+  nodeSelector:
+  tolerations:
+  affinity:
+  topologySpreadConstraints:
+  # Container Security Context
+  containerSecurityContext:
+  config:
+    admin:
+    workloadIdentity:
+    defaultNamespaceLabels:
+      # Below is a list of labels to be set by default.
+      #
+      # To add a namespace label, use `key: 'value'`, for example:
+      # istio.io/rev: 'asm-191-1'
+      #
+      # To remove a namespace label, use `key: ''`. For example:
+      # istio-injection: ''
+      #
+      # Profile controller will not replace a namespace label if its key already
+      # exists. If you want to override the value of a previously applied label, you
+      # need to:
+      # 1. Remove the label by using `key: ''` and deploy.
+      # 2. Add the label by using `key: 'value'` and deploy.
+      #
+      katib.kubeflow.org/metrics-collector-injection: "enabled"
+      serving.kubeflow.org/inferenceservice: "enabled"
+      pipelines.kubeflow.org/enabled: "true"
+      app.kubernetes.io/part-of: "kubeflow-profile"
+    extraNamespaceLabels:
+
 istioIntegration:
   enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy

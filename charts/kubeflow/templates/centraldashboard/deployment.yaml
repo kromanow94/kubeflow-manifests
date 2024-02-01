@@ -40,11 +40,6 @@ spec:
         - containerPort: 8082
           protocol: TCP
 
-        {{- with .Values.imagePullSecrets }}
-        imagePullSecrets:
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
-
         {{- with .Values.centraldashboard.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
@@ -78,6 +73,11 @@ spec:
         securityContext:
           {{- . | nindent 10 }}
         {{- end }}
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 
       serviceAccountName: {{ include "kubeflow.centraldashboard.rbac.serviceAccountName" . }}
 

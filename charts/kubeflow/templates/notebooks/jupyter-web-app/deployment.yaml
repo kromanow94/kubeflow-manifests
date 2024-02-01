@@ -30,21 +30,9 @@ spec:
         image: {{ include "kubeflow.notebooks.jupyterWebApp.image" . }}
         imagePullPolicy: {{ include "kubeflow.notebooks.jupyterWebApp.imagePullPolicy" . }}
 
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 5000
-          initialDelaySeconds: 30
-          periodSeconds: 30
-
         ports:
         - containerPort: 5000
           protocol: TCP
-
-        {{- with .Values.imagePullSecrets }}
-        imagePullSecrets:
-          {{- toYaml . | nindent 8 }}
-        {{- end }}
 
         {{- with .Values.notebooks.jupyterWebApp.resources }}
         resources:
@@ -73,6 +61,11 @@ spec:
         securityContext:
           {{- . | nindent 10 }}
         {{- end }}
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 
       serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" . }}
 
