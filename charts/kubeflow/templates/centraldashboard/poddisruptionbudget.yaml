@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.centraldashboard.createPDB" . | eq "true") -}}
+{{- if (include "kubeflow.centraldashboard.pdb.create" . | eq "true") -}}
 
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -11,8 +11,8 @@ spec:
   selector:
     matchLabels:
       {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 6 }}
-  {{- with .Values.centraldashboard.podDisruptionBudget }}
-    {{- toYaml . | nindent 2 }}
+  {{- with (include "kubeflow.centraldashboard.pdb.values" .) }}
+    {{- . | nindent 2 }}
   {{- end }}
 
 {{- end }}

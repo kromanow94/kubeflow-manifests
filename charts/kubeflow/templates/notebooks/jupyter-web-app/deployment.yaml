@@ -60,16 +60,12 @@ spec:
         env:
         - name: APP_PREFIX
           value: {{ .Values.notebooks.jupyterWebApp.urlPrefix }}
-
         - name: UI
           value: {{ .Values.notebooks.jupyterWebApp.uiFlavor }}
-
         - name: USERID_HEADER
           value: {{ .Values.auth.userHeaderName | quote }}
-
         - name: USERID_PREFIX
           value: {{ .Values.auth.userIdPrefix | quote }}
-
         - name: APP_SECURE_COOKIES
           value: {{ .Values.notebooks.jupyterWebApp.secureCookies | quote }}
 
@@ -87,5 +83,25 @@ spec:
       - name: logos-volume
         configMap:
           name: {{ include "kubeflow.notebooks.jupyterWebApp.logos.configMapName" . }}
+
+      {{- with include "kubeflow.notebooks.jupyterWebApp.nodeSelector" . }}
+      nodeSelector:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.notebooks.jupyterWebApp.tolerations" . }}
+      tolerations:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.notebooks.jupyterWebApp.affinity" . }}
+      affinity:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.notebooks.jupyterWebApp.topologySpreadConstraints" . }}
+      topologySpreadConstraints:
+        {{- . | nindent 8 }}
+      {{- end }}
 
 {{- end }}

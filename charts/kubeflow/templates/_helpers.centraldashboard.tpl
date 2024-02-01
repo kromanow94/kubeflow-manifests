@@ -45,37 +45,6 @@
 {{- end }}
 
 
-{{- define "kubeflow.centraldashboard.nodeSelector" -}}
-{{- if .Values.centraldashboard.nodeSelector -}}
-  {{- toYaml .Values.centraldashboard.nodeSelector }}
-{{- else if .Values.defaults.nodeSelector -}}
-  {{- toYaml .Values.defaults.nodeSelector }}
-{{- end }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.tolerations" -}}
-{{- if .Values.centraldashboard.tolerations -}}
-  {{- toYaml .Values.centraldashboard.tolerations }}
-{{- else if .Values.defaults.tolerations -}}
-  {{- toYaml .Values.defaults.tolerations }}
-{{- end }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.affinity" -}}
-{{- if .Values.centraldashboard.affinity -}}
-  {{- toYaml .Values.centraldashboard.affinity }}
-{{- else if .Values.defaults.affinity -}}
-  {{- toYaml .Values.defaults.affinity }}
-{{- end }}
-{{- end }}
-
-{{- define "kubeflow.centraldashboard.topologySpreadConstraints" -}}
-{{- if .Values.centraldashboard.topologySpreadConstraints -}}
-  {{- toYaml .Values.centraldashboard.topologySpreadConstraints }}
-{{- else if .Values.defaults.topologySpreadConstraints -}}
-  {{- toYaml .Values.defaults.topologySpreadConstraints }}
-{{- end }}
-{{- end }}
 
 {{- define "kubeflow.centraldashboard.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
@@ -85,6 +54,37 @@
 )}}
 {{- end }}
 
+{{- define "kubeflow.centraldashboard.topologySpreadConstraints" -}}
+{{ include "kubeflow.component.topologySpreadConstraints" (
+    list
+    .Values.defaults.topologySpreadConstraints
+    .Values.centraldashboard.topologySpreadConstraints
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.nodeSelector" -}}
+{{ include "kubeflow.component.nodeSelector" (
+    list
+    .Values.defaults.nodeSelector
+    .Values.centraldashboard.nodeSelector
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.tolerations" -}}
+{{ include "kubeflow.component.tolerations" (
+    list
+    .Values.defaults.tolerations
+    .Values.centraldashboard.tolerations
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.affinity" -}}
+{{ include "kubeflow.component.affinity" (
+    list
+    .Values.defaults.affinity
+    .Values.centraldashboard.affinity
+)}}
+{{- end }}
 
 {{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.rbac.serviceAccount) }}
@@ -154,8 +154,19 @@
 }}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.createPDB" -}}
-{{- and
-  .Values.centraldashboard.enabled
-  .Values.centraldashboard.podDisruptionBudget }}
+{{- define "kubeflow.centraldashboard.pdb.create" -}}
+{{- include "kubeflow.component.pdb.create" (
+    list
+    (include "kubeflow.centraldashboard.enabled" .)
+    .Values.defaults.podDisruptionBudget
+    .Values.centraldashboard.podDisruptionBudget
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.pdb.values" -}}
+{{- include "kubeflow.component.pdb.values" (
+    list
+    .Values.defaults.podDisruptionBudget
+    .Values.centraldashboard.podDisruptionBudget
+)}}
 {{- end }}

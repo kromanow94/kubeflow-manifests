@@ -176,3 +176,59 @@ https://github.com/helm/helm/issues/5358
   {{- toYaml $defaultContext }}
 {{- end }}
 {{- end }}
+
+{{- define "kubeflow.component.topologySpreadConstraints" -}}
+{{- $defaultConstraints := index . 0 -}}
+{{- $componentConstraints := index . 1 -}}
+{{- if $componentConstraints -}}
+  {{- toYaml $componentConstraints }}
+{{- else if $defaultConstraints -}}
+  {{- toYaml $defaultConstraints }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.component.nodeSelector" -}}
+{{- $defaultNodeSelector := index . 0 -}}
+{{- $componentNodeSelector := index . 1 -}}
+{{- if $componentNodeSelector -}}
+  {{- toYaml $componentNodeSelector }}
+{{- else if $defaultNodeSelector -}}
+  {{- toYaml $defaultNodeSelector }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.component.tolerations" -}}
+{{- $defaultTolerations := index . 0 -}}
+{{- $componentTolerations := index . 1 -}}
+{{- if $componentTolerations -}}
+  {{- toYaml $componentTolerations }}
+{{- else if $defaultTolerations -}}
+  {{- toYaml $defaultTolerations }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.component.affinity" -}}
+{{- $defaultAffinity := index . 0 -}}
+{{- $componentAffinity := index . 1 -}}
+{{- if $componentAffinity -}}
+  {{- toYaml $componentAffinity }}
+{{- else if $defaultAffinity -}}
+  {{- toYaml $defaultAffinity }}
+{{- end }}
+{{- end }}
+
+{{- define "kubeflow.component.pdb.create" -}}
+{{- $componentEnabled := index . 0 -}}
+{{- $defaultPDB := index . 1 -}}
+{{- $componentPDB := index . 2 -}}
+{{- and
+  (or $defaultPDB $componentPDB)
+  ($componentEnabled | eq "true")
+}}
+{{- end }}
+
+{{- define "kubeflow.component.pdb.values" -}}
+{{- $defaultPDB := index . 0 -}}
+{{- $componentPDB := index . 1 -}}
+{{ toYaml (default $defaultPDB $componentPDB) }}
+{{- end }}

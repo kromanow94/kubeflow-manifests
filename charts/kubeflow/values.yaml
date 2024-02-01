@@ -20,6 +20,7 @@ defaults:
     maxReplicas: 3
     targetCPUUtilizationPercentage: 80
     targetMemoryUtilizationPercentage: 80
+  podDisruptionBudget: {}
   nodeSelector: {}
   tolerations: []
   affinity: {}

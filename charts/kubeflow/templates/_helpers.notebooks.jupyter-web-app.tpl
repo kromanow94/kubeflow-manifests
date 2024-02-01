@@ -76,8 +76,9 @@
 
 {{- define "kubeflow.notebooks.jupyterWebApp.createIstioIntegrationObjects" -}}
 {{- and
+  .Values.istioIntegration.enabled
   (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true" )
-  .Values.istioIntegration.enabled }}
+}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" -}}
@@ -130,5 +131,54 @@
     list
     .Values.defaults.containerSecurityContext
     .Values.notebooks.jupyterWebApp.containerSecurityContext
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.topologySpreadConstraints" -}}
+{{ include "kubeflow.component.topologySpreadConstraints" (
+    list
+    .Values.defaults.topologySpreadConstraints
+    .Values.notebooks.jupyterWebApp.topologySpreadConstraints
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.nodeSelector" -}}
+{{ include "kubeflow.component.nodeSelector" (
+    list
+    .Values.defaults.nodeSelector
+    .Values.notebooks.jupyterWebApp.nodeSelector
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.tolerations" -}}
+{{ include "kubeflow.component.tolerations" (
+    list
+    .Values.defaults.tolerations
+    .Values.notebooks.jupyterWebApp.tolerations
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.affinity" -}}
+{{ include "kubeflow.component.affinity" (
+    list
+    .Values.defaults.affinity
+    .Values.notebooks.jupyterWebApp.affinity
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.pdb.create" -}}
+{{- include "kubeflow.component.pdb.create" (
+    list
+    (include "kubeflow.notebooks.jupyterWebApp.enabled" .)
+    .Values.defaults.podDisruptionBudget
+    .Values.notebooks.jupyterWebApp.podDisruptionBudget
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.pdb.values" -}}
+{{- include "kubeflow.component.pdb.values" (
+    list
+    .Values.defaults.podDisruptionBudget
+    .Values.notebooks.jupyterWebApp.podDisruptionBudget
 )}}
 {{- end }}
