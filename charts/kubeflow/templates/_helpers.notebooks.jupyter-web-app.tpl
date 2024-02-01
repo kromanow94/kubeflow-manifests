@@ -36,6 +36,14 @@
 {{ include "kubeflow.component.autoscaling.maxReplicas" (list .Values.defaults.autoscaling .Values.notebooks.jupyterWebApp.autoscaling) }}
 {{- end }}
 
+{{- define "kubeflow.notebooks.jupyterWebApp.autoscaling.targetCPUUtilizationPercentage" -}}
+{{ include "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" (list .Values.defaults.autoscaling .Values.notebooks.jupyterWebApp.autoscaling) }}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.autoscaling.targetMemoryUtilizationPercentage" -}}
+{{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (list .Values.defaults.autoscaling .Values.notebooks.jupyterWebApp.autoscaling) }}
+{{- end }}
+
 
 {{- define "kubeflow.notebooks.jupyterWebApp.spawnerUIConfigName" -}}
 {{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "config" }}
