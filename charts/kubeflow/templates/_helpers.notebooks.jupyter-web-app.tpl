@@ -52,7 +52,7 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- end }}
 
 
-{{- define "kubeflow.notebooks.jupyterWebApp.spawnerUIConfigName" -}}
+{{- define "kubeflow.notebooks.jupyterWebApp.spawnerUI.configMapName" -}}
 {{- printf "%s-%s" (include "kubeflow.notebooks.jupyterWebApp.name" .) "config" }}
 {{- end }}
 

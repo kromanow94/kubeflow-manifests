@@ -47,17 +47,17 @@ spec:
 
         env:
           - name: USE_ISTIO
-            value: {{ .Values.istioIntegration.enabled }}
+            value: {{ .Values.istioIntegration.enabled | quote }}
           - name: ISTIO_GATEWAY
             value: {{ .Values.istioIntegration.gateway.name }}
           - name: CLUSTER_DOMAIN
             value: {{ .Values.clusterDomain }}
           - name: ENABLE_CULLING
-            value: {{ .Values.notebooks.controller.config.culling.enabled }}
+            value: {{ .Values.notebooks.controller.config.culling.enabled | quote }}
           - name: CULL_IDLE_TIME
-            value: {{ .Values.notebooks.controller.config.culling.idleTimeMinutes }}
+            value: {{ .Values.notebooks.controller.config.culling.idleTimeMinutes | quote }}
           - name: IDLENESS_CHECK_PERIOD
-            value: {{ .Values.notebooks.controller.config.culling.idleCheckPeriodMinutes }}
+            value: {{ .Values.notebooks.controller.config.culling.idleCheckPeriodMinutes | quote }}
 
       serviceAccountName: {{ include "kubeflow.notebooks.controller.rbac.serviceAccountName" . }}
 

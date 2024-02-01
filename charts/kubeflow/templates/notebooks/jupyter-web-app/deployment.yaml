@@ -79,7 +79,7 @@ spec:
       volumes:
       - name: config-volume
         configMap:
-          name: {{ include "kubeflow.notebooks.jupyterWebApp.spawnerUIConfigName" . }}
+          name: {{ include "kubeflow.notebooks.jupyterWebApp.spawnerUI.configMapName" . }}
       - name: logos-volume
         configMap:
           name: {{ include "kubeflow.notebooks.jupyterWebApp.logos.configMapName" . }}
