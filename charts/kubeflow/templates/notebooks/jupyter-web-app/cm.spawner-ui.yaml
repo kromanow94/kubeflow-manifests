@@ -9,6 +9,7 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 data:
   spawner_ui_config.yaml: |
-    {{- toYaml .Values.notebooks.jupyterWebApp.spawnerFormDefaults | nindent 4 }}
+    spawnerFormDefaults:
+      {{- toYaml .Values.notebooks.jupyterWebApp.spawnerFormDefaults | nindent 6 }}
 
 {{- end }}

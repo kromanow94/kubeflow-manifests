@@ -53,7 +53,7 @@ spec:
           value: {{ .Values.auth.userIdPrefix | quote }}
 
         - name: PROFILES_KFAM_SERVICE_HOST
-          value: {{ printf "profiles-kfam.%s" .Release.Namespace }}
+          value: {{ include "kubeflow.profilesController.kfam.svc.host" . }}
 
         - name: REGISTRATION_FLOW
           value: {{ .Values.centraldashboard.config.enableRegistrationFlow | quote }}

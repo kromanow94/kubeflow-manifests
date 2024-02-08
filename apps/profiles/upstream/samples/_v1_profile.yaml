@@ -5,4 +5,5 @@ metadata:
 spec:
   owner:
     kind: User
-    name: test-user@kubeflow.org
+    # name: test-user@kubeflow.org
+    name: user@example.com
