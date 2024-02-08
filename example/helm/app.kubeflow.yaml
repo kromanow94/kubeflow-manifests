@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://code.roche.com/mlops/innersource-kubeflow/kubeflow-platform.git
+    repoURL: https://code.roche.com/mlops/innersource-kubeflow/manifests.git
     targetRevision: helmcharts
     path: charts/kubeflow
   syncPolicy:
