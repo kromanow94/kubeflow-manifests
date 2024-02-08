@@ -14,6 +14,11 @@ spec:
     repoURL: https://code.roche.com/mlops/innersource-kubeflow/manifests.git
     targetRevision: helmcharts
     path: charts/kubeflow
+  ignoreDifferences:
+  - group: rbac.authorization.k8s.io
+    kind: ClusterRole
+    jsonPointers:
+      - /rules
   syncPolicy:
     automated:
       prune: true
