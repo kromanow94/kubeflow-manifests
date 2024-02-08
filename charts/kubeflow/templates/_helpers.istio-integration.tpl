@@ -34,6 +34,10 @@ Istio Integration object names.
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "configure-self-signed-m2m" }}
 {{- end }}
 
+{{- define "kubeflow.istio-integration.m2m.selfSigned.inClusterClusterRoleBindingName" -}}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "unauthenticated-oidc-viewer" }}
+{{- end }}
+
 {{- define "kubeflow.istio-integration.userAuth.requestAuthenticationName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "user-auth" }}
 {{- end }}
@@ -64,5 +68,12 @@ Istio Integration enable and create toggles.
 {{- and
   (include "kubeflow.istio-integration.enabled" . | eq "true" )
   .Values.istioIntegration.m2m.selfSigned.autoJwksDiscovery
+}}
+{{- end }}
+
+{{- define "kubeflow.istio-integration.m2m.inCluster" -}}
+{{- and
+  (include "kubeflow.istio-integration.enabled" . | eq "true" )
+  .Values.istioIntegration.m2m.inCluster
 }}
 {{- end }}

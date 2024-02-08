@@ -644,6 +644,7 @@ istioIntegration:
   rootNamespace: istio-system
   m2m:
     enabled: true
+    inCluster: true
     selfSigned:
       # This is not yet fully supported.
       autoJwksDiscovery: false
