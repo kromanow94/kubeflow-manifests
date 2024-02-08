@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: kubeflow
+  namespace: argocd
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://code.roche.com/mlops/innersource-kubeflow/kubeflow-platform.git
+    targetRevision: helmcharts
+    path: charts/kubeflow
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true

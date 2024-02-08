@@ -1,0 +1,71 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: dex
+  namespace: argocd
+spec:
+  destination:
+    namespace: dex
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: dex
+    repoURL: https://charts.dexidp.io
+    helm:
+      values: |-
+        env:
+          OIDC_CLIENT_ID: kubeflow-oidc-authservice
+          OIDC_CLIENT_SECRET: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
+
+        config:
+          issuer: https://eks.uat.rdigtm.roche.com/dex
+
+          storage:
+            type: kubernetes
+            config:
+              inCluster: true
+
+          web:
+            http: 0.0.0.0:5556
+
+          logger:
+            level: "debug"
+            format: text
+
+          oauth2:
+            skipApprovalScreen: true
+
+          # Enable at least one connector
+          # See https://dexidp.io/docs/connectors/ for more options
+          enablePasswordDB: true
+
+          staticClients:
+          - idEnv: OIDC_CLIENT_ID
+            name: 'Dex Login Application'
+            redirectURIs:
+            - https://dashboard.kfis.roche.com/oauth2/callback
+            - http://dashboard.kfis.roche.com/oauth2/callback
+            secretEnv: OIDC_CLIENT_SECRET
+
+          staticPasswords:
+          - email: user@example.com
+            hash: $2y$12$4K/VkmDd1q1Orb3xAt82zu8gk7Ad6ReFR4LCP9UeYE90NLiN9Df72
+            # https://github.com/dexidp/dex/pull/1601/commits
+            # FIXME: Use hashFromEnv instead
+            username: user
+            userID: "15841185641784"
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true

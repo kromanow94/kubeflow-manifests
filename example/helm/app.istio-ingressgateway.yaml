@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: istio-ingressgateway
+  namespace: argocd
+spec:
+  destination:
+    namespace: istio-ingress
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: gateway
+    repoURL: https://istio-release.storage.googleapis.com/charts
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true

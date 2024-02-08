@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: istiod
+  namespace: argocd
+spec:
+  destination:
+    namespace: istio-system
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: istiod
+    repoURL: https://istio-release.storage.googleapis.com/charts
+    helm:
+      values: |-
+        meshConfig:
+          extensionProviders:
+          - name: oauth2-proxy
+            envoyExtAuthzHttp:
+              headersToDownstreamOnDeny:
+              - content-type
+              - set-cookie
+              headersToUpstreamOnAllow:
+              - authorization
+              - path
+              - x-auth-request-email
+              - x-auth-request-groups
+              - x-auth-request-preferred-username
+              - x-auth-request-user
+              - x-auth-request-user-groups
+              includeRequestHeadersInCheck:
+              - authorization
+              - cookie
+              port: 80
+              service: oauth2-proxy.oauth2-proxy.svc.cluster.local
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true
