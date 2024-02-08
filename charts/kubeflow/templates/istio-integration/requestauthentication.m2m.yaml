@@ -1,0 +1,21 @@
+{{- if (include "kubeflow.istio-integration.m2m.enabled" . | eq "true") -}}
+
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  labels:
+    {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.istio-integration.m2m.requestAuthenticationName" . }}
+  namespace: {{ .Values.istioIntegration.rootNamespace }}
+spec:
+  jwtRules:
+    - issuer: {{ .Values.istioIntegration.m2m.issuer }}
+      forwardOriginalToken: true
+      {{- with .Values.istioIntegration.m2m.selfSigned.jwks }}
+      jwks: {{ . }}
+      {{- end }}
+      outputClaimToHeaders:
+        - claim: email
+          header: {{ .Values.auth.userHeaderName }}
+
+{{- end }}

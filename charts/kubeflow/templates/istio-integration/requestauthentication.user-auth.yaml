@@ -1,0 +1,18 @@
+{{- if (include "kubeflow.istio-integration.enabled" . | eq "true") -}}
+
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  labels:
+    {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.istio-integration.userAuth.requestAuthenticationName" . }}
+  namespace: {{ .Values.istioIntegration.rootNamespace }}
+spec:
+  jwtRules:
+    - issuer: {{ .Values.istioIntegration.userAuth.issuer }}
+      forwardOriginalToken: true
+      outputClaimToHeaders:
+        - claim: email
+          header: {{ .Values.auth.userHeaderName }}
+
+{{- end }}

@@ -641,6 +641,16 @@ profilesController:
 istioIntegration:
   enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
+  rootNamespace: istio-system
+  m2m:
+    enabled: true
+    selfSigned:
+      # This is not yet fully supported.
+      autoJwksDiscovery: false
+      jwks:
+    issuer: https://kubernetes.default.svc.cluster.local
+  userAuth:
+    issuer: http://dex.dex.svc.cluster.local:5556/dex
   gateway:
     name: kubeflow-gateway
     selector:

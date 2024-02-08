@@ -1,4 +1,5 @@
-{{- if .Values.istioIntegration.enabled }}
+{{- if (include "kubeflow.istio-integration.enabled" . | eq "true") -}}
+
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
@@ -11,4 +12,5 @@ spec:
     {{- toYaml .Values.istioIntegration.gateway.selector | nindent 4 }}
   servers:
     {{- toYaml .Values.istioIntegration.gateway.servers | nindent 4 }}
+
 {{- end }}

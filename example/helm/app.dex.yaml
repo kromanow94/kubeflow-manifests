@@ -20,7 +20,7 @@ spec:
           OIDC_CLIENT_SECRET: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
 
         config:
-          issuer: https://eks.uat.rdigtm.roche.com/dex
+          issuer: http://dex.dex.svc.cluster.local:5556/dex
 
           storage:
             type: kubernetes
