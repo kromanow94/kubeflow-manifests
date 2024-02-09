@@ -644,6 +644,8 @@ istioIntegration:
   rootNamespace: istio-system
   m2m:
     enabled: true
+    # This will create CRB allowing access to
+    # https://kubernetes.default.svc.cluster.local/.well-known/openid-configuration
     inCluster: true
     selfSigned:
       # This is not yet fully supported.

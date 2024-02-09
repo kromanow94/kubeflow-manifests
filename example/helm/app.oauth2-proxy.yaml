@@ -18,7 +18,7 @@ spec:
       values: |-
         extraArgs:
           - --skip-jwt-bearer-tokens=true
-          - --extra-jwt-issuers=https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local
+          - --extra-jwt-issuers=https://oidc.eks.eu-central-1.amazonaws.com/id/E50C631E383910181F99DC151565C6AD=https://kubernetes.default.svc
           - --set-xauthrequest=true
           - --set-authorization-header=true
           - --code-challenge-method=S256
