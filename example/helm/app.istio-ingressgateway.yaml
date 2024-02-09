@@ -17,7 +17,7 @@ spec:
     helm:
       values: |-
         service:
-          type: ClusterIP
+          type: NodePort
   syncPolicy:
     automated:
       prune: true
