@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: metacontroller
+  namespace: argocd
+spec:
+  destination:
+    namespace: metacontroller
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: metacontroller-helm
+    repoURL: ghcr.io/metacontroller
+    targetRevision: v2.6.1
+    helm:
+      values: |
+        image:
+          repository: ghcr.io/metacontroller/metacontroller
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true
