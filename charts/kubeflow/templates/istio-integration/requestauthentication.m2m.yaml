@@ -15,7 +15,7 @@ spec:
       jwks: {{ . }}
       {{- end }}
       outputClaimToHeaders:
-        - claim: email
+        - claim: {{ .Values.istioIntegration.m2m.userClaim }}
           header: {{ .Values.auth.userHeaderName }}
 
 {{- end }}

@@ -647,12 +647,14 @@ istioIntegration:
     # This will create CRB allowing access to
     # https://kubernetes.default.svc.cluster.local/.well-known/openid-configuration
     inCluster: true
+    userClaim: sub
+    issuer: https://kubernetes.default.svc.cluster.local
     selfSigned:
       # This is not yet fully supported.
       autoJwksDiscovery: false
       jwks:
-    issuer: https://kubernetes.default.svc.cluster.local
   userAuth:
+    userClaim: email
     issuer: http://dex.dex.svc.cluster.local:5556/dex
   gateway:
     name: kubeflow-gateway

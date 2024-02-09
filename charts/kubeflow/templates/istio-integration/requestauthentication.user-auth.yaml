@@ -12,7 +12,7 @@ spec:
     - issuer: {{ .Values.istioIntegration.userAuth.issuer }}
       forwardOriginalToken: true
       outputClaimToHeaders:
-        - claim: email
+        - claim: {{ .Values.istioIntegration.userAuth.userClaim }}
           header: {{ .Values.auth.userHeaderName }}
 
 {{- end }}
