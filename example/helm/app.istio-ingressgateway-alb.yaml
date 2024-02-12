@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://code.roche.com/mlops/innersource-kubeflow/kubeflow-platform.git
     targetRevision: romanok1-networking-improvements
-    path: config/eks-alb-ingress-groups
+    path: config/istio-ingressgateway-alb
   syncPolicy:
     automated:
       prune: true
