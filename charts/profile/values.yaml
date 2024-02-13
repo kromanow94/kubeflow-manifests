@@ -8,6 +8,8 @@ plugins:
 owner:
   # kind: User
   # name: test-user@kubeflow.org
+
+resourceQuotaSpec:
   
 istioIntegration:
   enabled: true

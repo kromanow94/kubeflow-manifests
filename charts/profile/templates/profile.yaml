@@ -10,6 +10,11 @@ spec:
     {{- toYaml . | nindent 4}}
   {{- end }}
 
+  {{- with .Values.resourceQuotaSpec }}
+  resourceQuotaSpec:
+    {{- toYaml . | nindent 4}}
+  {{- end }}
+
   {{- with .Values.plugins }}
   plugins:
     {{- toYaml . | nindent 2 }}
