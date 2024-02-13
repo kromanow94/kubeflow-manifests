@@ -1,0 +1,16 @@
+{{- if .Values.istioIntegration.enabled -}}
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  labels:
+    {{- include "profile.labels" . | nindent 4 }}
+  name: {{ include "profile.authorizationpolicy.name" . }}
+spec:
+  action: CUSTOM
+  provider:
+    name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+  rules:
+  - {}
+
+{{- end }}
