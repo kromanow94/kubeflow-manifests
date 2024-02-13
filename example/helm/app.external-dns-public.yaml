@@ -3,7 +3,7 @@ kind: Application
 metadata:
   labels:
     deployed-by: romanok1
-  name: external-dns-private
+  name: external-dns-public
   namespace: argocd
 spec:
   destination:
@@ -22,8 +22,8 @@ spec:
           region: eu-central-1
         extraArgs:
           - --aws-prefer-cname
-          - --annotation-filter=alb.ingress.kubernetes.io/group.name in (private.group)
-          - --zone-id-filter=/hostedzone/Z09944603GJH9XWYT59AG
+          - --annotation-filter=alb.ingress.kubernetes.io/group.name in (public.group)
+          - --zone-id-filter=/hostedzone/Z05151241FN3ZQOF1VX1D
         policy: sync
         provider:
           name: aws
@@ -31,7 +31,7 @@ spec:
           annotations:
             eks.amazonaws.com/role-arn: arn:aws:iam::172912098878:role/innersource_playground-externaldns-role
           name: external-dns
-        txtOwnerId: innersource_playground_private
+        txtOwnerId: innersource_playground_public
   syncPolicy:
     automated:
       prune: true
@@ -42,5 +42,3 @@ spec:
         factor: 2
         maxDuration: 10m
       limit: 5
-    syncOptions:
-    - CreateNamespace=true

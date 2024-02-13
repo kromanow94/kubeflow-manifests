@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: external-dns-private
+  namespace: argocd
+spec:
+  destination:
+    namespace: addons
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: external-dns
+    repoURL: https://kubernetes-sigs.github.io/external-dns
+    targetRevision: 1.14.3
+    helm:
+      values: |-
+        sources:
+          - ingress
+        aws:
+          region: eu-central-1
+        extraArgs:
+          - --aws-prefer-cname
+          - --annotation-filter=alb.ingress.kubernetes.io/group.name in (private.group)
+          - --zone-id-filter=/hostedzone/Z09944603GJH9XWYT59AG
+        policy: sync
+        provider:
+          name: aws
+        serviceAccount:
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::172912098878:role/innersource_playground-externaldns-role
+          name: external-dns
+        txtOwnerId: innersource_playground_private
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
