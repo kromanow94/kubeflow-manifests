@@ -14,3 +14,15 @@ resourceQuotaSpec:
 istioIntegration:
   enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
+
+auth:
+  userHeaderName: kubeflow-userid
+
+# Currently not used
+# kubeflowClusterRoleNames:
+#   edit: kubeflow-edit
+#   view: kubeflow-view
+
+contributors:
+- user@example.com
+- krzysztof.romanowski.kr3@roche.com

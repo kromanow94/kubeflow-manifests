@@ -1,0 +1,21 @@
+{{- if .Values.istioIntegration.enabled -}}
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  labels:
+    {{- include "profile.labels" . | nindent 4 }}
+  name: contributors
+  namespace: {{ .Release.Name }}
+spec:
+  rules:
+  - when:
+    - key: request.headers[{{ .Values.auth.userHeaderName }}]
+      {{- with .Values.contributors }}
+      values:
+        {{- range $i, $val := . }}
+        - {{ . }}
+        {{- end }}
+      {{- end }}
+
+{{- end }}

@@ -36,5 +36,16 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Resource Names.
 */}}
 {{- define "profile.authorizationpolicy.name" -}}
-{{- printf "%s-%s" .Release.Name .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+{{- printf "%s-%s" "ext-auth" .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+{{- end }}
+
+{{/*
+Parse user email.
+*/}}
+{{- define "profile.parseUserEmail" -}}
+{{- $email := . }}
+{{- $pattern := "[.@_]" }}
+{{- $replacement := "-" }}
+{{- $modifiedEmail := regexReplaceAll $pattern $email $replacement }}
+{{- printf "%s-%s" "user" (lower $modifiedEmail) }}
 {{- end }}
