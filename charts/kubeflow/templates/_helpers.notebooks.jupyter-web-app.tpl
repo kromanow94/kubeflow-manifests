@@ -74,15 +74,15 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiAdminClusterRoleName" -}}
-{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-admin" }}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebooks-ui-admin" }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiEditClusterRoleName" -}}
-{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-edit" }}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebooks-ui-edit" }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiViewClusterRoleName" -}}
-{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebook-ui-view" }}
+{{- printf "%s-%s" (include "kubeflow.fullname" .) "notebooks-ui-view" }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.enabled" -}}
