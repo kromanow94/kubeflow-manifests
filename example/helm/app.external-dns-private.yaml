@@ -5,6 +5,8 @@ metadata:
     deployed-by: romanok1
   name: external-dns-private
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: addons
@@ -32,6 +34,7 @@ spec:
             eks.amazonaws.com/role-arn: arn:aws:iam::172912098878:role/innersource_playground-externaldns-role
           name: external-dns
         txtOwnerId: innersource_playground_private
+        txtPrefix: external-dns.
   syncPolicy:
     automated:
       prune: true

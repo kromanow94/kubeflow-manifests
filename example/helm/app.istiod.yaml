@@ -5,6 +5,8 @@ metadata:
     deployed-by: romanok1
   name: istiod
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: istio-system

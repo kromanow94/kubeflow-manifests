@@ -5,6 +5,8 @@ metadata:
     deployed-by: romanok1
   name: oauth2-proxy
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: oauth2-proxy
