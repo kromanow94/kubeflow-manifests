@@ -5,6 +5,8 @@ metadata:
     deployed-by: romanok1
   name: external-dns-public
   namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: addons
@@ -28,10 +30,13 @@ spec:
         provider:
           name: aws
         serviceAccount:
-          annotations:
-            eks.amazonaws.com/role-arn: arn:aws:iam::172912098878:role/innersource_playground-externaldns-role
+          # Use the one defined in private app
+          create: false
           name: external-dns
+        rbac:
+          create: false
         txtOwnerId: innersource_playground_public
+        txtPrefix: external-dns.
   syncPolicy:
     automated:
       prune: true
