@@ -23,6 +23,7 @@ spec:
         extraArgs:
           - --aws-prefer-cname
           - --annotation-filter=alb.ingress.kubernetes.io/group.name in (private.group)
+          - --zone-id-filter=/hostedzone/Z09944603GJH9XWYT59AG
         policy: sync
         provider:
           name: aws
