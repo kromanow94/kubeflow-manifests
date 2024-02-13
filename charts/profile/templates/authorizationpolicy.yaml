@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "profile.labels" . | nindent 4 }}
   name: {{ include "profile.authorizationpolicy.name" . }}
+  namespace: {{ .Release.Name }}
 spec:
   action: CUSTOM
   provider:
