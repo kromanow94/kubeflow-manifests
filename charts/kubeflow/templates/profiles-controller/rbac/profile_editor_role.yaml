@@ -1,4 +1,7 @@
-# permissions for end users to edit profiles.
+{{/*
+# Permissions for end users to edit profiles.
+# Currently not used anywhere.
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -22,3 +25,5 @@ rules:
   - profiles/status
   verbs:
   - get
+
+*/}}

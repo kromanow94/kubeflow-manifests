@@ -1,4 +1,7 @@
----
+{{/*
+# This role is defined in kubeflow/manifests but it seems it's not used anywhere.
+# https://github.com/kubeflow/manifests/blob/6cb9ff2fa2b25755eca5ce41c03d125aa8c8653b/apps/profiles/upstream/rbac/role.yaml
+
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -37,3 +40,5 @@ rules:
   - authorizationpolicies
   verbs:
   - '*'
+
+*/}}
