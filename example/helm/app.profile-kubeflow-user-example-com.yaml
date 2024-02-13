@@ -21,8 +21,6 @@ spec:
         owner:
           kind: User
           name: user@example.com
-        contributors:
-        - user@example.com
   syncPolicy:
     automated:
       prune: true

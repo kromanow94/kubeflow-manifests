@@ -11,11 +11,18 @@ spec:
   rules:
   - when:
     - key: request.headers[{{ .Values.auth.userHeaderName }}]
-      {{- with .Values.contributors }}
       values:
-        {{- range $i, $val := . }}
-        - {{ . }}
-        {{- end }}
+      {{- range $i, $val := (.Values.contributors | default list) }}
+        - {{ $val }}
       {{- end }}
+      {{/*
+      Currently the AuthorizationPolicy ns-owner-access-istio created by profiles-controller
+      specifies that user can only route through a istio-ingressgateway-service-account SA.
+      This SA name is deprecated. This AuthorizationPolicy defines more granular access and
+      has to specify access for the owner as well because of the SA mismatch.
+      */}}
+      {{- with (.Values.owner | default dict).name }}
+        - {{ . }}
+      {{- end -}}
 
 {{- end }}

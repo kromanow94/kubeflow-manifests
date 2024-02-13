@@ -13,6 +13,7 @@ resourceQuotaSpec:
   
 istioIntegration:
   enabled: true
+  createExtAuthHttpAuthorizationPolicy: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
 
 auth:
@@ -24,5 +25,4 @@ auth:
 #   view: kubeflow-view
 
 contributors:
-- user@example.com
-- krzysztof.romanowski.kr3@roche.com
+# - user@example.com
