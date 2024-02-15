@@ -1,0 +1,15 @@
+{{- if (include "kubeflow.pipelines.ui.rbac.createServiceAccount" . | eq "true") -}}
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  {{- with .Values.pipelines.ui.rbac.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kubeflow.pipelines.ui.labels" . | nindent 4 }}
+  name:  {{ include "kubeflow.pipelines.ui.rbac.serviceAccountName" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+
+{{- end }}
