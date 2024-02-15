@@ -1,4 +1,15 @@
+{{- if (include "kubeflow.pipelines.persistenceAgent.rbac.createServiceAccount" . | eq "true") -}}
+
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: ml-pipeline-persistenceagent
+  {{- with .Values.pipelines.persistenceAgent.rbac.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kubeflow.pipelines.persistenceAgent.labels" . | nindent 4 }}
+  name:  {{ include "kubeflow.pipelines.persistenceAgent.rbac.serviceAccountName" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+
+{{- end }}
