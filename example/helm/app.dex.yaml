@@ -48,8 +48,7 @@ spec:
           - idEnv: OIDC_CLIENT_ID
             name: 'Dex Login Application'
             redirectURIs:
-            - https://dashboard.kfis.roche.com/oauth2/callback
-            - http://dashboard.kfis.roche.com/oauth2/callback
+            - /oauth2/callback
             secretEnv: OIDC_CLIENT_SECRET
 
           staticPasswords:

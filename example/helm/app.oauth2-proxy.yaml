@@ -15,7 +15,7 @@ spec:
   source:
     chart: oauth2-proxy
     repoURL: https://oauth2-proxy.github.io/manifests
-    targetRevision: 6.23.1
+    targetRevision: 6.24.1
     helm:
       values: |-
         extraArgs:
@@ -35,7 +35,7 @@ spec:
           - --skip-auth-route=/dex/.*
           - --skip-provider-button=true # go directly to the configured provider
 
-          - --cookie-name=oauth2_proxy_kubeflow_helm
+          - --cookie-name=kfis
           - --cookie-expire=24h
           - --cookie-refresh=1h
 
@@ -45,9 +45,10 @@ spec:
 
           - --redirect-url=/oauth2/callback
 
-          # not available until new oauth2-proxy release
-          # Until this is not available, the dex.config.staticClients.redirectURIs has to be absolute URIs
-          # - --relative-redirect-url
+          # This is fresh and fruity!
+          # https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.6.0
+          # https://github.com/oauth2-proxy/oauth2-proxy/pull/2183
+          - --relative-redirect-url
         
         config:
           clientID: kubeflow-oidc-authservice
