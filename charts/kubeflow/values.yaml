@@ -65,7 +65,6 @@ centraldashboard:
   tolerations:
   affinity:
   topologySpreadConstraints:
-  # Container Security Context
   containerSecurityContext:
   config:
     # This enables the automatic profile creation.
@@ -195,7 +194,6 @@ notebooks:
     tolerations:
     affinity:
     topologySpreadConstraints:
-    # Container Security Context
     containerSecurityContext:
     # TODO: embed into config
     urlPrefix: /jupyter
@@ -558,7 +556,6 @@ notebooks:
     tolerations:
     affinity:
     topologySpreadConstraints:
-    # Container Security Context
     containerSecurityContext:
     config:
       culling:
@@ -612,7 +609,6 @@ profilesController:
   tolerations:
   affinity:
   topologySpreadConstraints:
-  # Container Security Context
   containerSecurityContext:
   config:
     admin:
@@ -637,6 +633,167 @@ profilesController:
       pipelines.kubeflow.org/enabled: "true"
       app.kubernetes.io/part-of: "kubeflow-profile"
     extraNamespaceLabels:
+
+pipelines:
+  enabled: true
+  # NOTE: The pipelines do not use the '.Values.defaults.image' values because
+  # the container images are stored in a different registry.
+  image:
+    registry: gcr.io/ml-pipeline
+    tag: 2.0.1
+    pullPolicy: IfNotPresent
+  cache:
+    enabled: true
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+  mlPipeline:  # aka api-server
+    enabled: true
+    image:
+      repository: api-server
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 500Mi
+      # limits:
+      #   cpu: 500m
+      #   memory: 1024Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      # WARNING: currently the secrets are provided with direct values
+      # to the deployment envs. This should be later improved to accept
+      # existing Secrets and existing ConfigMap.
+      #
+      # always use KF Pipeline latest version?
+      autoUpdatePipelineDefaultVersion: true
+      # S3 / minio
+      objectStoreConfigSecure: false
+      objectStoreConfigBucketname: mlpipeline
+      objectStoreAccessKey: minio
+      objectStoreSecretKey: minio123
+      dbHost: mysql
+      dbPort: 3306
+      dbConfigUser: root
+      dbConfigPassword: ""
+      dbConfigConMaxLifetime: 120s
+      pipelineDb: mlpipeline
+
+  persistenceAgent:
+    enabled: true
+    image:
+      repository: persistenceagent
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      requests:
+        cpu: 120m
+        memory: 500Mi
+      # limits:
+      #   cpu: 500m
+      #   memory: 1024Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      ttlSecondsAfterWorkflowFinish: 86400
+      numWorkers: 2
+
+  # ---
+  kfam:
+    image:
+      repository: kubeflownotebookswg/kfam
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    config:
+      urlPrefix: /kfam
+  manager:
+    image:
+      repository: kubeflownotebookswg/profile-controller
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled:
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
+  podDisruptionBudget: {}
+  rbac:
+    create: true
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+  nodeSelector:
+  tolerations:
+  affinity:
+  topologySpreadConstraints:
+  containerSecurityContext:
+  config:
 
 istioIntegration:
   enabled: true

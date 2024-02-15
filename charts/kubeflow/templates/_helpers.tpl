@@ -77,6 +77,20 @@ app.kubernetes.io/component: {{ . }}
 {{- end }}
 
 {{/*
+subcomponent specific labels
+*/}}
+{{- define "kubeflow.component.subcomponent.labels" -}}
+{{ include "kubeflow.component.subcomponent.selectorLabels" . }}
+{{- end }}
+
+{{/*
+subcomponent specific selector labels
+*/}}
+{{- define "kubeflow.component.subcomponent.selectorLabels" -}}
+app.kubernetes.io/subcomponent: {{ . }}
+{{- end }}
+
+{{/*
 Namespace for all resources to be installed into
 If not defined in values file then the helm release namespace is used
 By default this is not set so the helm release namespace will be used

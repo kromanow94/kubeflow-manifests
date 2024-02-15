@@ -30,44 +30,39 @@ spec:
         image: {{ include "kubeflow.centraldashboard.image" . }}
         imagePullPolicy: {{ include "kubeflow.centraldashboard.imagePullPolicy" . }}
 
+        env:
+        - name: USERID_HEADER
+          value: {{ .Values.auth.userHeaderName | quote }}
+        - name: USERID_PREFIX
+          value: {{ .Values.auth.userIdPrefix | quote }}
+        - name: PROFILES_KFAM_SERVICE_HOST
+          value: {{ include "kubeflow.profilesController.kfam.svc.host" . }}
+        - name: REGISTRATION_FLOW
+          value: {{ .Values.centraldashboard.config.enableRegistrationFlow | quote }}
+        - name: DASHBOARD_LINKS_CONFIGMAP
+          value: {{ include "kubeflow.centraldashboard.config.name" . }}
+        - name: LOGOUT_URL
+          value: {{ .Values.centraldashboard.config.logoutURL | quote }}
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+        ports:
+        - containerPort: 8082
+          protocol: TCP
+
         livenessProbe:
           httpGet:
             path: /healthz
             port: 8082
           initialDelaySeconds: 30
           periodSeconds: 30
-        ports:
-        - containerPort: 8082
-          protocol: TCP
 
         {{- with .Values.centraldashboard.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
         {{- end }}
-
-        env:
-        - name: USERID_HEADER
-          value: {{ .Values.auth.userHeaderName | quote }}
-
-        - name: USERID_PREFIX
-          value: {{ .Values.auth.userIdPrefix | quote }}
-
-        - name: PROFILES_KFAM_SERVICE_HOST
-          value: {{ include "kubeflow.profilesController.kfam.svc.host" . }}
-
-        - name: REGISTRATION_FLOW
-          value: {{ .Values.centraldashboard.config.enableRegistrationFlow | quote }}
-
-        - name: DASHBOARD_LINKS_CONFIGMAP
-          value: {{ include "kubeflow.centraldashboard.config.name" . }}
-
-        - name: LOGOUT_URL
-          value: {{ .Values.centraldashboard.config.logoutURL | quote }}
-
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
 
         {{- with include "kubeflow.centraldashboard.containerSecurityContext" . }}
         securityContext:

@@ -14,7 +14,11 @@ Kubeflow Centraldashboard object names.
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
-{{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.centraldashboard.name" .) .Values.centraldashboard.rbac.serviceAccount) }}
+{{- include "kubeflow.component.serviceAccountName"  (
+    list
+    (include "kubeflow.centraldashboard.name" .)
+    .Values.centraldashboard.rbac.serviceAccount)
+}}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.roleName" -}}

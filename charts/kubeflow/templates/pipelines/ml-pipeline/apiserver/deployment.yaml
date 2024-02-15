@@ -1,0 +1,150 @@
+{{- if (include "kubeflow.pipelines.mlPipeline.enabled" . | eq "true") -}}
+
+{{- $autoscalingEnabled := include "kubeflow.pipelines.mlPipeline.autoscaling.enabled" . -}}
+{{- $replicas := include "kubeflow.pipelines.mlPipeline.autoscaling.minReplicas" . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "kubeflow.pipelines.mlPipeline.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.pipelines.mlPipeline.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  {{- if (eq $autoscalingEnabled "false") }}
+  replicas: {{ $replicas }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      {{- include "kubeflow.pipelines.mlPipeline.selectorLabels" . | nindent 6 }}
+
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        {{- include "kubeflow.pipelines.mlPipeline.selectorLabels" . | nindent 8 }}
+
+    spec:
+      containers:
+      - name: ml-pipeline-api-server
+        image: {{ include "kubeflow.pipelines.mlPipeline.image" . }}
+        imagePullPolicy: {{ include "kubeflow.pipelines.mlPipeline.imagePullPolicy" . }}
+
+        env:
+        - name: KUBEFLOW_USERID_HEADER
+          value: {{ .Values.auth.userHeaderName | quote }}
+        - name: KUBEFLOW_USERID_PREFIX
+          value: {{ .Values.auth.userIdPrefix | quote }}
+        - name: AUTO_UPDATE_PIPELINE_DEFAULT_VERSION
+          value: {{ .Values.pipelines.mlPipeline.config.autoUpdatePipelineDefaultVersion | quote }}
+        - name: OBJECTSTORECONFIG_SECURE
+          value: {{ .Values.pipelines.mlPipeline.config.objectStoreConfigSecure | quote }}
+        - name: OBJECTSTORECONFIG_BUCKETNAME
+          value: {{ .Values.pipelines.mlPipeline.config.objectStoreConfigBucketname }}
+        - name: DBCONFIG_USER
+          value: {{ .Values.pipelines.mlPipeline.config.dbConfigUser }}
+        - name: DBCONFIG_PASSWORD
+          value: {{ .Values.pipelines.mlPipeline.config.dbConfigPassword | quote }}
+        - name: DBCONFIG_DBNAME
+          value: {{ .Values.pipelines.mlPipeline.config.pipelineDb }}
+        - name: DBCONFIG_HOST
+          value: {{ .Values.pipelines.mlPipeline.config.dbHost }}
+        - name: DBCONFIG_PORT
+          value: {{ .Values.pipelines.mlPipeline.config.dbPort | quote }}
+        - name: DBCONFIG_CONMAXLIFETIME
+          value: {{ .Values.pipelines.mlPipeline.config.dbConfigConMaxLifetime | quote }}
+        - name: OBJECTSTORECONFIG_ACCESSKEY
+          value: {{ .Values.pipelines.mlPipeline.config.objectStoreAccessKey }}
+        - name: OBJECTSTORECONFIG_SECRETACCESSKEY
+          value: {{ .Values.pipelines.mlPipeline.config.objectStoreSecretKey }}
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+        ports:
+        - name: http
+          containerPort: 8888
+        - name: grpc
+          containerPort: 8887
+
+        readinessProbe:
+          exec:
+            command:
+              - wget
+              - -q # quiet
+              - -S # show server response
+              - -O
+              - "-" # Redirect output to stdout
+              - http://localhost:8888/apis/v1beta1/healthz
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          timeoutSeconds: 2
+        livenessProbe:
+          exec:
+            command:
+              - wget
+              - -q # quiet
+              - -S # show server response
+              - -O
+              - "-" # Redirect output to stdout
+              - http://localhost:8888/apis/v1beta1/healthz
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          timeoutSeconds: 2
+        # This startup probe provides up to a 60 second grace window before the
+        # liveness probe takes over to accomodate the occasional database
+        # migration.
+        startupProbe:
+          exec:
+            command:
+              - wget
+              - -q # quiet
+              - -S # show server response
+              - -O
+              - "-" # Redirect output to stdout
+              - http://localhost:8888/apis/v1beta1/healthz
+          failureThreshold: 12
+          periodSeconds: 5
+          timeoutSeconds: 2
+
+        {{- with .Values.pipelines.mlPipeline.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+
+        {{- with include "kubeflow.pipelines.mlPipeline.containerSecurityContext" . }}
+        securityContext:
+          {{- . | nindent 10 }}
+        {{- end }}
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      serviceAccountName: {{ include "kubeflow.pipelines.mlPipeline.rbac.serviceAccountName" . }}
+
+      {{- with include "kubeflow.pipelines.mlPipeline.nodeSelector" . }}
+      nodeSelector:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.mlPipeline.tolerations" . }}
+      tolerations:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.mlPipeline.affinity" . }}
+      affinity:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.mlPipeline.topologySpreadConstraints" . }}
+      topologySpreadConstraints:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+{{- end }}
