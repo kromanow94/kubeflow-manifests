@@ -650,6 +650,7 @@ pipelines:
         create: true
         name:
         annotations:
+
   mlPipeline:  # aka api-server
     enabled: true
     image:
@@ -746,6 +747,46 @@ pipelines:
     config:
       ttlSecondsAfterWorkflowFinish: 86400
       numWorkers: 2
+
+  scheduledWorkflow:
+    enabled: true
+    image:
+      repository: scheduledworkflow
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu: 250m
+      #   memory: 500Mi
+      # limits:
+      #   cpu: 500m
+      #   memory: 1024Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      cronScheduleTimezone: "UTC"
 
   # ---
   kfam:
