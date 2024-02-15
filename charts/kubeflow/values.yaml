@@ -634,6 +634,8 @@ profilesController:
       app.kubernetes.io/part-of: "kubeflow-profile"
     extraNamespaceLabels:
 
+
+# TODO: verify patches in apps/pipeline/upstream/base/installs/multi-user
 pipelines:
   enabled: true
   # NOTE: The pipelines do not use the '.Values.defaults.image' values because
@@ -642,6 +644,19 @@ pipelines:
     registry: gcr.io/ml-pipeline
     tag: 2.0.1
     pullPolicy: IfNotPresent
+  config:
+    # S3 / minio
+    objectStoreConfigSecure: false
+    objectStoreConfigBucketname: mlpipeline
+    objectStoreAccessKey: minio
+    objectStoreSecretKey: minio123
+    # DB
+    dbHost: mysql
+    dbPort: 3306
+    dbConfigUser: root
+    dbConfigPassword: ""
+    dbConfigConMaxLifetime: 120s
+    pipelineDb: mlpipeline
   cache:
     enabled: true
     rbac:
@@ -695,17 +710,6 @@ pipelines:
       #
       # always use KF Pipeline latest version?
       autoUpdatePipelineDefaultVersion: true
-      # S3 / minio
-      objectStoreConfigSecure: false
-      objectStoreConfigBucketname: mlpipeline
-      objectStoreAccessKey: minio
-      objectStoreSecretKey: minio123
-      dbHost: mysql
-      dbPort: 3306
-      dbConfigUser: root
-      dbConfigPassword: ""
-      dbConfigConMaxLifetime: 120s
-      pipelineDb: mlpipeline
 
   persistenceAgent:
     enabled: true
@@ -788,6 +792,48 @@ pipelines:
     config:
       cronScheduleTimezone: "UTC"
 
+  ui:  # aka api-server
+    enabled: true
+    image:
+      repository: frontend
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 70Mi
+      # limits:
+      #   cpu: 500m
+      #   memory: 1024Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      # one of ['default-editor', 'kubeflow-pipelines-viewer']
+      viewerPodServiceAccountName: default-editor
+      allowCustomVisualizations: true
+
   # ---
   kfam:
     image:
@@ -834,7 +880,6 @@ pipelines:
   affinity:
   topologySpreadConstraints:
   containerSecurityContext:
-  config:
 
 istioIntegration:
   enabled: true

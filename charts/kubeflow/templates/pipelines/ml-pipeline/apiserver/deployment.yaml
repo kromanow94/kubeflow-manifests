@@ -40,25 +40,25 @@ spec:
         - name: AUTO_UPDATE_PIPELINE_DEFAULT_VERSION
           value: {{ .Values.pipelines.mlPipeline.config.autoUpdatePipelineDefaultVersion | quote }}
         - name: OBJECTSTORECONFIG_SECURE
-          value: {{ .Values.pipelines.mlPipeline.config.objectStoreConfigSecure | quote }}
+          value: {{ .Values.pipelines.config.objectStoreConfigSecure | quote }}
         - name: OBJECTSTORECONFIG_BUCKETNAME
-          value: {{ .Values.pipelines.mlPipeline.config.objectStoreConfigBucketname }}
-        - name: DBCONFIG_USER
-          value: {{ .Values.pipelines.mlPipeline.config.dbConfigUser }}
-        - name: DBCONFIG_PASSWORD
-          value: {{ .Values.pipelines.mlPipeline.config.dbConfigPassword | quote }}
-        - name: DBCONFIG_DBNAME
-          value: {{ .Values.pipelines.mlPipeline.config.pipelineDb }}
-        - name: DBCONFIG_HOST
-          value: {{ .Values.pipelines.mlPipeline.config.dbHost }}
-        - name: DBCONFIG_PORT
-          value: {{ .Values.pipelines.mlPipeline.config.dbPort | quote }}
-        - name: DBCONFIG_CONMAXLIFETIME
-          value: {{ .Values.pipelines.mlPipeline.config.dbConfigConMaxLifetime | quote }}
+          value: {{ .Values.pipelines.config.objectStoreConfigBucketname }}
         - name: OBJECTSTORECONFIG_ACCESSKEY
-          value: {{ .Values.pipelines.mlPipeline.config.objectStoreAccessKey }}
+          value: {{ .Values.pipelines.config.objectStoreAccessKey }}
         - name: OBJECTSTORECONFIG_SECRETACCESSKEY
-          value: {{ .Values.pipelines.mlPipeline.config.objectStoreSecretKey }}
+          value: {{ .Values.pipelines.config.objectStoreSecretKey }}
+        - name: DBCONFIG_USER
+          value: {{ .Values.pipelines.config.dbConfigUser }}
+        - name: DBCONFIG_PASSWORD
+          value: {{ .Values.pipelines.config.dbConfigPassword | quote }}
+        - name: DBCONFIG_DBNAME
+          value: {{ .Values.pipelines.config.pipelineDb }}
+        - name: DBCONFIG_HOST
+          value: {{ .Values.pipelines.config.dbHost }}
+        - name: DBCONFIG_PORT
+          value: {{ .Values.pipelines.config.dbPort | quote }}
+        - name: DBCONFIG_CONMAXLIFETIME
+          value: {{ .Values.pipelines.config.dbConfigConMaxLifetime | quote }}
         - name: POD_NAMESPACE
           valueFrom:
             fieldRef:
