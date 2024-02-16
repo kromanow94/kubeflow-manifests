@@ -834,6 +834,46 @@ pipelines:
       viewerPodServiceAccountName: default-editor
       allowCustomVisualizations: true
 
+  viewerCrd:
+    enabled: true
+    image:
+      repository: viewer-crd-controller
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu:
+      #   memory:
+      # limits:
+      #   cpu:
+      #   memory:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+      serviceAccount:
+        create: true
+        name:
+        annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      maxNumViewers: 50
+
   # ---
   kfam:
     image:
