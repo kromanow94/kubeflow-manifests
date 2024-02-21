@@ -157,10 +157,9 @@ Kubeflow Pipelines ML Pipeline enable and create toggles.
     .Values.pipelines.mlPipeline.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.mlPipeline.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.mlPipeline.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.mlPipeline.enabled" . | eq "true")
-    (include "kubeflow.pipelines.mlPipeline.rbac.createRoles" . | eq "true")
     .Values.pipelines.mlPipeline.serviceAccount.create
 }}
 {{- end }}

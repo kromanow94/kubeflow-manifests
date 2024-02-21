@@ -153,10 +153,9 @@ Kubeflow Pipelines Scheduled Workflow enable and create toggles.
     .Values.pipelines.scheduledWorkflow.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.scheduledWorkflow.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.scheduledWorkflow.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.scheduledWorkflow.enabled" . | eq "true")
-    (include "kubeflow.pipelines.scheduledWorkflow.rbac.createRoles" . | eq "true")
     .Values.pipelines.scheduledWorkflow.serviceAccount.create
 }}
 {{- end }}

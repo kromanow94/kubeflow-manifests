@@ -168,10 +168,9 @@ Kubeflow Profiles Controller enable and create toggles.
     .Values.profilesController.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.profilesController.rbac.createServiceAccount" -}}
+{{- define "kubeflow.profilesController.createServiceAccount" -}}
 {{- and
     (include "kubeflow.profilesController.enabled" . | eq "true")
-    (include "kubeflow.profilesController.rbac.createRoles" . | eq "true")
     .Values.profilesController.serviceAccount.create
 }}
 {{- end }}

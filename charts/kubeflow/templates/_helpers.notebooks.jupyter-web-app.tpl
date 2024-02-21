@@ -102,10 +102,9 @@ Kubeflow Notebooks Jupyter Web App object names.
     .Values.notebooks.jupyterWebApp.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.notebooks.jupyterWebApp.rbac.createServiceAccount" -}}
+{{- define "kubeflow.notebooks.jupyterWebApp.createServiceAccount" -}}
 {{- and
     (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true")
-    (include "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" . | eq "true")
     .Values.notebooks.jupyterWebApp.serviceAccount.create
 }}
 {{- end }}

@@ -185,10 +185,9 @@ Kubeflow Centraldashboard enable and create toggles.
     .Values.centraldashboard.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.rbac.createServiceAccount" -}}
+{{- define "kubeflow.centraldashboard.createServiceAccount" -}}
 {{- and
     (include "kubeflow.centraldashboard.enabled" . | eq "true")
-    (include "kubeflow.centraldashboard.rbac.createRoles" . | eq "true")
     .Values.centraldashboard.serviceAccount.create
 }}
 {{- end }}

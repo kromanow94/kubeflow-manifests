@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.pipelines.persistenceAgent.rbac.createServiceAccount" . | eq "true") -}}
+{{- if (include "kubeflow.pipelines.persistenceAgent.createServiceAccount" . | eq "true") -}}
 
 apiVersion: v1
 kind: ServiceAccount

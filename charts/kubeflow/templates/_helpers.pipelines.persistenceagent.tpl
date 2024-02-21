@@ -153,10 +153,9 @@ Kubeflow Pipelines Persistence Agent enable and create toggles.
     .Values.pipelines.persistenceAgent.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.persistenceAgent.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.persistenceAgent.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.persistenceAgent.enabled" . | eq "true")
-    (include "kubeflow.pipelines.persistenceAgent.rbac.createRoles" . | eq "true")
     .Values.pipelines.persistenceAgent.serviceAccount.create
 }}
 {{- end }}

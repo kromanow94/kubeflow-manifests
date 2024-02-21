@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.pipelines.scheduledWorkflow.rbac.createServiceAccount" . | eq "true") -}}
+{{- if (include "kubeflow.pipelines.scheduledWorkflow.createServiceAccount" . | eq "true") -}}
 
 apiVersion: v1
 kind: ServiceAccount

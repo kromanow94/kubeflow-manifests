@@ -944,9 +944,6 @@ pipelines:
       targetMemoryUtilizationPercentage:
     podDisruptionBudget: {}
     # NOTE: metadata-envoy doesn't define any RBAC.
-    # * This is an example where somebody would like to specify
-    #   a different SA... But RBAC is not needed... Let's put
-    #   serviceAccount in a separate section everywhere.
     # rbac:
     #   create: true
     #   serviceAccount:
@@ -954,7 +951,7 @@ pipelines:
     #     name:
     #     annotations:
     serviceAccount:
-      create: true
+      create: false
       name:
       annotations:
     nodeSelector:

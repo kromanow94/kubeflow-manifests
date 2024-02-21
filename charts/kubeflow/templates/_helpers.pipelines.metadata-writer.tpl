@@ -153,10 +153,9 @@ Kubeflow Pipelines Metadata Writer enable and create toggles.
     .Values.pipelines.metadataWriter.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.metadataWriter.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.metadataWriter.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.metadataWriter.enabled" . | eq "true")
-    (include "kubeflow.pipelines.metadataWriter.rbac.createRoles" . | eq "true")
     .Values.pipelines.metadataWriter.serviceAccount.create
 }}
 {{- end }}

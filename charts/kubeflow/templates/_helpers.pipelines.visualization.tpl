@@ -153,10 +153,9 @@ Kubeflow Pipelines Visualization enable and create toggles.
     .Values.pipelines.visualization.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.visualization.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.visualization.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.visualization.enabled" . | eq "true")
-    (include "kubeflow.pipelines.visualization.rbac.createRoles" . | eq "true")
     .Values.pipelines.visualization.serviceAccount.create
 }}
 {{- end }}

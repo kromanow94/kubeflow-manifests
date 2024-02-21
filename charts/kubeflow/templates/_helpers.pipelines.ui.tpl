@@ -157,10 +157,9 @@ Kubeflow Pipelines UI enable and create toggles.
     .Values.pipelines.ui.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.ui.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.ui.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.ui.enabled" . | eq "true")
-    (include "kubeflow.pipelines.ui.rbac.createRoles" . | eq "true")
     .Values.pipelines.ui.serviceAccount.create
 }}
 {{- end }}

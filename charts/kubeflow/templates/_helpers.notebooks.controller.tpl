@@ -214,10 +214,9 @@ Kubeflow Notebooks Controller enable and create toggles.
     .Values.notebooks.controller.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.notebooks.controller.rbac.createServiceAccount" -}}
+{{- define "kubeflow.notebooks.controller.createServiceAccount" -}}
 {{- and
     (include "kubeflow.notebooks.controller.enabled" . | eq "true")
-    (include "kubeflow.notebooks.controller.rbac.createRoles" . | eq "true")
     .Values.notebooks.controller.serviceAccount.create
 }}
 {{- end }}

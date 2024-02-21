@@ -153,10 +153,9 @@ Kubeflow Pipelines ML Pipeline enable and create toggles.
     .Values.pipelines.viewerCrd.rbac.create }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.viewerCrd.rbac.createServiceAccount" -}}
+{{- define "kubeflow.pipelines.viewerCrd.createServiceAccount" -}}
 {{- and
     (include "kubeflow.pipelines.viewerCrd.enabled" . | eq "true")
-    (include "kubeflow.pipelines.viewerCrd.rbac.createRoles" . | eq "true")
     .Values.pipelines.viewerCrd.serviceAccount.create
 }}
 {{- end }}
