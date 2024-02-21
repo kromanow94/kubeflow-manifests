@@ -13,11 +13,11 @@ Kubeflow Pipelines ML Pipeline object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.viewerCrd.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.viewerCrd.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.viewerCrd.name" .)
-    .Values.pipelines.viewerCrd.rbac.serviceAccount)
+    .Values.pipelines.viewerCrd.serviceAccount)
 }}
 {{- end }}
 
@@ -157,6 +157,6 @@ Kubeflow Pipelines ML Pipeline enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.viewerCrd.enabled" . | eq "true")
     (include "kubeflow.pipelines.viewerCrd.rbac.createRoles" . | eq "true")
-    .Values.pipelines.viewerCrd.rbac.serviceAccount.create
+    .Values.pipelines.viewerCrd.serviceAccount.create
 }}
 {{- end }}

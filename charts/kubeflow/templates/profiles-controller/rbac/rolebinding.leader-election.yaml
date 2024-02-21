@@ -12,7 +12,7 @@ roleRef:
   name: {{ include "kubeflow.profilesController.leaderElectionRoleName" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kubeflow.profilesController.rbac.serviceAccountName" . }}
+  name: {{ include "kubeflow.profilesController.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

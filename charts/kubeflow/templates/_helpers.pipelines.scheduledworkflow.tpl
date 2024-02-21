@@ -13,11 +13,11 @@ Kubeflow Pipelines Scheduled Workflow object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.scheduledWorkflow.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.scheduledWorkflow.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.scheduledWorkflow.name" .)
-    .Values.pipelines.scheduledWorkflow.rbac.serviceAccount)
+    .Values.pipelines.scheduledWorkflow.serviceAccount)
 }}
 {{- end }}
 
@@ -157,6 +157,6 @@ Kubeflow Pipelines Scheduled Workflow enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.scheduledWorkflow.enabled" . | eq "true")
     (include "kubeflow.pipelines.scheduledWorkflow.rbac.createRoles" . | eq "true")
-    .Values.pipelines.scheduledWorkflow.rbac.serviceAccount.create
+    .Values.pipelines.scheduledWorkflow.serviceAccount.create
 }}
 {{- end }}

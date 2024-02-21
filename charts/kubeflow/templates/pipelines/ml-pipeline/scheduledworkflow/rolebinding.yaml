@@ -13,7 +13,7 @@ roleRef:
   name: {{ include "kubeflow.pipelines.scheduledWorkflow.roleName" . }}
 subjects:
 - kind: ServiceAccount
-  name:  {{ include "kubeflow.pipelines.scheduledWorkflow.rbac.serviceAccountName" . }}
+  name:  {{ include "kubeflow.pipelines.scheduledWorkflow.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

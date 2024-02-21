@@ -13,11 +13,11 @@ Kubeflow Pipelines Persistence Agent object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.persistenceAgent.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.persistenceAgent.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.persistenceAgent.name" .)
-    .Values.pipelines.persistenceAgent.rbac.serviceAccount)
+    .Values.pipelines.persistenceAgent.serviceAccount)
 }}
 {{- end }}
 
@@ -157,6 +157,6 @@ Kubeflow Pipelines Persistence Agent enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.persistenceAgent.enabled" . | eq "true")
     (include "kubeflow.pipelines.persistenceAgent.rbac.createRoles" . | eq "true")
-    .Values.pipelines.persistenceAgent.rbac.serviceAccount.create
+    .Values.pipelines.persistenceAgent.serviceAccount.create
 }}
 {{- end }}

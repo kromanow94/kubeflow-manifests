@@ -13,11 +13,11 @@ Kubeflow Pipelines UI object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.ui.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.ui.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.ui.name" .)
-    .Values.pipelines.ui.rbac.serviceAccount)
+    .Values.pipelines.ui.serviceAccount)
 }}
 {{- end }}
 
@@ -161,6 +161,6 @@ Kubeflow Pipelines UI enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.ui.enabled" . | eq "true")
     (include "kubeflow.pipelines.ui.rbac.createRoles" . | eq "true")
-    .Values.pipelines.ui.rbac.serviceAccount.create
+    .Values.pipelines.ui.serviceAccount.create
 }}
 {{- end }}

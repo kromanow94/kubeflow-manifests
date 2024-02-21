@@ -3,13 +3,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  {{- with .Values.pipelines.viewerCrd.rbac.serviceAccount.annotations }}
+  {{- with .Values.pipelines.viewerCrd.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "kubeflow.pipelines.viewerCrd.labels" . | nindent 4 }}
-  name:  {{ include "kubeflow.pipelines.viewerCrd.rbac.serviceAccountName" . }}
+  name:  {{ include "kubeflow.pipelines.viewerCrd.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

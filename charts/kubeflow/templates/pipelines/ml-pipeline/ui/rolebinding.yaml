@@ -13,7 +13,7 @@ roleRef:
   name: {{ include "kubeflow.pipelines.ui.roleName" . }}
 subjects:
 - kind: ServiceAccount
-  name:  {{ include "kubeflow.pipelines.ui.rbac.serviceAccountName" . }}
+  name:  {{ include "kubeflow.pipelines.ui.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

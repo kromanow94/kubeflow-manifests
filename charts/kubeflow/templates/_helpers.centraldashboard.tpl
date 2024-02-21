@@ -13,11 +13,11 @@ Kubeflow Centraldashboard object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.rbac.serviceAccountName" -}}
+{{- define "kubeflow.centraldashboard.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.centraldashboard.name" .)
-    .Values.centraldashboard.rbac.serviceAccount)
+    .Values.centraldashboard.serviceAccount)
 }}
 {{- end }}
 
@@ -189,7 +189,7 @@ Kubeflow Centraldashboard enable and create toggles.
 {{- and
     (include "kubeflow.centraldashboard.enabled" . | eq "true")
     (include "kubeflow.centraldashboard.rbac.createRoles" . | eq "true")
-    .Values.centraldashboard.rbac.serviceAccount.create
+    .Values.centraldashboard.serviceAccount.create
 }}
 {{- end }}
 

@@ -57,10 +57,10 @@ centraldashboard:
   podDisruptionBudget: {}
   rbac:
     create: true
-    serviceAccount:
-      create: true
-      name:
-      annotations:
+  serviceAccount:
+    create: true
+    name:
+    annotations:
   nodeSelector:
   tolerations:
   affinity:
@@ -186,10 +186,10 @@ notebooks:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -548,10 +548,10 @@ notebooks:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -601,10 +601,10 @@ profilesController:
   podDisruptionBudget: {}
   rbac:
     create: true
-    serviceAccount:
-      create: true
-      name:
-      annotations:
+  serviceAccount:
+    create: true
+    name:
+    annotations:
   nodeSelector:
   tolerations:
   affinity:
@@ -657,14 +657,16 @@ pipelines:
     dbConfigPassword: ""
     dbConfigConMaxLifetime: 120s
     pipelineDb: mlpipeline
+
+  # TODO: cache looks like it's missing a lot of stuff...
   cache:
     enabled: true
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
 
   mlPipeline:  # aka api-server
     enabled: true
@@ -694,10 +696,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -739,10 +741,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -780,10 +782,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -820,10 +822,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -862,10 +864,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -902,10 +904,59 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+
+  # NOTE: defines istio sidecar injection but it doesn't work
+  # because it's in an annotation, not pod label.
+  metadataEnvoy:
+    enabled: true
+    image:
+      repository: metadata-envoy
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu:
+      #   memory:
+      # limits:
+      #   cpu:
+      #   memory:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    # NOTE: metadata-envoy doesn't define any RBAC.
+    # * This is an example where somebody would like to specify
+    #   a different SA... But RBAC is not needed... Let's put
+    #   serviceAccount in a separate section everywhere.
+    # rbac:
+    #   create: true
+    #   serviceAccount:
+    #     create: true
+    #     name:
+    #     annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -941,10 +992,10 @@ pipelines:
     podDisruptionBudget: {}
     rbac:
       create: true
-      serviceAccount:
-        create: true
-        name:
-        annotations:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
     nodeSelector:
     tolerations:
     affinity:
@@ -989,10 +1040,10 @@ pipelines:
   podDisruptionBudget: {}
   rbac:
     create: true
-    serviceAccount:
-      create: true
-      name:
-      annotations:
+  serviceAccount:
+    create: true
+    name:
+    annotations:
   nodeSelector:
   tolerations:
   affinity:

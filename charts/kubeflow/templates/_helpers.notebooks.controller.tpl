@@ -13,11 +13,11 @@ Kubeflow Notebooks Controller object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.notebooks.controller.rbac.serviceAccountName" -}}
+{{- define "kubeflow.notebooks.controller.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.notebooks.controller.name" .)
-    .Values.notebooks.controller.rbac.serviceAccount
+    .Values.notebooks.controller.serviceAccount
 )}}
 {{- end }}
 
@@ -218,7 +218,7 @@ Kubeflow Notebooks Controller enable and create toggles.
 {{- and
     (include "kubeflow.notebooks.controller.enabled" . | eq "true")
     (include "kubeflow.notebooks.controller.rbac.createRoles" . | eq "true")
-    .Values.notebooks.controller.rbac.serviceAccount.create
+    .Values.notebooks.controller.serviceAccount.create
 }}
 {{- end }}
 

@@ -67,7 +67,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.notebooks.jupyterWebApp.serviceAccountName" . }}
 
       volumes:
       - name: config-volume

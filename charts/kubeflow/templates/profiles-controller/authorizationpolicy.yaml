@@ -1,7 +1,7 @@
 {{- if (include "kubeflow.profilesController.createIstioIntegrationObjects" . | eq "true") -}}
 
 {{ $namespace := include "kubeflow.namespace" . }}
-{{ $centraldashboardSaName := include "kubeflow.centraldashboard.rbac.serviceAccountName" . }}
+{{ $centraldashboardSaName := include "kubeflow.centraldashboard.serviceAccountName" . }}
 
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy

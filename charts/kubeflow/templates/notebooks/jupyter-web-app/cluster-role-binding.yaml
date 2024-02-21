@@ -12,7 +12,7 @@ roleRef:
   name: {{ include "kubeflow.notebooks.jupyterWebApp.mainClusterRoleName" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kubeflow.notebooks.jupyterWebApp.rbac.serviceAccountName" . }}
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

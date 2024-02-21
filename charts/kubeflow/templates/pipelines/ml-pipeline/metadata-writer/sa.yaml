@@ -3,13 +3,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  {{- with .Values.pipelines.metadataWriter.rbac.serviceAccount.annotations }}
+  {{- with .Values.pipelines.metadataWriter.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
     {{- include "kubeflow.pipelines.metadataWriter.labels" . | nindent 4 }}
-  name:  {{ include "kubeflow.pipelines.metadataWriter.rbac.serviceAccountName" . }}
+  name:  {{ include "kubeflow.pipelines.metadataWriter.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

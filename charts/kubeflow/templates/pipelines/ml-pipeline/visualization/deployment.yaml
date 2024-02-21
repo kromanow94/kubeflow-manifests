@@ -76,7 +76,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      serviceAccountName: {{ include "kubeflow.pipelines.visualization.rbac.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.pipelines.visualization.serviceAccountName" . }}
 
       {{- with include "kubeflow.pipelines.visualization.nodeSelector" . }}
       nodeSelector:

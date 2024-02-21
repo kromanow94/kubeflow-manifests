@@ -13,11 +13,11 @@ Kubeflow Pipelines Visualization object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.visualization.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.visualization.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.visualization.name" .)
-    .Values.pipelines.visualization.rbac.serviceAccount)
+    .Values.pipelines.visualization.serviceAccount)
 }}
 {{- end }}
 
@@ -157,6 +157,6 @@ Kubeflow Pipelines Visualization enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.visualization.enabled" . | eq "true")
     (include "kubeflow.pipelines.visualization.rbac.createRoles" . | eq "true")
-    .Values.pipelines.visualization.rbac.serviceAccount.create
+    .Values.pipelines.visualization.serviceAccount.create
 }}
 {{- end }}

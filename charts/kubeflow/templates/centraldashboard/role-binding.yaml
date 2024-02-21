@@ -13,7 +13,7 @@ roleRef:
   name: {{ include "kubeflow.centraldashboard.roleName" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kubeflow.centraldashboard.rbac.serviceAccountName" . }}
+  name: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

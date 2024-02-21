@@ -13,7 +13,7 @@ roleRef:
   name: {{ include "kubeflow.pipelines.persistenceAgent.roleName" . }}
 subjects:
 - kind: ServiceAccount
-  name:  {{ include "kubeflow.pipelines.persistenceAgent.rbac.serviceAccountName" . }}
+  name:  {{ include "kubeflow.pipelines.persistenceAgent.serviceAccountName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

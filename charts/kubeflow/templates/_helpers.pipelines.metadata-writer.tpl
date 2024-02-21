@@ -13,11 +13,11 @@ Kubeflow Pipelines Metadata Writer object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.pipelines.metadataWriter.rbac.serviceAccountName" -}}
+{{- define "kubeflow.pipelines.metadataWriter.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.pipelines.metadataWriter.name" .)
-    .Values.pipelines.metadataWriter.rbac.serviceAccount)
+    .Values.pipelines.metadataWriter.serviceAccount)
 }}
 {{- end }}
 
@@ -157,6 +157,6 @@ Kubeflow Pipelines Metadata Writer enable and create toggles.
 {{- and
     (include "kubeflow.pipelines.metadataWriter.enabled" . | eq "true")
     (include "kubeflow.pipelines.metadataWriter.rbac.createRoles" . | eq "true")
-    .Values.pipelines.metadataWriter.rbac.serviceAccount.create
+    .Values.pipelines.metadataWriter.serviceAccount.create
 }}
 {{- end }}

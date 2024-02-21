@@ -74,7 +74,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      serviceAccountName: {{ include "kubeflow.pipelines.persistenceAgent.rbac.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.pipelines.persistenceAgent.serviceAccountName" . }}
 
       {{- with include "kubeflow.pipelines.persistenceAgent.nodeSelector" . }}
       nodeSelector:

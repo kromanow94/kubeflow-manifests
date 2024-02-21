@@ -13,7 +13,7 @@ roleRef:
   name: {{ include "kubeflow.notebooks.controller.leaderElectionRoleName" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kubeflow.notebooks.controller.rbac.serviceAccountName" .}}
+  name: {{ include "kubeflow.notebooks.controller.serviceAccountName" .}}
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}

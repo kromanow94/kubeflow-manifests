@@ -74,7 +74,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      serviceAccountName: {{ include "kubeflow.centraldashboard.rbac.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.centraldashboard.serviceAccountName" . }}
 
       {{- with include "kubeflow.centraldashboard.nodeSelector" . }}
       nodeSelector:

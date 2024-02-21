@@ -19,7 +19,7 @@ Kubeflow Pipelines object names.
 
 {{- define "kubeflow.pipelines.rbac.cacheDeployer.serviceAccountName" -}}
 {{- $saName := printf "%s-%s" (include "kubeflow.pipelines.baseRbacName" .) "cache-deployer" -}}
-{{- include "kubeflow.component.serviceAccountName"  (list $saName .Values.pipelines.rbac.serviceAccount) }}
+{{- include "kubeflow.component.serviceAccountName"  (list $saName .Values.pipelines.serviceAccount) }}
 {{- end }}
 
 {{- define "kubeflow.pipelines.rbac.cacheDeployer.clusterRoleName" -}}

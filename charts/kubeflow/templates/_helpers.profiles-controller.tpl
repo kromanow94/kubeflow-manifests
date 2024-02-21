@@ -13,11 +13,11 @@ Kubeflow Profiles Controller object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.profilesController.rbac.serviceAccountName" -}}
+{{- define "kubeflow.profilesController.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.profilesController.name" .)
-    .Values.profilesController.rbac.serviceAccount
+    .Values.profilesController.serviceAccount
 )}}
 {{- end }}
 
@@ -172,7 +172,7 @@ Kubeflow Profiles Controller enable and create toggles.
 {{- and
     (include "kubeflow.profilesController.enabled" . | eq "true")
     (include "kubeflow.profilesController.rbac.createRoles" . | eq "true")
-    .Values.profilesController.rbac.serviceAccount.create
+    .Values.profilesController.serviceAccount.create
 }}
 {{- end }}
 

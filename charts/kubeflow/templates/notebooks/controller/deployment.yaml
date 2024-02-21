@@ -64,6 +64,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "kubeflow.notebooks.controller.rbac.serviceAccountName" . }}
+      serviceAccountName: {{ include "kubeflow.notebooks.controller.serviceAccountName" . }}
 
 {{- end }}
