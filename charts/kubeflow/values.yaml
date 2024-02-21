@@ -654,9 +654,10 @@ pipelines:
     dbHost: mysql
     dbPort: 3306
     dbConfigUser: root
-    dbConfigPassword: ""
+    dbConfigPassword: ""  # or "test" or b64(dGVzdA==)
     dbConfigConMaxLifetime: 120s
     pipelineDb: mlpipeline
+    mlmdDb: metadb
 
   # TODO: cache looks like it's missing a lot of stuff...
   cache:
@@ -937,6 +938,7 @@ pipelines:
       type: ClusterIP
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      # TODO: add PDB to all deployments.
       enabled:
       minReplicas:
       maxReplicas:
@@ -952,6 +954,53 @@ pipelines:
     #     annotations:
     serviceAccount:
       create: false
+      name:
+      annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+
+  metadataGrpcServer:
+    enabled: true
+    image:
+      registryOverwrite: gcr.io/tfx-oss-public
+      repository: ml_metadata_store_server
+      tagOverwrite: 1.5.0
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu:
+      #   memory:
+      # limits:
+      #   cpu:
+      #   memory:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+      # TODO: investigate if exposing port config to all services makes sense.
+      port: 8080
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      # TODO: add PDB to all deployments.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    # NOTE: metadata-envoy doesn't define any RBAC.
+    # rbac:
+    #   create: true
+    #   serviceAccount:
+    #     create: true
+    #     name:
+    #     annotations:
+    serviceAccount:
+      create: true
       name:
       annotations:
     nodeSelector:
