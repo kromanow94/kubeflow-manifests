@@ -51,6 +51,28 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+Indicates if Kubeflow is deployed in cluster mode.
+*/}}
+{{- define "kubeflow.deploymentMode.cluster" -}}
+{{- ternary true "" (eq .Values.deploymentMode "cluster") -}}
+{{- end }}
+
+{{/*
+Indicates if Kubeflow is deployed in namespace mode.
+TODO: use ternary for other conditionals.
+*/}}
+{{- define "kubeflow.deploymentMode.namespace" -}}
+{{- ternary true "" (eq .Values.deploymentMode "namespace") -}}
+{{- end }}
+
+{{/*
+Indicates if should integrate with cert-manager.
+*/}}
+{{- define "kubeflow.certManagerIntegration.enabled" -}}
+{{- ternary true "" .Values.certManagerIntegration.enabled -}}
+{{- end }}
+
+{{/*
 Kubeflow Component Names.
 
 Changing this function will reflect on all component and subcomponent names.

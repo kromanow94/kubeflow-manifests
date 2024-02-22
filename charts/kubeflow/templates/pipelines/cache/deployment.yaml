@@ -1,0 +1,133 @@
+{{- if (include "kubeflow.pipelines.cache.enabled" .) -}}
+
+# TODO: Add cache-deployer if cert-manager integration is disabled.
+
+{{- $autoscalingEnabled := include "kubeflow.pipelines.cache.autoscaling.enabled" . -}}
+{{- $replicas := include "kubeflow.pipelines.cache.autoscaling.minReplicas" . -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "kubeflow.pipelines.cache.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.pipelines.cache.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  {{- if (eq $autoscalingEnabled "false") }}
+  replicas: {{ $replicas }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      {{- include "kubeflow.pipelines.cache.selectorLabels" . | nindent 6 }}
+
+  template:
+    metadata:
+      labels:
+        {{- include "kubeflow.pipelines.cache.selectorLabels" . | nindent 8 }}
+
+    spec:
+      containers:
+      - name: server
+        image: {{ include "kubeflow.pipelines.cache.image" . }}
+        imagePullPolicy: {{ include "kubeflow.pipelines.cache.imagePullPolicy" . }}
+
+        args:
+        - --db_driver=$(DBCONFIG_DRIVER)
+        - --db_host=$(DBCONFIG_HOST_NAME)
+        - --db_port=$(DBCONFIG_PORT)
+        - --db_name=$(DBCONFIG_DB_NAME)
+        - --db_user=$(DBCONFIG_USER)
+        - --db_password=$(DBCONFIG_PASSWORD)
+        - --namespace_to_watch=$(NAMESPACE_TO_WATCH)
+        - --listen_port=$(WEBHOOK_PORT)
+        {{- if (include "kubeflow.certManagerIntegration.enabled" . )}}
+        - --tls_cert_filename=tls.crt
+        - --tls_key_filename=tls.key
+        {{- end }}
+
+        env:
+        - name: DEFAULT_CACHE_STALENESS
+          value: {{ .Values.pipelines.cache.config.defaultCacheStaleness | quote }}
+        - name: MAXIMUM_CACHE_STALENESS
+          value: {{ .Values.pipelines.cache.config.maximumCacheStaleness | quote }}
+        - name: CACHE_IMAGE
+          value: {{ .Values.pipelines.cache.config.cacheImage }}
+        - name: CACHE_NODE_RESTRICTIONS
+          value: {{ .Values.pipelines.cache.config.cacheNodeRestrictions | quote }}
+        - name: DBCONFIG_DRIVER
+          value: {{ .Values.pipelines.config.dbConfigDriver }}
+        - name: DBCONFIG_DB_NAME
+          value: {{ .Values.pipelines.config.cacheDb }}
+        - name: DBCONFIG_HOST_NAME
+          value: {{ .Values.pipelines.config.dbHost }}
+        - name: DBCONFIG_PORT
+          value: {{ .Values.pipelines.config.dbPort | quote }}
+        - name: DBCONFIG_USER
+          value: {{ .Values.pipelines.config.dbConfigUser }}
+        - name: DBCONFIG_PASSWORD
+          value: {{ .Values.pipelines.config.dbConfigPassword | quote }}
+        - name: WEBHOOK_PORT
+          value: {{ .Values.pipelines.cache.service.port | quote }}
+
+        - name: NAMESPACE_TO_WATCH
+          {{- if (include "kubeflow.deploymentMode.namespace" .) }}
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+          {{- else }}
+          value: ""
+          {{- end }}
+
+        ports:
+        - containerPort: {{ .Values.pipelines.cache.service.port }}
+          name: webhook-api
+
+        {{- with .Values.pipelines.cache.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+
+        {{- with include "kubeflow.pipelines.cache.containerSecurityContext" . }}
+        securityContext:
+          {{- . | nindent 10 }}
+        {{- end }}
+
+        volumeMounts:
+        - name: webhook-tls-certs
+          mountPath: /etc/webhook/certs
+          readOnly: true
+
+      volumes:
+      - name: webhook-tls-certs
+        secret:
+          secretName: {{ include "kubeflow.pipelines.cache.tlsCertSecretName" . }}
+
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      serviceAccountName: {{ include "kubeflow.pipelines.cache.serviceAccountName" . }}
+
+      {{- with include "kubeflow.pipelines.cache.nodeSelector" . }}
+      nodeSelector:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.cache.tolerations" . }}
+      tolerations:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.cache.affinity" . }}
+      affinity:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+      {{- with include "kubeflow.pipelines.cache.topologySpreadConstraints" . }}
+      topologySpreadConstraints:
+        {{- . | nindent 8 }}
+      {{- end }}
+
+{{- end }}

@@ -3,6 +3,10 @@
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
 namespace: ""
 
+# one of ['cluster', 'namespace']
+# 'namespace' is not yet fully supported.
+deploymentMode: cluster
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -10,7 +14,6 @@ fullnameOverride: ""
 defaults:
   image:
     registry: docker.io
-    # tag: "v1.8.0-rc.0"
     # tag: "latest"
     tag: v1.8.0
     pullPolicy: IfNotPresent
@@ -656,18 +659,81 @@ pipelines:
     dbConfigUser: root
     dbConfigPassword: ""  # or "test" or b64(dGVzdA==)
     dbConfigConMaxLifetime: 120s
+    dbConfigDriver: mysql
     pipelineDb: mlpipeline
     mlmdDb: metadb
+    cacheDb: cachedb
 
   # TODO: cache looks like it's missing a lot of stuff...
   cache:
     enabled: true
+    image:
+      repository: cache-server
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu:
+      #   memory:
+      # limits:
+      #   cpu:
+      #   memory:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+      # TODO: investigate if exposing port config to all services makes sense.
+      port: 8443
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      # TODO: add PDB to all deployments.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
     rbac:
       create: true
     serviceAccount:
       create: true
       name:
       annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      ## defaultCacheStaleness and maximumCacheStaleness configures caching according to
+      ## https://www.kubeflow.org/docs/components/pipelines/overview/caching/ and
+      ## https://www.kubeflow.org/docs/components/pipelines/overview/caching-v2/.
+      ## This value is used if the user did not set a value in the pipeline.
+      ## defaultCacheStaleness: "P7D"
+      ## maximumCacheStaleness: "P30D"
+      defaultCacheStaleness: ""
+      maximumCacheStaleness: ""
+      ## ConMaxLifeTime will set the connection max lifetime for MySQL
+      ## this is very important to setup when using external databases.
+      ## See this issue for more details: https://github.com/kubeflow/pipelines/issues/5329
+      ## Note: this value should be a string that can be parsed by `time.ParseDuration`.
+      ## If this value doesn't include a unit abbreviation, the units will be assumed
+      ## to be nanoseconds.
+      conMaxLifeTime: "120s"
+      ## cacheImage is the image that the mutating webhook will use to patch
+      ## cached steps with. Will be used to echo a message announcing that
+      ## the cached step result will be used. If not set it will default to
+      ## 'gcr.io/google-containers/busybox'
+      cacheImage: gcr.io/google-containers/busybox
+      ## cacheNodeRestrictions the dummy container running if output is cached
+      ## will run with the same affinity and node selector as the default pipeline
+      ## step. This is defaulted to 'false' to allow the pod to be scheduled on
+      ## any node and avoid defaulting to specific nodes. Allowed values are:
+      ## 'false' and 'true'.
+      cacheNodeRestrictions: "false"
+
+  # ---
 
   mlPipeline:  # aka api-server
     enabled: true
@@ -1096,6 +1162,11 @@ pipelines:
   topologySpreadConstraints:
   containerSecurityContext:
 
+# if cert manager is not enabled, we have to use cache-deployer.
+# We currently don't support deployments without cert-manager.
+certManagerIntegration:
+  enabled: true
+
 istioIntegration:
   enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
@@ -1172,23 +1243,36 @@ auth:
 
 clusterDomain: cluster.local
 
-# --- below values are the default created by helm create
-
-podAnnotations: {}
-
-ingress:
-  enabled: false
-  className: ""
-  annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+# apiVersion: v1
+# data:
+#   ConMaxLifeTime: 120s
+#   DEFAULT_CACHE_STALENESS: ""
+#   MAXIMUM_CACHE_STALENESS: ""
+#   appName: pipeline
+#   appVersion: 2.0.1
+#   autoUpdatePipelineDefaultVersion: "true"
+#   bucketName: mlpipeline
+#   cacheDb: cachedb
+#   cacheImage: gcr.io/google-containers/busybox
+#   cacheNodeRestrictions: "false"
+#   cronScheduleTimezone: UTC
+#   dbHost: mysql
+#   dbPort: "3306"
+#   defaultPipelineRoot: ""
+#   mlmdDb: metadb
+#   pipelineDb: mlpipeline
+#   warning: |
+#     1. Do not use kubectl to edit this configmap, because some values are used
+#     during kustomize build. Instead, change the configmap and apply the entire
+#     kustomize manifests again.
+#     2. After updating the configmap, some deployments may need to be restarted
+#     until the changes take effect. A quick way to restart all deployments in a
+#     namespace: `kubectl rollout restart deployment -n <your-namespace>`.
+# kind: ConfigMap
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: ml-pipeline
+#     app.kubernetes.io/name: kubeflow-pipelines
+#     application-crd-id: kubeflow-pipelines
+#   name: pipeline-install-config
+#   namespace: kubeflow

@@ -1,0 +1,23 @@
+{{- if (include "kubeflow.pipelines.cache.enabled" .) -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  {{- with .Values.pipelines.cache.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kubeflow.pipelines.cache.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.pipelines.cache.svc.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  ports:
+    - port: 443
+      targetPort: webhook-api
+  selector:
+    {{- include "kubeflow.pipelines.cache.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
+  type: {{ .Values.pipelines.cache.service.type }}
+
+{{- end }}
