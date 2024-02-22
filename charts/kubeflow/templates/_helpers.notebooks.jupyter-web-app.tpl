@@ -124,7 +124,7 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{ print (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
 {{- end }}
 
-{{- define "kubeflow.notebooks.jupyterWebApp.svc.host" -}}
+{{- define "kubeflow.notebooks.jupyterWebApp.svc.fqdn" -}}
 {{ printf "%s.%s.svc.%s"
   (include "kubeflow.notebooks.jupyterWebApp.svc.name" .)
   (include "kubeflow.namespace" .)

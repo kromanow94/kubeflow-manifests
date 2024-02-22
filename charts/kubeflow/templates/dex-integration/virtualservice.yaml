@@ -22,7 +22,7 @@ spec:
         prefix: {{ .Values.dexIntegration.urlPrefix }}/
     route:
     - destination:
-        host: {{ include "kubeflow.dexIntegration.svc.host" . }}
+        host: {{ include "kubeflow.dexIntegration.svc.fqdn" . }}
         port:
           number: {{ .Values.dexIntegration.svc.port }}
 

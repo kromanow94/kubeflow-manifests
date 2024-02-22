@@ -20,7 +20,7 @@ spec:
       uri: /
     route:
     - destination:
-        host: {{ include "kubeflow.notebooks.jupyterWebApp.svc.host" . }}
+        host: {{ include "kubeflow.notebooks.jupyterWebApp.svc.fqdn" . }}
         port:
           number: 80
     headers:

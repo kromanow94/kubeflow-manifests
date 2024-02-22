@@ -185,7 +185,7 @@ Kubeflow Notebooks Controller Scheduling.
 {{/*
 Kubeflow Notebooks Controller Service Host FQDN.
 */}}
-{{- define "kubeflow.notebooks.controller.svc.host" -}}
+{{- define "kubeflow.notebooks.controller.svc.fqdn" -}}
 {{ printf "%s.%s.svc.%s"
   (include "kubeflow.notebooks.controller.svc.name" .)
   (include "kubeflow.namespace" .)

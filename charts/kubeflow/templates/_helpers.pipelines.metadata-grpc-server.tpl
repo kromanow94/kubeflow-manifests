@@ -29,10 +29,6 @@ Kubeflow Pipelines Metadata GRPC Server object names.
 {{- include "kubeflow.pipelines.metadataGrpcServer.roleName" . }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.metadataGrpcServer.svc.name" -}}
-{{ print (include "kubeflow.pipelines.metadataGrpcServer.name" .) }}
-{{- end }}
-
 {{/*
 Kubeflow Pipelines Metadata GRPC Server object labels.
 */}}
@@ -46,6 +42,32 @@ Kubeflow Pipelines Metadata GRPC Server object labels.
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.pipelines.name" .) }}
 {{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.pipelines.metadataGrpcServer.name" .) }}
+{{- end }}
+
+{{/*
+Kubeflow Pipelines Metadata GRPC Server Service.
+*/}}
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.metadataGrpcServer.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
+    (include "kubeflow.namespace" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
+    (include "kubeflow.namespace" .)
+    .Values.clusterDomain
+)}}
 {{- end }}
 
 {{/*
@@ -158,4 +180,12 @@ Kubeflow Pipelines Metadata GRPC Server enable and create toggles.
     (include "kubeflow.pipelines.metadataGrpcServer.enabled" . | eq "true")
     .Values.pipelines.metadataGrpcServer.serviceAccount.create
 }}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.metadataGrpcServer.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
+)}}
 {{- end }}

@@ -36,7 +36,7 @@ spec:
         - name: USERID_PREFIX
           value: {{ .Values.auth.userIdPrefix | quote }}
         - name: PROFILES_KFAM_SERVICE_HOST
-          value: {{ include "kubeflow.profilesController.kfam.svc.host" . }}
+          value: {{ include "kubeflow.profilesController.kfam.svc.fqdn" . }}
         - name: REGISTRATION_FLOW
           value: {{ .Values.centraldashboard.config.enableRegistrationFlow | quote }}
         - name: DASHBOARD_LINKS_CONFIGMAP

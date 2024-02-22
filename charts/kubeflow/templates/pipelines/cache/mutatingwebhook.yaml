@@ -12,7 +12,7 @@ metadata:
   annotations:
     cert-manager.io/inject-ca-from: {{ $ca }}
 webhooks:
-  - name: {{ include "kubeflow.pipelines.cache.svc.nameWithSvc" . }}
+  - name: {{ include "kubeflow.pipelines.cache.svc.addressWithSvc" . }}
     clientConfig:
       service:
         name: {{ include "kubeflow.pipelines.cache.svc.name" .}}

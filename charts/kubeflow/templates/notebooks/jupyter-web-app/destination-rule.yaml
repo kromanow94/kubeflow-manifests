@@ -8,7 +8,7 @@ metadata:
   name: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
-  host: {{ include "kubeflow.notebooks.jupyterWebApp.svc.host" . }}
+  host: {{ include "kubeflow.notebooks.jupyterWebApp.svc.fqdn" . }}
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL

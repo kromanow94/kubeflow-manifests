@@ -29,10 +29,6 @@ Kubeflow Pipelines Metadata Envoy object names.
 {{- include "kubeflow.pipelines.metadataEnvoy.roleName" . }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.metadataEnvoy.svc.name" -}}
-{{ print (include "kubeflow.pipelines.metadataEnvoy.name" .) }}
-{{- end }}
-
 {{/*
 Kubeflow Pipelines Metadata Envoy object labels.
 */}}
@@ -47,6 +43,25 @@ Kubeflow Pipelines Metadata Envoy object labels.
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.pipelines.name" .) }}
 {{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.pipelines.metadataEnvoy.name" .) }}
 {{- end }}
+
+{{/*
+Kubeflow Pipelines Metadata Envoy Service.
+*/}}
+{{- define "kubeflow.pipelines.metadataEnvoy.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.metadataEnvoy.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataEnvoy.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    (include "kubeflow.pipelines.metadataEnvoy.name" .)
+    (include "kubeflow.namespace" .)
+    .Values.clusterDomain
+)}}
+{{- end }}
+
 
 {{/*
 Kubeflow Pipelines Metadata Envoy container image settings.

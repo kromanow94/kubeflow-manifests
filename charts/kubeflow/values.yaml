@@ -861,7 +861,7 @@ pipelines:
     config:
       cronScheduleTimezone: "UTC"
 
-  ui:  # aka api-server
+  ui:
     enabled: true
     image:
       repository: frontend
@@ -1075,6 +1075,7 @@ pipelines:
     topologySpreadConstraints:
     containerSecurityContext:
     config:
+      urlPrefix: /ml_metadata
 
   visualization:
     enabled: true

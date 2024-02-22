@@ -29,31 +29,6 @@ Kubeflow Pipelines Cache object names.
 {{- include "kubeflow.pipelines.cache.roleName" . }}
 {{- end }}
 
-{{- define "kubeflow.pipelines.cache.svc.name" -}}
-{{ print (include "kubeflow.pipelines.cache.name" .) }}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.nameWithNs" -}}
-{{ printf "%s.%s"
-    (include "kubeflow.pipelines.cache.svc.name" .)
-    (include "kubeflow.namespace" . )
-}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.nameWithSvc" -}}
-{{ printf "%s.%s"
-    (include "kubeflow.pipelines.cache.svc.nameWithNs" .)
-    "svc"
-}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.fqdn" -}}
-{{ printf "%s.%s"
-    (include "kubeflow.pipelines.cache.svc.nameWithSvc" .)
-    .Values.clusterDomain
-}}
-{{- end }}
-
 {{- define "kubeflow.pipelines.cache.tlsCertSecretName" -}}
 {{ printf "%s-%s" (include "kubeflow.pipelines.cache.name" .) "tls-certs" }}
 {{- end }}
@@ -91,6 +66,38 @@ pipelines.kubeflow.org/cache_enabled: "true"
 
 {{- define "kubeflow.pipelines.cache.cacheDisabledLabel" -}}
 pipelines.kubeflow.org/cache_enabled: "false"
+{{- end }}
+
+{{/*
+Kubeflow Pipelines Cache Service.
+*/}}
+{{- define "kubeflow.pipelines.cache.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.cache.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    (include "kubeflow.pipelines.cache.name" .)
+    (include "kubeflow.namespace" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    (include "kubeflow.pipelines.cache.name" .)
+    (include "kubeflow.namespace" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.fqdn" -}}
+{{ printf "%s.%s"
+    (include "kubeflow.pipelines.cache.svc.addressWithSvc" .)
+    .Values.clusterDomain
+}}
 {{- end }}
 
 {{/*

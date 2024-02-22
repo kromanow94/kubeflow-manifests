@@ -24,7 +24,7 @@ Dex Integration object labels.
 {{/*
 Dex Service Host FQDN.
 */}}
-{{- define "kubeflow.dexIntegration.svc.host" -}}
+{{- define "kubeflow.dexIntegration.svc.fqdn" -}}
 {{ printf "%s.%s.svc.%s"
   .Values.dexIntegration.svc.name
   .Values.dexIntegration.svc.namespace

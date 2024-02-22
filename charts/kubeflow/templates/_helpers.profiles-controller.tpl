@@ -85,6 +85,18 @@ Kubeflow Profiles Controller object labels.
 {{- end }}
 
 {{/*
+Kubeflow Profiles Controller Service.
+*/}}
+{{- define "kubeflow.profilesController.kfam.svc.fqdn" -}}
+{{ printf "%s.%s.svc.%s"
+  (include "kubeflow.profilesController.kfam.svc.name" .)
+  (include "kubeflow.namespace" .)
+  .Values.clusterDomain
+}}
+{{- end }}
+
+
+{{/*
 Kubeflow Profiles Controller container image settings.
 */}}
 {{- define "kubeflow.profilesController.manager.image" -}}
@@ -136,17 +148,6 @@ Kubeflow Profiles Controller Autoscaling and Availability.
     .Values.defaults.podDisruptionBudget
     .Values.profilesController.podDisruptionBudget
 )}}
-{{- end }}
-
-{{/*
-Kubeflow Profiles Controller Service Host FQDN.
-*/}}
-{{- define "kubeflow.profilesController.kfam.svc.host" -}}
-{{ printf "%s.%s.svc.%s"
-  (include "kubeflow.profilesController.kfam.svc.name" .)
-  (include "kubeflow.namespace" .)
-  .Values.clusterDomain
-}}
 {{- end }}
 
 {{/*

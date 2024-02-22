@@ -158,7 +158,7 @@ Kubeflow Centraldashboard Scheduling.
 {{/*
 Kubeflow Centraldashboard Service Host FQDN.
 */}}
-{{- define "kubeflow.centraldashboard.svc.host" -}}
+{{- define "kubeflow.centraldashboard.svc.fqdn" -}}
 {{ printf "%s.%s.svc.%s"
   (include "kubeflow.centraldashboard.svc.name" .)
   (include "kubeflow.namespace" .)

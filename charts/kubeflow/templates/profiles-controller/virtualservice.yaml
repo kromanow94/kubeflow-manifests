@@ -20,7 +20,7 @@ spec:
       uri: {{ .Values.profilesController.kfam.config.urlPrefix }}/
     route:
     - destination:
-        host: {{ include "kubeflow.profilesController.kfam.svc.host" . }}
+        host: {{ include "kubeflow.profilesController.kfam.svc.fqdn" . }}
         port:
           number: 8081
     headers:

@@ -113,6 +113,33 @@ app.kubernetes.io/subcomponent: {{ . }}
 {{- end }}
 
 {{/*
+Component Service.
+*/}}
+{{- define "kubeflow.component.svc.name" -}}
+{{- $componentName := . -}}
+{{ print $componentName }}
+{{- end }}
+
+{{- define "kubeflow.component.svc.addressWithNs" -}}
+{{- $componentName := index . 0 -}}
+{{- $ns := index . 1 -}}
+{{ printf "%s.%s" $componentName $ns }}
+{{- end }}
+
+{{- define "kubeflow.component.svc.addressWithSvc" -}}
+{{- $componentName := index . 0 -}}
+{{- $ns := index . 1 -}}
+{{ printf "%s.%s.%s" $componentName $ns "svc" }}
+{{- end }}
+
+{{- define "kubeflow.component.svc.fqdn" -}}
+{{- $componentName := index . 0 -}}
+{{- $ns := index . 1 -}}
+{{- $clusterDomain := index . 2 -}}
+{{ printf "%s.%s.%s.%s" $componentName $ns "svc" $clusterDomain }}
+{{- end }}
+
+{{/*
 Namespace for all resources to be installed into
 If not defined in values file then the helm release namespace is used
 By default this is not set so the helm release namespace will be used
