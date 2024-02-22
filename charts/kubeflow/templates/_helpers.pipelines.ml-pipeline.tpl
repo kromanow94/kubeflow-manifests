@@ -145,16 +145,19 @@ Kubeflow Pipelines ML Pipeline Scheduling.
 Kubeflow Pipelines ML Pipeline enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.mlPipeline.enabled" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.enabled" . | eq "true")
     .Values.pipelines.mlPipeline.enabled
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.mlPipeline.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.mlPipeline.enabled" . | eq "true")
-    .Values.pipelines.mlPipeline.rbac.create }}
+    .Values.pipelines.mlPipeline.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.mlPipeline.createServiceAccount" -}}

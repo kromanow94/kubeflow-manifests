@@ -1172,6 +1172,7 @@ istioIntegration:
   enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   rootNamespace: istio-system
+  ingressGatewayNamespace: istio-ingress
   m2m:
     enabled: true
     # This will create CRB allowing access to
