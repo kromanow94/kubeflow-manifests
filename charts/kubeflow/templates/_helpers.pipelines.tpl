@@ -135,7 +135,7 @@ Kubeflow Pipelines Scheduling.
 Kubeflow Pipelines enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.enabled" -}}
-{{- .Values.pipelines.enabled }}
+{{- ternary true "" .Values.pipelines.enabled }}
 {{- end }}
 
 {{- define "kubeflow.pipelines.cache.enabled" -}}

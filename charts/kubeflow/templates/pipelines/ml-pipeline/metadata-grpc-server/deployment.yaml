@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.pipelines.metadataGrpcServer.enabled" . | eq "true") -}}
+{{- if (include "kubeflow.pipelines.metadataGrpcServer.enabled" .) -}}
 
 {{- $autoscalingEnabled := include "kubeflow.pipelines.metadataGrpcServer.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.pipelines.metadataGrpcServer.autoscaling.minReplicas" . -}}

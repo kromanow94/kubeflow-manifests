@@ -163,10 +163,11 @@ Kubeflow Pipelines Metadata GRPC Server Scheduling.
 Kubeflow Pipelines Metadata GRPC Server enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.metadataGrpcServer.enabled" -}}
-{{- and
-    (include "kubeflow.pipelines.enabled" . | eq "true")
-    .Values.pipelines.metadataGrpcServer.enabled
-}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.enabled" . | eq "true")
+        .Values.pipelines.metadataGrpcServer.enabled
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataGrpcServer.rbac.createRoles" -}}
