@@ -29,8 +29,37 @@ Kubeflow Pipelines Metadata Writer object names.
 {{- include "kubeflow.pipelines.metadataWriter.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines Metadata Writer Service.
+*/}}
 {{- define "kubeflow.pipelines.metadataWriter.svc.name" -}}
-{{ print (include "kubeflow.pipelines.metadataWriter.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.metadataWriter.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataWriter.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataWriter.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataWriter.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataWriter.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataWriter.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataWriter.name" .)
+)}}
 {{- end }}
 
 {{/*

@@ -41,15 +41,44 @@ Kubeflow Centraldashboard object names.
 {{ printf "%s-config" (include "kubeflow.centraldashboard.name" .) }}
 {{- end }}
 
-{{- define "kubeflow.centraldashboard.svc.name" -}}
-{{ print (include "kubeflow.centraldashboard.name" .) }}
-{{- end }}
-
 {{- define "kubeflow.centraldashboard.authorizationPolicyExtAuthName" -}}
 {{ include "kubeflow.component.authorizationPolicyExtAuthName" (
     list
     (include "kubeflow.centraldashboard.name" .)
     .Values.istioIntegration
+)}}
+{{- end }}
+
+{{/*
+Kubeflow Centraldashboard Service.
+*/}}
+{{- define "kubeflow.centraldashboard.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.centraldashboard.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.centraldashboard.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.centraldashboard.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.centraldashboard.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.centraldashboard.name" .)
 )}}
 {{- end }}
 
@@ -152,18 +181,6 @@ Kubeflow Centraldashboard Scheduling.
     .Values.defaults.affinity
     .Values.centraldashboard.affinity
 )}}
-{{- end }}
-
-
-{{/*
-Kubeflow Centraldashboard Service Host FQDN.
-*/}}
-{{- define "kubeflow.centraldashboard.svc.fqdn" -}}
-{{ printf "%s.%s.svc.%s"
-  (include "kubeflow.centraldashboard.svc.name" .)
-  (include "kubeflow.namespace" .)
-  .Values.clusterDomain
-}}
 {{- end }}
 
 {{/*

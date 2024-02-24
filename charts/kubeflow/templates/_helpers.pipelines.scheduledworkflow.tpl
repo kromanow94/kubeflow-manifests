@@ -21,6 +21,14 @@ Kubeflow Pipelines Scheduled Workflow object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.scheduledWorkflow.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.scheduledWorkflow.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.scheduledWorkflow.roleName" -}}
 {{- include "kubeflow.pipelines.scheduledWorkflow.name" . }}
 {{- end }}
@@ -29,8 +37,37 @@ Kubeflow Pipelines Scheduled Workflow object names.
 {{- include "kubeflow.pipelines.scheduledWorkflow.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines Scheduled Workflow Service.
+*/}}
 {{- define "kubeflow.pipelines.scheduledWorkflow.svc.name" -}}
-{{ print (include "kubeflow.pipelines.scheduledWorkflow.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.scheduledWorkflow.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.scheduledWorkflow.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.scheduledWorkflow.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.scheduledWorkflow.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.scheduledWorkflow.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.scheduledWorkflow.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.scheduledWorkflow.name" .)
+)}}
 {{- end }}
 
 {{/*

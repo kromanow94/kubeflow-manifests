@@ -121,22 +121,31 @@ Component Service.
 {{- end }}
 
 {{- define "kubeflow.component.svc.addressWithNs" -}}
-{{- $componentName := index . 0 -}}
-{{- $ns := index . 1 -}}
-{{ printf "%s.%s" $componentName $ns }}
+{{- $ctx := index . 0 -}}
+{{- $componentName := index . 1 -}}
+{{ printf "%s.%s"
+    $componentName
+    (include "kubeflow.namespace" $ctx)
+}}
 {{- end }}
 
 {{- define "kubeflow.component.svc.addressWithSvc" -}}
-{{- $componentName := index . 0 -}}
-{{- $ns := index . 1 -}}
-{{ printf "%s.%s.%s" $componentName $ns "svc" }}
+{{- $ctx := index . 0 -}}
+{{- $componentName := index . 1 -}}
+{{ printf "%s.%s.svc"
+    $componentName
+    (include "kubeflow.namespace" $ctx)
+}}
 {{- end }}
 
 {{- define "kubeflow.component.svc.fqdn" -}}
-{{- $componentName := index . 0 -}}
-{{- $ns := index . 1 -}}
-{{- $clusterDomain := index . 2 -}}
-{{ printf "%s.%s.%s.%s" $componentName $ns "svc" $clusterDomain }}
+{{- $ctx := index . 0 -}}
+{{- $componentName := index . 1 -}}
+{{ printf "%s.%s.svc.%s"
+    $componentName
+    (include "kubeflow.namespace" $ctx)
+    $ctx.Values.clusterDomain
+}}
 {{- end }}
 
 {{/*
@@ -233,6 +242,16 @@ https://github.com/helm/helm/issues/5358
 {{- else }}
   {{- default "default" $componentSA.name -}}
 {{- end }}
+{{- end }}
+
+{{- define "kubeflow.component.serviceAccountPrincipal" -}}
+{{- $ctx := index . 0 -}}
+{{- $saName := index . 1 -}}
+{{- printf "%s/ns/%s/sa/%s"
+    $ctx.Values.clusterDomain
+    (include "kubeflow.namespace" $ctx)
+    $saName
+}}
 {{- end }}
 
 {{- define "kubeflow.component.authorizationPolicyExtAuthName" -}}

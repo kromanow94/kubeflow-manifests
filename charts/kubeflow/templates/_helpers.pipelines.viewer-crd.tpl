@@ -21,6 +21,14 @@ Kubeflow Pipelines ML Pipeline object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.viewerCrd.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.viewerCrd.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.viewerCrd.roleName" -}}
 {{- include "kubeflow.pipelines.viewerCrd.name" . }}
 {{- end }}
@@ -29,8 +37,37 @@ Kubeflow Pipelines ML Pipeline object names.
 {{- include "kubeflow.pipelines.viewerCrd.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines ML Pipeline Service.
+*/}}
 {{- define "kubeflow.pipelines.viewerCrd.svc.name" -}}
-{{ print (include "kubeflow.pipelines.viewerCrd.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.viewerCrd.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.viewerCrd.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.viewerCrd.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.viewerCrd.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.viewerCrd.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.viewerCrd.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.viewerCrd.name" .)
+)}}
 {{- end }}
 
 {{/*

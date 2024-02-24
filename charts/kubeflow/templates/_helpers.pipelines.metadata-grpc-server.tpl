@@ -30,6 +30,39 @@ Kubeflow Pipelines Metadata GRPC Server object names.
 {{- end }}
 
 {{/*
+Kubeflow Pipelines Metadata GRPC Server Service.
+*/}}
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.metadataGrpcServer.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataGrpcServer.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
+)}}
+{{- end }}
+
+{{/*
 Kubeflow Pipelines Metadata GRPC Server object labels.
 */}}
 {{- define "kubeflow.pipelines.metadataGrpcServer.labels" -}}
@@ -42,32 +75,6 @@ Kubeflow Pipelines Metadata GRPC Server object labels.
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.pipelines.name" .) }}
 {{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.pipelines.metadataGrpcServer.name" .) }}
-{{- end }}
-
-{{/*
-Kubeflow Pipelines Metadata GRPC Server Service.
-*/}}
-{{- define "kubeflow.pipelines.metadataGrpcServer.svc.name" -}}
-{{ include "kubeflow.component.svc.name" (
-    include "kubeflow.pipelines.metadataGrpcServer.name" .
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.metadataGrpcServer.svc.addressWithNs" -}}
-{{ include "kubeflow.component.svc.addressWithNs"  (
-    list
-    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
-    (include "kubeflow.namespace" .)
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.metadataGrpcServer.svc.fqdn" -}}
-{{ include "kubeflow.component.svc.fqdn"  (
-    list
-    (include "kubeflow.pipelines.metadataGrpcServer.name" .)
-    (include "kubeflow.namespace" .)
-    .Values.clusterDomain
-)}}
 {{- end }}
 
 {{/*

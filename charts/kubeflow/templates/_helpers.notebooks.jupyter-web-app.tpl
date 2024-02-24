@@ -120,18 +120,6 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- include "kubeflow.component.serviceAccountName"  (list (include "kubeflow.notebooks.jupyterWebApp.name" .) .Values.notebooks.jupyterWebApp.serviceAccount) }}
 {{- end }}
 
-{{- define "kubeflow.notebooks.jupyterWebApp.svc.name" -}}
-{{ print (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
-{{- end }}
-
-{{- define "kubeflow.notebooks.jupyterWebApp.svc.fqdn" -}}
-{{ printf "%s.%s.svc.%s"
-  (include "kubeflow.notebooks.jupyterWebApp.svc.name" .)
-  (include "kubeflow.namespace" .)
-  .Values.clusterDomain
-}}
-{{- end }}
-
 {{- define "kubeflow.notebooks.jupyterWebApp.authorizationPolicyExtAuthName" -}}
 {{ include "kubeflow.component.authorizationPolicyExtAuthName" (
     list
@@ -140,6 +128,42 @@ Kubeflow Notebooks Jupyter Web App object names.
 )}}
 {{- end }}
 
+{{/*
+Kubeflow Notebooks Jupyter Web App Service.
+*/}}
+{{- define "kubeflow.notebooks.jupyterWebApp.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.notebooks.jupyterWebApp.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.notebooks.jupyterWebApp.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.notebooks.jupyterWebApp.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.jupyterWebApp.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.notebooks.jupyterWebApp.name" .)
+)}}
+{{- end }}
+
+{{/*
+Kubeflow Notebooks Jupyter Web App Security Context.
+*/}}
 {{- define "kubeflow.notebooks.jupyterWebApp.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
     list

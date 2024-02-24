@@ -21,6 +21,14 @@ Kubeflow Pipelines Cache object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.cache.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.cache.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.cache.roleName" -}}
 {{- include "kubeflow.pipelines.cache.name" . }}
 {{- end }}
@@ -46,6 +54,39 @@ Kubeflow Pipelines Cache object names.
 {{- end }}
 
 {{/*
+Kubeflow Pipelines Cache Service.
+*/}}
+{{- define "kubeflow.pipelines.cache.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.cache.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.cache.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.cache.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.cache.name" .)
+)}}
+{{- end }}
+
+{{/*
 Kubeflow Pipelines Cache object labels.
 */}}
 {{- define "kubeflow.pipelines.cache.labels" -}}
@@ -66,38 +107,6 @@ pipelines.kubeflow.org/cache_enabled: "true"
 
 {{- define "kubeflow.pipelines.cache.cacheDisabledLabel" -}}
 pipelines.kubeflow.org/cache_enabled: "false"
-{{- end }}
-
-{{/*
-Kubeflow Pipelines Cache Service.
-*/}}
-{{- define "kubeflow.pipelines.cache.svc.name" -}}
-{{ include "kubeflow.component.svc.name" (
-    include "kubeflow.pipelines.cache.name" .
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.addressWithNs" -}}
-{{ include "kubeflow.component.svc.addressWithNs"  (
-    list
-    (include "kubeflow.pipelines.cache.name" .)
-    (include "kubeflow.namespace" .)
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.addressWithSvc" -}}
-{{ include "kubeflow.component.svc.addressWithSvc"  (
-    list
-    (include "kubeflow.pipelines.cache.name" .)
-    (include "kubeflow.namespace" .)
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.cache.svc.fqdn" -}}
-{{ printf "%s.%s"
-    (include "kubeflow.pipelines.cache.svc.addressWithSvc" .)
-    .Values.clusterDomain
-}}
 {{- end }}
 
 {{/*
@@ -221,5 +230,13 @@ Kubeflow Pipelines Cache enable and create toggles.
     and
         (include "kubeflow.pipelines.cache.enabled" . | eq "true" )
         (include "kubeflow.certManagerIntegration.enabled" . | eq "true" )
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.cache.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.cache.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
 )}}
 {{- end }}

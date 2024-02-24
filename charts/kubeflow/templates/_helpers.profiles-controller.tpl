@@ -1,5 +1,6 @@
 {{/*
 Kubeflow Profiles Controller object names.
+TODO: define profilesController.manager, standardize kubeflow.component.name template (and maybe others) to include ctx either as always first or always last.
 */}}
 {{- define "kubeflow.profilesController.baseName" -}}
 {{- printf "profiles-controller" }}
@@ -12,6 +13,14 @@ Kubeflow Profiles Controller object names.
     .
 )}}
 {{- end }}
+
+{{- define "kubeflow.profilesController.kfam.name" -}}
+{{- printf "%s-%s"
+    (include "kubeflow.profilesController.name" .)
+    "kfam"
+}}
+{{- end }}
+
 
 {{- define "kubeflow.profilesController.serviceAccountName" -}}
 {{- include "kubeflow.component.serviceAccountName"  (
@@ -57,18 +66,38 @@ TODO: use proper cluster role dedicated to profiles-controller.
 }}
 {{- end }}
 
+# ---
+{{/*
+Kubeflow Profiles Controller Service.
+*/}}
 {{- define "kubeflow.profilesController.kfam.svc.name" -}}
-{{- printf "%s-%s"
-    (include "kubeflow.profilesController.name" .)
-    "kfam"
-}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.profilesController.kfam.name" .
+)}}
 {{- end }}
 
-{{- define "kubeflow.profilesController.kfam.name" -}}
-{{- printf "%s-%s"
-    (include "kubeflow.profilesController.name" .)
-    "kfam"
-}}
+{{- define "kubeflow.profilesController.kfam.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.profilesController.kfam.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.profilesController.kfam.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.profilesController.kfam.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.profilesController.kfam.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.profilesController.kfam.name" .)
+)}}
 {{- end }}
 
 {{/*
@@ -83,18 +112,6 @@ Kubeflow Profiles Controller object labels.
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.profilesController.name" .) }}
 {{- end }}
-
-{{/*
-Kubeflow Profiles Controller Service.
-*/}}
-{{- define "kubeflow.profilesController.kfam.svc.fqdn" -}}
-{{ printf "%s.%s.svc.%s"
-  (include "kubeflow.profilesController.kfam.svc.name" .)
-  (include "kubeflow.namespace" .)
-  .Values.clusterDomain
-}}
-{{- end }}
-
 
 {{/*
 Kubeflow Profiles Controller container image settings.

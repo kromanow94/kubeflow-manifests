@@ -56,9 +56,37 @@ Kubeflow Notebooks Controller object names.
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "notebooks-view" }}
 {{- end }}
 
-
+{{/*
+Kubeflow Notebooks Controller Service.
+*/}}
 {{- define "kubeflow.notebooks.controller.svc.name" -}}
-{{ print (include "kubeflow.notebooks.controller.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.notebooks.controller.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.controller.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.notebooks.controller.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.controller.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.notebooks.controller.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.notebooks.controller.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.notebooks.controller.name" .)
+)}}
 {{- end }}
 
 {{/*
@@ -180,17 +208,6 @@ Kubeflow Notebooks Controller Scheduling.
     .Values.defaults.affinity
     .Values.notebooks.controller.affinity
 )}}
-{{- end }}
-
-{{/*
-Kubeflow Notebooks Controller Service Host FQDN.
-*/}}
-{{- define "kubeflow.notebooks.controller.svc.fqdn" -}}
-{{ printf "%s.%s.svc.%s"
-  (include "kubeflow.notebooks.controller.svc.name" .)
-  (include "kubeflow.namespace" .)
-  .Values.clusterDomain
-}}
 {{- end }}
 
 {{/*

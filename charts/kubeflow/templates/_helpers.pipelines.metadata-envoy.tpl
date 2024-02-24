@@ -30,6 +30,23 @@ Kubeflow Pipelines Metadata Envoy object names.
 {{- end }}
 
 {{/*
+Kubeflow Pipelines Metadata Envoy Service.
+*/}}
+{{- define "kubeflow.pipelines.metadataEnvoy.svc.name" -}}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.metadataEnvoy.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.metadataEnvoy.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.metadataEnvoy.name" .)
+)}}
+{{- end }}
+
+{{/*
 Kubeflow Pipelines Metadata Envoy object labels.
 */}}
 {{- define "kubeflow.pipelines.metadataEnvoy.labels" -}}
@@ -42,24 +59,6 @@ Kubeflow Pipelines Metadata Envoy object labels.
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.pipelines.name" .) }}
 {{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.pipelines.metadataEnvoy.name" .) }}
-{{- end }}
-
-{{/*
-Kubeflow Pipelines Metadata Envoy Service.
-*/}}
-{{- define "kubeflow.pipelines.metadataEnvoy.svc.name" -}}
-{{ include "kubeflow.component.svc.name" (
-    include "kubeflow.pipelines.metadataEnvoy.name" .
-)}}
-{{- end }}
-
-{{- define "kubeflow.pipelines.metadataEnvoy.svc.fqdn" -}}
-{{ include "kubeflow.component.svc.fqdn"  (
-    list
-    (include "kubeflow.pipelines.metadataEnvoy.name" .)
-    (include "kubeflow.namespace" .)
-    .Values.clusterDomain
-)}}
 {{- end }}
 
 

@@ -1,5 +1,5 @@
 {{/*
-Kubeflow Pipelines UI object names.
+Kubeflow Pipelines UI (aka ml-pipeline-ui) object names.
 */}}
 {{- define "kubeflow.pipelines.ui.baseName" -}}
 {{- printf "ml-pipeline-ui" }}
@@ -21,6 +21,14 @@ Kubeflow Pipelines UI object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.ui.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.ui.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.ui.configMapName" -}}
 {{- include "kubeflow.pipelines.ui.name" . }}
 {{- end }}
@@ -33,8 +41,37 @@ Kubeflow Pipelines UI object names.
 {{- include "kubeflow.pipelines.ui.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines UI Service.
+*/}}
 {{- define "kubeflow.pipelines.ui.svc.name" -}}
-{{ print (include "kubeflow.pipelines.ui.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.ui.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.ui.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.ui.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.ui.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.ui.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.ui.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.ui.name" .)
+)}}
 {{- end }}
 
 {{/*
@@ -145,21 +182,33 @@ Kubeflow Pipelines UI Scheduling.
 Kubeflow Pipelines UI enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.ui.enabled" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.enabled" . | eq "true")
     .Values.pipelines.ui.enabled
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.ui.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.ui.enabled" . | eq "true")
-    .Values.pipelines.ui.rbac.create }}
+    .Values.pipelines.ui.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.ui.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.ui.enabled" . | eq "true")
     .Values.pipelines.ui.serviceAccount.create
-}}
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.ui.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.ui.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
+)}}
 {{- end }}

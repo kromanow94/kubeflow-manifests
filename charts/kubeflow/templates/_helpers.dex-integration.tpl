@@ -14,15 +14,7 @@ Dex Integration object names.
 {{- end }}
 
 {{/*
-Dex Integration object labels.
-*/}}
-{{- define "kubeflow.dexIntegration.labels" -}}
-{{ include "kubeflow.common.labels" . }}
-{{ include "kubeflow.component.labels" (include "kubeflow.dexIntegration.name" .) }}
-{{- end }}
-
-{{/*
-Dex Service Host FQDN.
+Dex Service.
 */}}
 {{- define "kubeflow.dexIntegration.svc.fqdn" -}}
 {{ printf "%s.%s.svc.%s"
@@ -30,6 +22,14 @@ Dex Service Host FQDN.
   .Values.dexIntegration.svc.namespace
   .Values.clusterDomain
 }}
+{{- end }}
+
+{{/*
+Dex Integration object labels.
+*/}}
+{{- define "kubeflow.dexIntegration.labels" -}}
+{{ include "kubeflow.common.labels" . }}
+{{ include "kubeflow.component.labels" (include "kubeflow.dexIntegration.name" .) }}
 {{- end }}
 
 {{/*

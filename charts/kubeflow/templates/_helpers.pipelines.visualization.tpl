@@ -29,8 +29,37 @@ Kubeflow Pipelines Visualization object names.
 {{- include "kubeflow.pipelines.visualization.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines Visualization Service.
+*/}}
 {{- define "kubeflow.pipelines.visualization.svc.name" -}}
-{{ print (include "kubeflow.pipelines.visualization.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.visualization.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.visualization.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.visualization.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.visualization.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.visualization.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.visualization.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.visualization.name" .)
+)}}
 {{- end }}
 
 {{/*
@@ -141,21 +170,33 @@ Kubeflow Pipelines Visualization Scheduling.
 Kubeflow Pipelines Visualization enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.visualization.enabled" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.enabled" . | eq "true")
     .Values.pipelines.visualization.enabled
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.visualization.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.visualization.enabled" . | eq "true")
-    .Values.pipelines.visualization.rbac.create }}
+    .Values.pipelines.visualization.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.visualization.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.visualization.enabled" . | eq "true")
     .Values.pipelines.visualization.serviceAccount.create
-}}
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.visualization.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.visualization.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
+)}}
 {{- end }}

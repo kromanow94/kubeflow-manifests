@@ -137,10 +137,3 @@ Kubeflow Pipelines enable and create toggles.
 {{- define "kubeflow.pipelines.enabled" -}}
 {{- ternary true "" .Values.pipelines.enabled }}
 {{- end }}
-
-{{- define "kubeflow.pipelines.cache.enabled" -}}
-{{- and
-    (include "kubeflow.pipelines.enabled" . | eq "true")
-    .Values.pipelines.cache.enabled
-}}
-{{- end }}

@@ -1,9 +1,5 @@
 {{/*
-ML Pipeline (ml-pipeline) is also known as Api Server (api-server)
-*/}}
-
-{{/*
-Kubeflow Pipelines ML Pipeline object names.
+Kubeflow Pipelines ML Pipeline (api-server) object names.
 */}}
 {{- define "kubeflow.pipelines.mlPipeline.baseName" -}}
 {{- printf "ml-pipeline" }}
@@ -25,6 +21,14 @@ Kubeflow Pipelines ML Pipeline object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.mlPipeline.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.mlPipeline.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.mlPipeline.roleName" -}}
 {{- include "kubeflow.pipelines.mlPipeline.name" . }}
 {{- end }}
@@ -33,8 +37,37 @@ Kubeflow Pipelines ML Pipeline object names.
 {{- include "kubeflow.pipelines.mlPipeline.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines ML Pipeline Service.
+*/}}
 {{- define "kubeflow.pipelines.mlPipeline.svc.name" -}}
-{{ print (include "kubeflow.pipelines.mlPipeline.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.mlPipeline.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.mlPipeline.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.mlPipeline.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.mlPipeline.name" .)
+)}}
 {{- end }}
 
 {{/*
@@ -161,8 +194,17 @@ Kubeflow Pipelines ML Pipeline enable and create toggles.
 {{- end }}
 
 {{- define "kubeflow.pipelines.mlPipeline.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.mlPipeline.enabled" . | eq "true")
     .Values.pipelines.mlPipeline.serviceAccount.create
-}}
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.pipelines.mlPipeline.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
+)}}
 {{- end }}

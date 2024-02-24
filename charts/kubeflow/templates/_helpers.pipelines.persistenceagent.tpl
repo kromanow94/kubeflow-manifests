@@ -21,6 +21,14 @@ Kubeflow Pipelines Persistence Agent object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.persistenceAgent.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.pipelines.persistenceAgent.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.pipelines.persistenceAgent.roleName" -}}
 {{- include "kubeflow.pipelines.persistenceAgent.name" . }}
 {{- end }}
@@ -29,8 +37,37 @@ Kubeflow Pipelines Persistence Agent object names.
 {{- include "kubeflow.pipelines.persistenceAgent.roleName" . }}
 {{- end }}
 
+{{/*
+Kubeflow Pipelines Persistence Agent Service.
+*/}}
 {{- define "kubeflow.pipelines.persistenceAgent.svc.name" -}}
-{{ print (include "kubeflow.pipelines.persistenceAgent.name" .) }}
+{{ include "kubeflow.component.svc.name" (
+    include "kubeflow.pipelines.persistenceAgent.name" .
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.persistenceAgent.svc.addressWithNs" -}}
+{{ include "kubeflow.component.svc.addressWithNs"  (
+    list
+    .
+    (include "kubeflow.pipelines.persistenceAgent.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.persistenceAgent.svc.addressWithSvc" -}}
+{{ include "kubeflow.component.svc.addressWithSvc"  (
+    list
+    .
+    (include "kubeflow.pipelines.persistenceAgent.name" .)
+)}}
+{{- end }}
+
+{{- define "kubeflow.pipelines.persistenceAgent.svc.fqdn" -}}
+{{ include "kubeflow.component.svc.fqdn"  (
+    list
+    .
+    (include "kubeflow.pipelines.persistenceAgent.name" .)
+)}}
 {{- end }}
 
 {{/*

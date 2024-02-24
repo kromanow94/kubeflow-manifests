@@ -16,6 +16,7 @@ spec:
     - from:
         - source:
             principals:
+              # TODO: change me
               - cluster.local/ns/{{ $namespace }}/sa/{{ $centraldashboardSaName }}
   selector:
     matchLabels:
