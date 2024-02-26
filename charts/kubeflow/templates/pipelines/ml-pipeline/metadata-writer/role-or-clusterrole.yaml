@@ -1,7 +1,7 @@
-{{- if (include "kubeflow.pipelines.metadataWriter.rbac.createRoles" . | eq "true") -}}
+{{- if (include "kubeflow.pipelines.metadataWriter.rbac.createRoles" .) -}}
 
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: {{ include "kubeflow.deploymentMode.scopedRoleKind" . }}
 metadata:
   labels:
     {{- include "kubeflow.pipelines.metadataWriter.labels" . | nindent 4 }}

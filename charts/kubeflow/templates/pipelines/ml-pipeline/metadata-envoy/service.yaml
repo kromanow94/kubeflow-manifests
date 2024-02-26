@@ -1,14 +1,20 @@
+{{- if (include "kubeflow.pipelines.metadataEnvoy.enabled" . | eq "true") -}}
+
 kind: Service
 apiVersion: v1
 metadata:
   labels:
-    app: metadata-envoy
-  name: metadata-envoy-service
+    {{- include "kubeflow.pipelines.metadataEnvoy.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.pipelines.metadataEnvoy.svc.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
-  selector:
-    component: metadata-envoy
-  type: ClusterIP
   ports:
   - port: 9090
     protocol: TCP
     name: md-envoy
+  selector:
+    {{- include "kubeflow.pipelines.metadataEnvoy.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
+  type: {{ .Values.pipelines.metadataEnvoy.service.type }}
+
+{{- end }}

@@ -170,21 +170,25 @@ Kubeflow Pipelines Metadata Writer Scheduling.
 Kubeflow Pipelines Metadata Writer enable and create toggles.
 */}}
 {{- define "kubeflow.pipelines.metadataWriter.enabled" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.enabled" . | eq "true")
     .Values.pipelines.metadataWriter.enabled
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataWriter.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.metadataWriter.enabled" . | eq "true")
-    .Values.pipelines.metadataWriter.rbac.create }}
+    .Values.pipelines.metadataWriter.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataWriter.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.pipelines.metadataWriter.enabled" . | eq "true")
     .Values.pipelines.metadataWriter.serviceAccount.create
-}}
+)}}
 {{- end }}

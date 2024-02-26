@@ -5,6 +5,7 @@ namespace: ""
 
 # one of ['cluster', 'namespace']
 # 'namespace' is not yet fully supported.
+# Maybe rename to 'deploymentScope'?
 deploymentMode: cluster
 
 imagePullSecrets: []
@@ -663,6 +664,7 @@ pipelines:
     pipelineDb: mlpipeline
     mlmdDb: metadb
     cacheDb: cachedb
+    defaultPipelineRoot: ""
 
   # TODO: cache looks like it's missing a lot of stuff...
   cache:
@@ -1116,7 +1118,58 @@ pipelines:
     containerSecurityContext:
     config:
 
+  # This is metacontroller based implementation that creates instances of
+  # * Secret/mlpipeline-minio-artifact
+  # * Deployment/ml-pipeline-ui-artifact
+  # * Service/ml-pipeline-ui-artifact
+  # * Deployment/ml-pipeline-visualizationserver
+  # * Service/ml-pipeline-visualizationserver
+  # * ConfigMap/kfp-launcher
+  # * ConfigMap/metadata-grpc-configmap
+  # * AuthorizationPolicy/ml-pipeline-visualizationserver
+  # * DestinationRule/ml-pipeline-visualizationserver
+  profileController:
+    enabled: true
+    image:
+      repository: python
+      registryOverwrite: docker.io
+      tagOverwrite: "3.7"
+      pullPolicyOverwrite:
+    resources:
+      # requests:
+      #   cpu:
+      #   memory:
+      # limits:
+      #   cpu:
+      #   memory:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: false
+    serviceAccount:
+      create: false
+      name:
+      annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      disableIstioSidecar: false
+
   # ---
+  # TODO: check if this is used
   kfam:
     image:
       repository: kubeflownotebookswg/kfam
