@@ -1,10 +1,9 @@
 {{- if (include "kubeflow.pipelines.cache.enabled" .) -}}
 
-# TODO: Add cache-deployer if cert-manager integration is disabled.
-
 {{- $autoscalingEnabled := include "kubeflow.pipelines.cache.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.pipelines.cache.autoscaling.minReplicas" . -}}
 
+# TODO: Add cache-deployer if cert-manager integration is disabled.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
