@@ -33,12 +33,17 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.scheduledWorkflow.imagePullPolicy" . }}
 
         env:
-          - name: CRON_SCHEDULE_TIMEZONE
-            value: {{ .Values.pipelines.scheduledWorkflow.config.cronScheduleTimezone | quote }}
-          - name: NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
+        - name: CRON_SCHEDULE_TIMEZONE
+          value: {{ .Values.pipelines.scheduledWorkflow.config.cronScheduleTimezone | quote }}
+
+        - name: NAMESPACE
+          {{- if (include "kubeflow.deploymentMode.namespace" .) }}
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+          {{- else }}
+          value: ""
+          {{- end }}
 
         {{- with .Values.pipelines.scheduledWorkflow.resources }}
         resources:

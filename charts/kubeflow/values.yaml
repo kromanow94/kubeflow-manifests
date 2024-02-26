@@ -901,9 +901,12 @@ pipelines:
     topologySpreadConstraints:
     containerSecurityContext:
     config:
-      # one of ['default-editor', 'kubeflow-pipelines-viewer']
+      # Note from apps/pipeline/upstream/base/installs/multi-user/pipelines-ui/configmap-patch.yaml
+      # Temporary workarounds:
+      # 1. Using default-editor because default-viewer isn't bound to workload identity
       viewerPodServiceAccountName: default-editor
       allowCustomVisualizations: true
+      urlPrefix: /pipeline
 
   viewerCrd:
     enabled: true

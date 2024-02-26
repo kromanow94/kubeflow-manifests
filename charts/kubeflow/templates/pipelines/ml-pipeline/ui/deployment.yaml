@@ -33,18 +33,35 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.ui.imagePullPolicy" . }}
 
         env:
-          - name: VIEWER_TENSORBOARD_POD_TEMPLATE_SPEC_PATH
-            value: /etc/config/viewer-pod-template.json
-          - name: MINIO_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: MINIO_ACCESS_KEY
-            value: {{ .Values.pipelines.config.objectStoreAccessKey }}
-          - name: MINIO_SECRET_KEY
-            value: {{ .Values.pipelines.config.objectStoreSecretKey }}
-          - name: ALLOW_CUSTOM_VISUALIZATIONS
-            value: {{ .Values.pipelines.ui.config.allowCustomVisualizations | quote }}
+        - name: VIEWER_TENSORBOARD_POD_TEMPLATE_SPEC_PATH
+          value: /etc/config/viewer-pod-template.json
+        - name: MINIO_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: MINIO_ACCESS_KEY
+          value: {{ .Values.pipelines.config.objectStoreAccessKey }}
+        - name: MINIO_SECRET_KEY
+          value: {{ .Values.pipelines.config.objectStoreSecretKey }}
+        - name: ALLOW_CUSTOM_VISUALIZATIONS
+          value: {{ .Values.pipelines.ui.config.allowCustomVisualizations | quote }}
+
+        {{- if (include "kubeflow.deploymentMode.cluster" .) }}
+        - name: DEPLOYMENT
+          value: KUBEFLOW
+        - name: ARTIFACTS_SERVICE_PROXY_NAME
+          value: ml-pipeline-ui-artifact
+        - name: ARTIFACTS_SERVICE_PROXY_PORT
+          value: '80'
+        - name: ARTIFACTS_SERVICE_PROXY_ENABLED
+          value: 'true'
+        - name: ENABLE_AUTHZ
+          value: 'true'
+        - name: KUBEFLOW_USERID_HEADER
+          value: {{ .Values.auth.userHeaderName | quote }}
+        - name: KUBEFLOW_USERID_PREFIX
+          value: {{ .Values.auth.userIdPrefix | quote }}
+        {{- end }}
 
         ports:
         - containerPort: 3000

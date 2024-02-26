@@ -37,9 +37,13 @@ spec:
         - name: MAX_NUM_VIEWERS
           value: {{ .Values.pipelines.viewerCrd.config.maxNumViewers | quote }}
         - name: NAMESPACE
+          {{- if (include "kubeflow.deploymentMode.namespace" .) }}
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+          {{- else }}
+          value: ""
+          {{- end }}
 
         {{- with .Values.pipelines.viewerCrd.resources }}
         resources:
