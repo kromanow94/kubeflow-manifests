@@ -43,7 +43,6 @@ spec:
   hooks:
     sync:
       webhook:
-        url_old: http://kubeflow-pipelines-profile-controller/sync
         url: {{ printf "http://%s/sync" (include "kubeflow.pipelines.profileController.svc.name" .) }}
 
 {{- end }}
