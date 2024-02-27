@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: mysql
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: mysql
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 9.21.2
+    helm:
+      values: |-
+        auth:
+          rootPassword: ""
+        commonLabels:
+          sidecar.istio.io/inject: "false"
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
