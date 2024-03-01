@@ -21,4 +21,27 @@ spec:
   sessionAffinity: None
   type: {{ .Values.pipelines.metadataGrpcServer.service.type }}
 
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  {{- with .Values.pipelines.metadataGrpcServer.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kubeflow.pipelines.metadataGrpcServer.labels" . | nindent 4 }}
+  name: metadata-grpc-service
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  ports:
+  - port: {{ .Values.pipelines.metadataGrpcServer.service.port }}
+    protocol: TCP
+    name: grpc-api
+  selector:
+    {{- include "kubeflow.pipelines.metadataGrpcServer.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
+  type: {{ .Values.pipelines.metadataGrpcServer.service.type }}
+
 {{- end }}
