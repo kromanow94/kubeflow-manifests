@@ -1,0 +1,75 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    deployed-by: romanok1
+  name: argo-workflows
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    chart: argo-workflows
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 0.17.1
+    helm:
+      values: |-
+        images:
+          tag: v3.3.10
+        
+        controller:
+          containerRuntimeExecutor: emissary
+
+        server:
+          enabled: false
+
+        artifactRepository:
+          archiveLogs: true
+          s3: 
+            accessKeySecret:
+              key: accesskey
+              name: mlpipeline-minio-artifact
+            secretKeySecret:
+              key: secretkey
+              name: mlpipeline-minio-artifact
+            bucket: mlpipeline
+            endpoint: minio.kubeflow:9000
+            insecure: true
+            keyFormat: artifacts/{{workflow.namespace}}/{{workflow.name}}/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}/{{pod.name}}
+
+        persistence:
+          archive: true
+          archiveTTL: 90d
+          connectionPool:
+            connMaxLifetime: 0s
+            maxIdleConns: 100
+            maxOpenConns: 0
+          mysql:
+            database: argo
+            host: mysql
+            port: 3306
+            passwordSecret:
+              key: password
+              name: mysql-secret
+            tableName: argo_workflows
+            userNameSecret:
+              key: username
+              name: mysql-secret
+          nodeStatusOffLoad: true
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+    - CreateNamespace=true
