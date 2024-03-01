@@ -3,7 +3,7 @@ kind: Application
 metadata:
   labels:
     deployed-by: romanok1
-  name: mysql
+  name: minio
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -13,15 +13,16 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    chart: mysql
+    chart: minio
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 9.21.2
+    targetRevision: 13.7.0
     helm:
       values: |-
-        auth:
-          rootPassword: mysql1234
         commonLabels:
           sidecar.istio.io/inject: "false"
+        auth:
+          rootUser: minio
+          rootPassword: minio123
 
   syncPolicy:
     automated:
@@ -33,3 +34,5 @@ spec:
         factor: 2
         maxDuration: 10m
       limit: 5
+    syncOptions:
+    - CreateNamespace=true

@@ -673,7 +673,8 @@ pipelines:
     dbHost: mysql
     dbPort: 3306
     dbConfigUser: root
-    dbConfigPassword: ""  # or "test" or b64(dGVzdA==)
+    # dbConfigPassword: ""  # or "test" or b64(dGVzdA==)
+    dbConfigPassword: mysql1234
     dbConfigConMaxLifetime: 120s
     dbConfigDriver: mysql
     pipelineDb: mlpipeline
