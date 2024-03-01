@@ -669,6 +669,11 @@ pipelines:
     objectStoreConfigBucketname: mlpipeline
     objectStoreAccessKey: minio
     objectStoreSecretKey: minio123
+
+    objectStoreHost: minio
+    objectStorePort: 9000
+    objectStoreRegion: ""
+
     # DB
     dbHost: mysql
     dbPort: 3306
