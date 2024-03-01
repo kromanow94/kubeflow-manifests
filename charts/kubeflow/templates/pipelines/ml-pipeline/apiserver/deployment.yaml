@@ -33,6 +33,18 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.mlPipeline.imagePullPolicy" . }}
 
         env:
+        # ---
+        # variables from pipeline-api-server-config-dc9hkg52h6
+        - name: DEFAULTPIPELINERUNNERSERVICEACCOUNT
+          value: default-editor
+        - name: MULTIUSER
+          value: {{ (include "kubeflow.isMultiuser" .) | quote }}
+        - name: VISUALIZATIONSERVICE_NAME
+          value: ml-pipeline-visualizationserver
+        - name: VISUALIZATIONSERVICE_PORT
+          value: "8888"
+        # ---
+
         - name: KUBEFLOW_USERID_HEADER
           value: {{ .Values.auth.userHeaderName | quote }}
         - name: KUBEFLOW_USERID_PREFIX
