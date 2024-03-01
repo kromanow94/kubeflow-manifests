@@ -41,6 +41,14 @@ Kubeflow Pipelines UI (aka ml-pipeline-ui) object names.
 {{- include "kubeflow.pipelines.ui.roleName" . }}
 {{- end }}
 
+{{- define "kubeflow.pipelines.ui.authorizationPolicyExtAuthName" -}}
+{{ include "kubeflow.component.authorizationPolicyExtAuthName" (
+    list
+    (include "kubeflow.pipelines.ui.name" .)
+    .Values.istioIntegration
+)}}
+{{- end }}
+
 {{/*
 Kubeflow Pipelines UI Service.
 */}}
