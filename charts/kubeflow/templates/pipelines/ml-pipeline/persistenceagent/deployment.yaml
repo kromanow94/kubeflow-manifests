@@ -41,6 +41,8 @@ spec:
           value: {{ .Values.auth.userHeaderName | quote }}
         - name: KUBEFLOW_USERID_PREFIX
           value: {{ .Values.auth.userIdPrefix | quote }}
+        - name: MULTIUSER
+          value: {{ (include "kubeflow.isMultiuser" .) | quote }}
         - name: NAMESPACE
           {{- if (include "kubeflow.deploymentMode.namespace" .) }}
           valueFrom:

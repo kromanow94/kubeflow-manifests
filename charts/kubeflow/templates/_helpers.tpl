@@ -65,6 +65,10 @@ TODO: use ternary for other conditionals.
 {{- ternary true "" (eq .Values.deploymentMode "namespace") -}}
 {{- end }}
 
+{{- define "kubeflow.isMultiuser" -}}
+{{- ternary "true" "false" (include "kubeflow.deploymentMode.cluster" . | eq "true") -}}
+{{- end }}
+
 {{- define "kubeflow.deploymentMode.scopedRoleBindingKind" -}}
 {{- ternary "ClusterRoleBinding" "RoleBinding" (include "kubeflow.deploymentMode.cluster" . | eq "true") -}}
 {{- end }}
