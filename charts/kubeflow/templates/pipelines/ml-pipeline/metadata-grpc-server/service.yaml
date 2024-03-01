@@ -23,6 +23,14 @@ spec:
 
 ---
 
+# TODO: having this SVC is a workaround... metadata-grpc service might be hardcoded...
+# Consider adding following snipper:
+#        env:
+#        - name: METADATA_GRPC_SERVICE_SERVICE_HOST
+#          value: {{ include "kubeflow.pipelines.metadataGrpcServer.svc.name" . }}
+#        - name: METADATA_GRPC_SERVICE_SERVICE_PORT
+#          value: "8080"
+
 kind: Service
 apiVersion: v1
 metadata:
