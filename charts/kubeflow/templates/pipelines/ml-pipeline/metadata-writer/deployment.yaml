@@ -31,6 +31,10 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.metadataWriter.imagePullPolicy" . }}
 
         env:
+        - name: METADATA_GRPC_SERVICE_SERVICE_HOST
+          value: {{ include "kubeflow.pipelines.metadataGrpcServer.svc.name" . }}
+        - name: METADATA_GRPC_SERVICE_SERVICE_PORT
+          value: "8080"
         - name: NAMESPACE_TO_WATCH
           {{- if (include "kubeflow.deploymentMode.namespace" .) }}
           valueFrom:
