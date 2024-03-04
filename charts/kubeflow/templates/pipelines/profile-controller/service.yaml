@@ -13,5 +13,9 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8080
+  selector:
+    {{- include "kubeflow.pipelines.profileController.selectorLabels" . | nindent 4 }}
+  sessionAffinity: None
+  type: {{ .Values.pipelines.profileController.service.type }}
 
 {{- end }}
