@@ -23,9 +23,30 @@ spec:
         
         controller:
           containerRuntimeExecutor: emissary
+          persistence:
+            archive: true
+            archiveTTL: 90d
+            connectionPool:
+              connMaxLifetime: 0s
+              maxIdleConns: 100
+              maxOpenConns: 0
+            mysql:
+              database: argo
+              host: mysql
+              port: 3306
+              passwordSecret:
+                key: password
+                name: mysql-secret
+              tableName: argo_workflows
+              userNameSecret:
+                key: username
+                name: mysql-secret
+            nodeStatusOffLoad: true
 
         server:
           enabled: false
+
+        useDefaultArtifactRepo: true
 
         artifactRepository:
           archiveLogs: true
@@ -41,25 +62,6 @@ spec:
             insecure: true
             keyFormat: artifacts/{{workflow.namespace}}/{{workflow.name}}/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}/{{pod.name}}
 
-        persistence:
-          archive: true
-          archiveTTL: 90d
-          connectionPool:
-            connMaxLifetime: 0s
-            maxIdleConns: 100
-            maxOpenConns: 0
-          mysql:
-            database: argo
-            host: mysql
-            port: 3306
-            passwordSecret:
-              key: password
-              name: mysql-secret
-            tableName: argo_workflows
-            userNameSecret:
-              key: username
-              name: mysql-secret
-          nodeStatusOffLoad: true
 
   syncPolicy:
     automated:
