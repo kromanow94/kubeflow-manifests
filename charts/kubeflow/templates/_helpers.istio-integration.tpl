@@ -43,6 +43,13 @@ Istio Integration object names.
 {{- end }}
 
 {{/*
+Role Aggregation Rule Labels
+*/}}
+{{- define "kubeflow.istio-integration.istioAdminRoleLabel" -}}
+{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.istio-integration.istioAdminRoleName" .) -}}
+{{- end }}
+
+{{/*
 Istio Integration object labels.
 */}}
 {{- define "kubeflow.istio-integration.labels" -}}

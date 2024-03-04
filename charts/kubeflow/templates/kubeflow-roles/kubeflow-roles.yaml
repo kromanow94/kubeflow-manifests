@@ -1,0 +1,43 @@
+# TODO: these roles should only be added in MULTIUSER mode.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflow-roles.kubeflowAdminRoleName" . }}
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      {{- include "kubeflow.kubeflow-roles.kubeflowAdminRoleLabel" . | nindent 6 }}
+rules: []
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflow-roles.kubeflowAdminRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflow-roles.kubeflowEditRoleName" . }}
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 6 }}
+rules: []
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflow-roles.kubeflowViewRoleName" . }}
+aggregationRule:
+  clusterRoleSelectors:
+  - matchLabels:
+      {{- include "kubeflow.kubeflow-roles.kubeflowViewRoleLabel" . | nindent 6 }}
+rules: []

@@ -5,12 +5,12 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.adminRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowAdminRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.istio-integration.istioAdminRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.istio-integration.istioAdminRoleName" . }}: "true"
+      {{- include "kubeflow.istio-integration.istioAdminRoleLabel" . | nindent 6 }}
 rules: []
 
 ---
@@ -20,8 +20,8 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.editRoleName" . }}: "true"
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.istio-integration.istioAdminRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 4 }}
+    {{- include "kubeflow.istio-integration.istioAdminRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.istio-integration.istioEditRoleName" . }}
 rules:
 - apiGroups: 
@@ -45,7 +45,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.viewRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowViewRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.istio-integration.istioViewRoleName" . }}
 rules:
 - apiGroups:

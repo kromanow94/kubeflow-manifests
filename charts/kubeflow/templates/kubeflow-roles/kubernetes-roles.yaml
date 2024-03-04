@@ -3,51 +3,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.kubeflow-roles.adminRoleName" . }}
-aggregationRule:
-  clusterRoleSelectors:
-  - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.adminRoleName" . }}: "true"
-rules: []
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.adminRoleName" . }}: "true"
-  name: {{ include "kubeflow.kubeflow-roles.editRoleName" . }}
-aggregationRule:
-  clusterRoleSelectors:
-  - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.editRoleName" . }}: "true"
-rules: []
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.editRoleName" . }}: "true"
-  name: {{ include "kubeflow.kubeflow-roles.viewRoleName" . }}
-aggregationRule:
-  clusterRoleSelectors:
-  - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.viewRoleName" . }}: "true"
-rules: []
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.adminRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowAdminRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.kubeflow-roles.kubernetesAdminRoleName" . }}
 rules:
 - apiGroups:
@@ -78,7 +34,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.editRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.kubeflow-roles.kubernetesEditRoleName" . }}
 rules:
 - apiGroups:
@@ -217,7 +173,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.viewRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowViewRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.kubeflow-roles.kubernetesViewRoleName" . }}
 rules:
 - apiGroups:

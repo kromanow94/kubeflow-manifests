@@ -57,6 +57,13 @@ Kubeflow Notebooks Controller object names.
 {{- end }}
 
 {{/*
+Role Aggregation Rule Labels
+*/}}
+{{- define "kubeflow.notebooks.controller.kfNbAdminClusterRoleLabel" -}}
+{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.notebooks.controller.kfNbAdminClusterRoleName" .) -}}
+{{- end }}
+
+{{/*
 Kubeflow Notebooks Controller Service.
 */}}
 {{- define "kubeflow.notebooks.controller.svc.name" -}}

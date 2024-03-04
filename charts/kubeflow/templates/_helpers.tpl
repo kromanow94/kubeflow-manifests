@@ -125,6 +125,19 @@ app.kubernetes.io/subcomponent: {{ . }}
 {{- end }}
 
 {{/*
+Role and ClusterRole aggregation rule labels
+*/}}
+{{- define "kubeflow.aggregationRule.labelBase" -}}
+{{- $labelPrefix := "rbac.authorization.kubeflow.org/aggregate-to" -}}
+{{- $roleName := . -}}
+{{- printf "%s-%s: \"%s\""
+  $labelPrefix
+  $roleName
+  "true"
+  -}}
+{{- end -}}
+
+{{/*
 Component Service.
 */}}
 {{- define "kubeflow.component.svc.name" -}}

@@ -5,13 +5,12 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.notebooks.controller.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.adminRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowAdminRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.notebooks.controller.kfNbAdminClusterRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
-      rbac.authorization.kubeflow.org/aggregate-to-kubeflow-notebooks-admin: "true"
-      rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.notebooks.controller.kfNbAdminClusterRoleName" . }}: "true"
+      {{- include "kubeflow.notebooks.controller.kfNbAdminClusterRoleLabel" . | nindent 6 }}
 rules: []
 
 ---
@@ -21,8 +20,8 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.notebooks.controller.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.editRoleName" . }}: "true"
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.notebooks.controller.kfNbAdminClusterRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 4 }}
+    {{- include "kubeflow.notebooks.controller.kfNbAdminClusterRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.notebooks.controller.kfNbEditClusterRoleName" . }}
 rules:
 - apiGroups:
@@ -47,7 +46,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.notebooks.controller.labels" . | nindent 4 }}
-    rbac.authorization.kubeflow.org/aggregate-to-{{ include "kubeflow.kubeflow-roles.viewRoleName" . }}: "true"
+    {{- include "kubeflow.kubeflow-roles.kubeflowViewRoleLabel" . | nindent 4 }}
   name: {{ include "kubeflow.notebooks.controller.kfNbViewClusterRoleName" . }}
 rules:
 - apiGroups:
