@@ -60,12 +60,12 @@ spec:
         - name: OBJECTSTORECONFIG_SECRETACCESSKEY
           value: {{ .Values.pipelines.config.objectStoreSecretKey }}
 
-        - name: OBJECTSTORECONFIG_HOST
-          value: {{ .Values.pipelines.config.objectStoreHost | quote }}
-        - name: OBJECTSTORECONFIG_PORT
-          value: {{ .Values.pipelines.config.objectStorePort | quote }}
-        - name: OBJECTSTORECONFIG_REGION
-          value: {{ .Values.pipelines.config.objectStoreRegion | quote }}
+        # - name: OBJECTSTORECONFIG_HOST
+        #   value: {{ .Values.pipelines.config.objectStoreHost | quote }}
+        # - name: OBJECTSTORECONFIG_PORT
+        #   value: {{ .Values.pipelines.config.objectStorePort | quote }}
+        # - name: OBJECTSTORECONFIG_REGION
+        #   value: {{ .Values.pipelines.config.objectStoreRegion | quote }}
 
         - name: DBCONFIG_USER
           value: {{ .Values.pipelines.config.dbConfigUser }}
