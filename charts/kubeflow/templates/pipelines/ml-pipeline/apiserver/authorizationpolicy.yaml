@@ -12,24 +12,23 @@ spec:
     matchLabels:
       {{- include "kubeflow.pipelines.mlPipeline.selectorLabels" . | nindent 6 }}
   rules:
-  # NOTE(kromanow94): this is temporarily configured with open access to verify
-  # if it will make it work
-  - {}
-  # - from:
-  #   - source:
-  #       principals:
-  #       - {{ include "kubeflow.pipelines.mlPipeline.serviceAccountPrincipal" . }}
-  #       - {{ include "kubeflow.pipelines.ui.serviceAccountPrincipal" . }}
-  #       - {{ include "kubeflow.pipelines.persistenceAgent.serviceAccountPrincipal" . }}
-  #       - {{ include "kubeflow.pipelines.scheduledWorkflow.serviceAccountPrincipal" . }}
-  #       - {{ include "kubeflow.pipelines.viewerCrd.serviceAccountPrincipal" . }}
-  #       - {{ include "kubeflow.pipelines.cache.serviceAccountPrincipal" . }}
+  - from:
+    - source:
+        principals:
+        - {{ include "kubeflow.pipelines.mlPipeline.serviceAccountPrincipal" . }}
+        - {{ include "kubeflow.pipelines.ui.serviceAccountPrincipal" . }}
+        - {{ include "kubeflow.pipelines.persistenceAgent.serviceAccountPrincipal" . }}
+        - {{ include "kubeflow.pipelines.scheduledWorkflow.serviceAccountPrincipal" . }}
+        - {{ include "kubeflow.pipelines.viewerCrd.serviceAccountPrincipal" . }}
+        - {{ include "kubeflow.pipelines.cache.serviceAccountPrincipal" . }}
 
   # NOTE(kromanow94): with m2m tokens through istio/oauth2-proxy and
   # ml-pipeline-ui, the following is probably not needed anymore.
-  # # For user workloads, which cannot use http headers for authentication
-  # - when:
-  #   - key: request.headers[kubeflow-userid]
-  #     notValues: ['*']
+  # NOTE(kromanow94) UPDATE!!!: It's needed, otherwise the KF Pipeline Steps
+  # cannot reach ml-pipeline and appareantly it's needed to process the step...
+  # For user workloads, which cannot use http headers for authentication
+  - when:
+    - key: request.headers[{{ .Values.auth.userHeaderName }}]
+      notValues: ['*']
 
 {{- end }}
