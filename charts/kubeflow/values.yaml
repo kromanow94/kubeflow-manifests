@@ -1,18 +1,3 @@
-# TODO: add mysql in separate chart
-
-# $ k get virtualservices.networking.istio.io -A
-# NAMESPACE                   NAME                                            GATEWAYS                        HOSTS   AGE
-# dex                         dex                                             ["kubeflow/kubeflow-gateway"]   ["*"]   18d
-# kubeflow-user-example-com   notebook-kubeflow-user-example-com-prof-kleks   ["kubeflow/kubeflow-gateway"]   ["*"]   17d
-# kubeflow                    centraldashboard                                ["kubeflow-gateway"]            ["*"]   18d
-# kubeflow                    jupyter-web-app                                 ["kubeflow-gateway"]            ["*"]   18d
-# kubeflow                    ml-pipeline-metadata-grpc-server                ["kubeflow-gateway"]            ["*"]   24m
-# kubeflow                    ml-pipeline-ui                                  ["kubeflow-gateway"]            ["*"]   24m
-# kubeflow                    profiles-controller-kfam                        ["kubeflow-gateway"]            ["*"]   18d
-
-# $ k -n metacontroller logs pod/metacontroller-metacontroller-helm-0
-# {"level":"error","ts":1708974250.5236855,"msg":"failed to sync Namespace 'istio-system': sync hook failed for Namespace /istio-system: sync hook failed: http error: Post \"http://ml-pipeline-profile-controller/sync\": dial tcp: lookup ml-pipeline-profile-controller on 172.20.0.10:53: no such host\n","stacktrace":"metacontroller/pkg/controller/composite.(*parentController).worker\n\t/go/src/metacontroller/pkg/controller/composite/controller.go:286\nk8s.io/apimachinery/pkg/util/wait.BackoffUntil.func1\n\t/go/pkg/mod/k8s.io/apimachinery@v0.23.5/pkg/util/wait/wait.go:155\nk8s.io/apimachinery/pkg/util/wait.BackoffUntil\n\t/go/pkg/mod/k8s.io/apimachinery@v0.23.5/pkg/util/wait/wait.go:156\nk8s.io/apimachinery/pkg/util/wait.JitterUntil\n\t/go/pkg/mod/k8s.io/apimachinery@v0.23.5/pkg/util/wait/wait.go:133\nk8s.io/apimachinery/pkg/util/wait.Until\n\t/go/pkg/mod/k8s.io/apimachinery@v0.23.5/pkg/util/wait/wait.go:90\nmetacontroller/pkg/controller/composite.(*parentController).Start.func1.1\n\t/go/src/metacontroller/pkg/controller/composite/controller.go:262"}
-
 # This namespace allows you to define where the services will be installed into
 # if not set then they will use the namespace of the release
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
