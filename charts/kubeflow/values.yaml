@@ -1243,8 +1243,7 @@ istioIntegration:
     userClaim: sub
     issuer: https://kubernetes.default.svc.cluster.local
     selfSigned:
-      # This is not yet fully supported.
-      autoJwksDiscovery: false
+      autoJwksDiscovery: true
       jwks:
   userAuth:
     userClaim: email
