@@ -175,9 +175,11 @@ Kubeflow Profiles Controller enable and create toggles.
 {{- end }}
 
 {{- define "kubeflow.profilesController.createIstioIntegrationObjects" -}}
-{{- and
-  (include "kubeflow.profilesController.enabled" . | eq "true" )
-  .Values.istioIntegration.enabled }}
+{{- ternary true "" (
+    and
+    (include "kubeflow.profilesController.enabled" . | eq "true" )
+    .Values.istioIntegration.enabled
+)}}
 {{- end }}
 
 {{- define "kubeflow.profilesController.rbac.createRoles" -}}

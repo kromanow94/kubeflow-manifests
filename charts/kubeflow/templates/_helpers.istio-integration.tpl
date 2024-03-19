@@ -42,6 +42,13 @@ Istio Integration object names.
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "user-auth" }}
 {{- end }}
 
+{{- define "kubeflow.istio-integration.extAuth.authorizationPolicyName" -}}
+{{- printf "%s-ext-auth-%s"
+  (include "kubeflow.fullname" .)
+  .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName
+}}
+{{- end }}
+
 {{/*
 Role Aggregation Rule Labels
 */}}
@@ -83,4 +90,12 @@ Istio Integration enable and create toggles.
   (include "kubeflow.istio-integration.enabled" . | eq "true" )
   .Values.istioIntegration.m2m.inCluster
 }}
+{{- end }}
+
+{{- define "kubeflow.istio-integration.authorizationMode.granular" -}}
+{{- ternary true "" (eq .Values.istioIntegration.authorizationMode "granular") -}}
+{{- end }}
+
+{{- define "kubeflow.istio-integration.authorizationMode.ingressgateway" -}}
+{{- ternary true "" (eq .Values.istioIntegration.authorizationMode "ingressgateway") -}}
 {{- end }}

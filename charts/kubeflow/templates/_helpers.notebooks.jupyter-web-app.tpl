@@ -90,10 +90,11 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.createIstioIntegrationObjects" -}}
-{{- and
-  .Values.istioIntegration.enabled
-  (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true" )
-}}
+{{- ternary true "" (
+    and
+        .Values.istioIntegration.enabled
+        (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true" )
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" -}}

@@ -191,9 +191,11 @@ Kubeflow Centraldashboard enable and create toggles.
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.createIstioIntegrationObjects" -}}
-{{- and
-  (include "kubeflow.centraldashboard.enabled" . | eq "true" )
-  .Values.istioIntegration.enabled }}
+{{- ternary true "" (
+    and
+    (include "kubeflow.centraldashboard.enabled" . | eq "true")
+    .Values.istioIntegration.enabled
+)}}
 {{- end }}
 
 {{- define "kubeflow.centraldashboard.rbac.createRoles" -}}

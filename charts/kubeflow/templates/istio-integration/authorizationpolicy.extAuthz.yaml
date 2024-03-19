@@ -1,0 +1,37 @@
+{{- if and
+  (include "kubeflow.istio-integration.enabled" . | eq "true")
+  (include "kubeflow.istio-integration.authorizationMode.ingressgateway" . | eq "true")
+-}}
+
+# NOTE: this AuthorizationPolicy forces traffic through ext authz http extension.
+# The .spec.rules.to.operations.notPaths is configured for
+# CloudFlare integration and allows only static, non-secret assets to be
+# accessible without the Istio Auth.
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  labels:
+    {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.istio-integration.extAuth.authorizationPolicyName" . }}
+  namespace: {{ .Values.istioIntegration.ingressGatewayNamespace }}
+spec:
+  action: CUSTOM
+  provider:
+    name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+  rules:
+    - to:
+      - operation:
+          notPaths:
+          - /favicon*
+          - /webcomponentsjs*
+          - /vendor.bundle.js
+          - /app.bundle.js
+          - /dashboard_lib.bundle.js
+          - /assets*
+          - /app.css
+  selector:
+    matchLabels:
+      {{- toYaml .Values.istioIntegration.gateway.selector | nindent 6 }}
+
+{{- end }}

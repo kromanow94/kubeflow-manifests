@@ -1235,6 +1235,16 @@ istioIntegration:
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   rootNamespace: istio-system
   ingressGatewayNamespace: istio-ingress
+  # one of ['ingressgateway', 'granular']
+  # * 'ingressgateway' will deploy one AuthorizationPolicy in the namespace where
+  #    istio ingress gateway Pod is being deployed.
+  # * 'granular' will deploy multiple AuthorizationPolicies with CUSTOM action using auth provider,
+  #   each for component that requires user id. This is an alternative way of setting authentication
+  #   with istio. 'granular' is more secure but more complex.
+  #   If you want to use 'granular', please also use the 'profile' Helm Chart in
+  #   the same directory as 'kubeflow' Helm Chart which is already compliant
+  #   with the 'granular' authorizationMode.
+  authorizationMode: ingressgateway
   m2m:
     enabled: true
     # This will create CRB allowing access to
