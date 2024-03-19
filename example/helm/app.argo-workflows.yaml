@@ -35,8 +35,13 @@ spec:
               host: mysql
               port: 3306
               passwordSecret:
+                # this is created by Kubeflow
                 key: password
                 name: mysql-secret
+
+                # this is created by mysql Helm Chart
+                # key: mysql-root-password
+                # name: mysql
               tableName: argo_workflows
               userNameSecret:
                 key: username
@@ -58,6 +63,7 @@ spec:
               key: secretkey
               name: mlpipeline-minio-artifact
             bucket: mlpipeline
+            # endpoint: minio-service.kubeflow:9000
             endpoint: minio.kubeflow:9000
             insecure: true
             keyFormat: artifacts/{{workflow.namespace}}/{{workflow.name}}/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}/{{pod.name}}

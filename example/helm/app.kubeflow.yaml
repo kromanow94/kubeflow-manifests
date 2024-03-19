@@ -13,15 +13,40 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://code.roche.com/mlops/innersource-kubeflow/manifests.git
+    repoURL: https://github.com/kromanow94/kubeflow-manifests.git
     targetRevision: helmcharts
     path: charts/kubeflow
     helm:
       values: |
         istioIntegration:
           m2m:
-            inCluster: false
-            issuer: https://oidc.eks.eu-central-1.amazonaws.com/id/E50C631E383910181F99DC151565C6AD
+            inCluster: true
+            selfSigned:
+              autoJwksDiscovery: true
+
+        pipelines:
+          cache:
+            enabled: false
+          mlPipeline:
+            enabled: true
+          persistenceAgent:
+            enabled: true
+          scheduledWorkflow:
+            enabled: true
+          ui:
+            enabled: true
+          viewerCrd:
+            enabled: true
+          metadataWriter:
+            enabled: true
+          metadataEnvoy:
+            enabled: true
+          metadataGrpcServer:
+            enabled: true
+          visualization:
+            enabled: true
+          profileController:
+            enabled: true
   ignoreDifferences:
   - group: rbac.authorization.k8s.io
     kind: ClusterRole
