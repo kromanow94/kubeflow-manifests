@@ -16,37 +16,7 @@ spec:
     repoURL: https://github.com/kromanow94/kubeflow-manifests.git
     targetRevision: helmcharts
     path: charts/kubeflow
-    helm:
-      values: |
-        istioIntegration:
-          m2m:
-            inCluster: true
-            selfSigned:
-              autoJwksDiscovery: true
-
-        pipelines:
-          cache:
-            enabled: false
-          mlPipeline:
-            enabled: true
-          persistenceAgent:
-            enabled: true
-          scheduledWorkflow:
-            enabled: true
-          ui:
-            enabled: true
-          viewerCrd:
-            enabled: true
-          metadataWriter:
-            enabled: true
-          metadataEnvoy:
-            enabled: true
-          metadataGrpcServer:
-            enabled: true
-          visualization:
-            enabled: true
-          profileController:
-            enabled: true
+    helm: {}
   ignoreDifferences:
   - group: rbac.authorization.k8s.io
     kind: ClusterRole
