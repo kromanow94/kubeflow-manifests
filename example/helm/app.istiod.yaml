@@ -12,32 +12,16 @@ spec:
     namespace: istio-system
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: istiod
+  sources:
+  - chart: istiod
     repoURL: https://istio-release.storage.googleapis.com/charts
     targetRevision: 1.20.2
     helm:
-      values: |-
-        meshConfig:
-          extensionProviders:
-          - name: oauth2-proxy
-            envoyExtAuthzHttp:
-              headersToDownstreamOnDeny:
-              - content-type
-              - set-cookie
-              headersToUpstreamOnAllow:
-              - authorization
-              - path
-              - x-auth-request-email
-              - x-auth-request-groups
-              - x-auth-request-preferred-username
-              - x-auth-request-user
-              - x-auth-request-user-groups
-              includeRequestHeadersInCheck:
-              - authorization
-              - cookie
-              port: 80
-              service: oauth2-proxy.oauth2-proxy.svc.cluster.local
+      valueFiles:
+      - $values/example/helm/values.istiod.yaml
+  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    targetRevision: helmcharts
+    ref: values
   syncPolicy:
     automated:
       prune: true

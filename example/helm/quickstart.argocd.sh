@@ -36,8 +36,12 @@ echo "Sleeping 10 seconds until pods are created..."
 sleep 10
 kubectl wait pods --all --namespace kubeflow --for=condition=Ready --timeout 300s
 
-kubectl apply -f profile.example.yaml
-# has to wait for CRB for oidc
+kubectl apply -f app.profile-kubeflow-user-example-com.yaml
+
+# When deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
+# minikube and so on), oauth2-proxy has to wait for CRB allowing accessing OIDC
+# Discovery endpoint from anonymous user. This is condifured by kubeflow helm
+# chart.
 kubectl apply -f app.oauth2-proxy.yaml
 
 # Wait until pods are created. This is not required since ArgoCD will be

@@ -12,63 +12,16 @@ spec:
     namespace: kubeflow
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: argo-workflows
+  sources:
+  - chart: argo-workflows
     repoURL: https://argoproj.github.io/argo-helm
     targetRevision: 0.17.1
     helm:
-      values: |-
-        images:
-          tag: v3.3.10
-        
-        controller:
-          containerRuntimeExecutor: emissary
-          persistence:
-            archive: true
-            archiveTTL: 90d
-            connectionPool:
-              connMaxLifetime: 0s
-              maxIdleConns: 100
-              maxOpenConns: 0
-            mysql:
-              database: argo
-              host: mysql
-              port: 3306
-              passwordSecret:
-                # this is created by Kubeflow
-                key: password
-                name: mysql-secret
-
-                # this is created by mysql Helm Chart
-                # key: mysql-root-password
-                # name: mysql
-              tableName: argo_workflows
-              userNameSecret:
-                key: username
-                name: mysql-secret
-            nodeStatusOffLoad: true
-
-        server:
-          enabled: false
-
-        useDefaultArtifactRepo: true
-
-        artifactRepository:
-          archiveLogs: true
-          s3: 
-            accessKeySecret:
-              key: accesskey
-              name: mlpipeline-minio-artifact
-            secretKeySecret:
-              key: secretkey
-              name: mlpipeline-minio-artifact
-            bucket: mlpipeline
-            # endpoint: minio-service.kubeflow:9000
-            endpoint: minio.kubeflow:9000
-            insecure: true
-            keyFormat: artifacts/{{workflow.namespace}}/{{workflow.name}}/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}/{{pod.name}}
-
-
+      valueFiles:
+      - $values/example/helm/values.argo-workflows.yaml
+  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    targetRevision: helmcharts
+    ref: values
   syncPolicy:
     automated:
       prune: true

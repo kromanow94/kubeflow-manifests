@@ -12,18 +12,16 @@ spec:
     namespace: kubeflow
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: minio
+  sources:
+  - chart: minio
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 13.7.0
     helm:
-      values: |-
-        commonLabels:
-          sidecar.istio.io/inject: "false"
-        auth:
-          rootUser: minio
-          rootPassword: minio123
-
+      valueFiles:
+      - $values/example/helm/values.minio.yaml
+  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    targetRevision: helmcharts
+    ref: values
   syncPolicy:
     automated:
       prune: true

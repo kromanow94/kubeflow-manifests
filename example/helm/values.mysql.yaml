@@ -1,0 +1,6 @@
+auth:
+  rootPassword: mysql1234
+  # This will create a new database.
+  database: argo
+commonLabels:
+  sidecar.istio.io/inject: "false"

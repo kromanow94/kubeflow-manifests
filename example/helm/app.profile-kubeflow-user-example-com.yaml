@@ -14,13 +14,9 @@ spec:
   source:
     repoURL: https://github.com/kromanow94/kubeflow-manifests.git
     targetRevision: helmcharts
-    path: charts/profile
-    helm:
-      releaseName: kubeflow-user-example-com
-      values: |
-        owner:
-          kind: User
-          name: user@example.com
+    path: example/helm
+    directory:
+      include: profile.kubeflow-user-example-com.yaml
   syncPolicy:
     automated:
       prune: true
@@ -31,8 +27,3 @@ spec:
         factor: 2
         maxDuration: 10m
       limit: 5
-    # syncOptions:
-    # - CreateNamespace=true
-    # managedNamespaceMetadata:
-    #   labels:
-    #     istio-injection: enabled

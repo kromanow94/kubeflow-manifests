@@ -12,49 +12,16 @@ spec:
     namespace: oauth2-proxy
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: oauth2-proxy
+  sources:
+  - chart: oauth2-proxy
     repoURL: https://oauth2-proxy.github.io/manifests
     targetRevision: 6.24.1
     helm:
-      values: |-
-        extraArgs:
-          - --skip-jwt-bearer-tokens=true
-          - --extra-jwt-issuers=https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local
-          - --set-xauthrequest=true
-          - --set-authorization-header=true
-          - --code-challenge-method=S256
-
-          - --provider=oidc
-          - --scope=profile email groups openid
-          - --oidc-issuer-url=http://dex.dex.svc.cluster.local:5556/dex
-          - --skip-oidc-discovery=true
-          - --login-url=/dex/auth
-          - --redeem-url=http://dex.dex.svc.cluster.local:5556/dex/token
-          - --oidc-jwks-url=http://dex.dex.svc.cluster.local:5556/dex/keys
-          - --skip-auth-route=/dex/.*
-          - --skip-provider-button=true # go directly to the configured provider
-
-          - --cookie-name=kfis
-          - --cookie-expire=24h
-          - --cookie-refresh=1h
-
-          - --ssl-insecure-skip-verify=true # has to be set for kubernetes self-signed issuer
-
-          - --upstream=static://200 # without this the authenticated requests are getting 404
-
-          - --redirect-url=/oauth2/callback
-
-          # This is fresh and fruity!
-          # https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.6.0
-          # https://github.com/oauth2-proxy/oauth2-proxy/pull/2183
-          - --relative-redirect-url
-        
-        config:
-          clientID: kubeflow-oidc-authservice
-          clientSecret: pUBnBOY80SnXgjibTYM9ZWNzY2xreNGQok
-          cookieSecret: XXXXXXXXXXXXXXXX
-
+      valueFiles:
+      - $values/example/helm/values.oauth2-proxy.yaml
+  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    targetRevision: helmcharts
+    ref: values
   syncPolicy:
     automated:
       prune: true
