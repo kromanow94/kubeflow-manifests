@@ -40,6 +40,10 @@ spec:
         - {{ default "" .Values.profilesController.config.workloadIdentity | quote }}
 
         env:
+        - name: NOTEBOOK_CONTROLLER_PRINCIPAL
+          value: {{ include "kubeflow.notebooks.controller.serviceAccountPrincipal" . }}
+        - name: KFP_UI_PRINCIPAL
+          value: {{ include "kubeflow.pipelines.ui.serviceAccountPrincipal" . }}
         {{- if (include "kubeflow.istio-integration.enabled" . ) }}
         - name: ISTIO_INGRESS_GATEWAY_PRINCIPAL
           value: {{ include "kubeflow.istio-integration.istioIngressGateway.serviceAccountPrincipal" . }}

@@ -21,6 +21,14 @@ Kubeflow Notebooks Controller object names.
 )}}
 {{- end }}
 
+{{- define "kubeflow.notebooks.controller.serviceAccountPrincipal" -}}
+{{- include "kubeflow.component.serviceAccountPrincipal" (
+    list
+    .
+    (include "kubeflow.notebooks.controller.serviceAccountName" .)
+)}}
+{{- end }}
+
 {{- define "kubeflow.notebooks.controller.mainClusterRoleName" -}}
 {{- printf "%s-%s"
     (include "kubeflow.fullname" .)
