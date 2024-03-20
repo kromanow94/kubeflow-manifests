@@ -29,6 +29,7 @@ spec:
       - name: manager
         image: {{ include "kubeflow.profilesController.manager.image" . }}
         imagePullPolicy: {{ include "kubeflow.profilesController.manager.imagePullPolicy" . }}
+
         command:
         - /manager
         - "-userid-header"
@@ -37,6 +38,13 @@ spec:
         - {{ default "" .Values.auth.userIdPrefix | quote }}
         - "-workload-identity"
         - {{ default "" .Values.profilesController.config.workloadIdentity | quote }}
+
+        env:
+        {{- if (include "kubeflow.istio-integration.enabled" . ) }}
+        - name: ISTIO_INGRESS_GATEWAY_PRINCIPAL
+          value: {{ include "kubeflow.istio-integration.istioIngressGateway.serviceAccountPrincipal" . }}
+        {{- end }}
+
         livenessProbe:
           httpGet:
             path: /healthz

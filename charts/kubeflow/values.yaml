@@ -1235,6 +1235,9 @@ istioIntegration:
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   rootNamespace: istio-system
   ingressGatewayNamespace: istio-ingress
+  # Required for KF Profiles Controller to configure
+  # correct AuthorizationPolicy principal.
+  ingressGatewayServiceAccountName: istio-ingressgateway
   # one of ['ingressgateway', 'granular']
   # * 'ingressgateway' will deploy one AuthorizationPolicy in the namespace where
   #    istio ingress gateway Pod is being deployed.

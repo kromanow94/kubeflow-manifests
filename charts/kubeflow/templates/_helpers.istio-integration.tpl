@@ -99,3 +99,11 @@ Istio Integration enable and create toggles.
 {{- define "kubeflow.istio-integration.authorizationMode.ingressgateway" -}}
 {{- ternary true "" (eq .Values.istioIntegration.authorizationMode "ingressgateway") -}}
 {{- end }}
+
+{{- define "kubeflow.istio-integration.istioIngressGateway.serviceAccountPrincipal" -}}
+{{- printf "%s/ns/%s/sa/%s"
+    .Values.clusterDomain
+    .Values.istioIntegration.ingressGatewayNamespace
+    .Values.istioIntegration.ingressGatewayServiceAccountName
+}}
+{{- end }}
