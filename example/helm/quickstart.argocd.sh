@@ -25,13 +25,13 @@ else
 fi
 
 set -x
-kubectl apply -f app.mysql.yaml
-kubectl apply -f app.minio.yaml
-kubectl apply -f app.cert-manager.yaml
-kubectl apply -f app.dex.yaml
-kubectl apply -f app.istio-base.yaml
-kubectl apply -f app.istiod.yaml
-kubectl apply -f app.metacontroller.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.mysql.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.minio.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.cert-manager.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.dex.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.istio-base.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.istiod.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.metacontroller.yaml
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be
@@ -41,9 +41,9 @@ sleep 30
 kubectl wait pods --all -n kubeflow --for=condition=Ready --timeout 300s
 
 set -x
-kubectl apply -f app.argo-workflows.yaml
-kubectl apply -f app.istio-ingressgateway.yaml
-kubectl apply -f app.kubeflow.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.argo-workflows.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.istio-ingressgateway.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.kubeflow.yaml
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be
@@ -53,7 +53,7 @@ sleep 10
 kubectl wait pods --all --namespace kubeflow --for=condition=Ready --timeout 300s
 
 set -x
-kubectl apply -f app.profile-kubeflow-user-example-com.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.profile-kubeflow-user-example-com.yaml
 set +x
 
 # When deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
@@ -61,7 +61,7 @@ set +x
 # Discovery endpoint from anonymous user. This is condifured by kubeflow helm
 # chart.
 set -x
-kubectl apply -f app.oauth2-proxy.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.oauth2-proxy.yaml
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be

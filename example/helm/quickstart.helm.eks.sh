@@ -3,6 +3,7 @@ set -e
 
 cat <<EOF
 WARNING: This script is for reference only and will not work out of the box.
+Also, it assumes the script is run from a locally cloned git repository.
 
 'kubeflow' and 'oauth2-proxy' Helm Charts needs to be parameterized for AWS IAM
 OIDC Issuer to enable access through M2M Service Account Tokens.

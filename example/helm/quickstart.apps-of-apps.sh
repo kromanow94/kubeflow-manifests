@@ -7,7 +7,7 @@ required for using sync-waves for ArgoCD Apps and deploy App of Apps manifest
 for kubeflow and it's dependencies.
 
 If you only want to apply the App of Apps manifest, cancel this script and execute:
-$ kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.2/example/helm/app.app-of-apps.yaml
+$ kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.app-of-apps.yaml
 
 Press 'Ctrl'+'C' to cancel.
 Waiting 10 seconds...
@@ -42,4 +42,4 @@ data:
 
 kubectl wait pods --namespace argocd --all --for=condition=Ready --timeout 300s
 
-kubectl apply -f app.app-of-apps.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/app.app-of-apps.yaml
