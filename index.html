@@ -2,19 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kromanow94's Kubeflow Helm Chart Repository</title>
 </head>
 <body>
-    <h1>Welcome to the kromanow94's Kubeflow Helm Chart Repository</h1>
+    <h1>Welcome to kromanow94's Kubeflow Helm Chart Repository</h1>
     <p>This Helm repository contains charts for deploying Kubeflow on Kubernetes. Follow the steps below to add this repository and start deploying Kubeflow.</p>
-    <h2>Adding the Helm Repository</h2>
-    <code>helm repo add kromanow94-kubeflow https://kromanow94.github.io/kubeflow-manifests</code>
-    <h2>Searching for Charts</h2>
-    <code>helm search repo kromanow94-kubeflow</code>
-    <h2>Installing a Chart</h2>
-    <p>To install the <em>kubeflow</em> chart:</p>
-    <code>helm install kubeflow kromanow94-kubeflow/kubeflow</code>
-    <h2>Further Information</h2>
-    <p>For more detailed instructions and additional charts, visit our <a href="https://github.com/kromanow94/kubeflow-manifests">GitHub repository</a>.</p>
+
+    <section>
+        <h2>Adding the Helm Repository</h2>
+        <pre><code>helm repo add kromanow94-kubeflow https://kromanow94.github.io/kubeflow-manifests</code></pre>
+    </section>
+
+    <section>
+        <h2>Searching for Charts</h2>
+        <pre><code>helm search repo kromanow94-kubeflow</code></pre>
+    </section>
+
+    <section>
+        <h2>Installing a Chart</h2>
+        <p>To install the <em>kubeflow</em> chart:</p>
+        <pre><code>helm install kubeflow kromanow94-kubeflow/kubeflow</code></pre>
+    </section>
+
+    <section>
+        <h2>Quickstart Installation</h2>
+        <p>For a quick and easy start, use one of the available quickstart
+        script.</p>
+
+        <h3>Helm</h3>
+        <p>This script will create 'kubeflow' namespace configured with istio
+        injection and install helm releases for each kubeflow dependency and
+        kubeflow itself.
+        <br>
+        <br>
+        This script will also install the Helm Releases for each dependency in
+        the correct order and will wait until the dependencies are ready.</p>
+        <ol>
+            <li>Create a Kubernetes cluster:<br><pre><code>kind create cluster</code></pre></li>
+            <li>Execute the quickstart script:<br><pre><code>curl -qs https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/quickstart.helm.sh | bash</code></pre></li>
+            <li>Forward the istio-ingressgateway port:<br><pre><code>nohup kubectl -n istio-ingress port-forward service/istio-ingressgateway 8080:80 &</code></pre></li>
+        </ol>
+
+        <h3>ArgoCD Apps</h3>
+        <p>This script installs ArgoCD, configures it for health assessment
+        required for using sync-waves for ArgoCD Apps, and deploys an App of
+        Apps manifest for Kubeflow and its dependencies.</p>
+        <ol>
+            <li>Create a Kubernetes cluster:<br><pre><code>kind create cluster</code></pre></li>
+            <li>Execute the quickstart script:<br><pre><code>curl -qs https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/quickstart.argocd.sh | bash</code></pre></li>
+            <li>Forward the istio-ingressgateway port:<br><pre><code>nohup kubectl -n istio-ingress port-forward service/istio-ingressgateway 8080:80 &</code></pre></li>
+        </ol>
+
+        <h3>ArgoCD Apps of Apps</h3>
+        <p>This script installs ArgoCD, configures it for health assessment
+        required for using sync-waves for ArgoCD Apps, and deploys an App of
+        Apps manifest for Kubeflow and its dependencies.</p>
+        <ol>
+            <li>Create a Kubernetes cluster:<br><pre><code>kind create cluster</code></pre></li>
+            <li>Execute the quickstart script:<br><pre><code>curl -qs https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.3/example/helm/quickstart.apps-of-apps.sh | bash</code></pre></li>
+            <li>Forward the istio-ingressgateway port:<br><pre><code>nohup kubectl -n istio-ingress port-forward service/istio-ingressgateway 8080:80 &</code></pre></li>
+        </ol>
+
+        <h3>Helm + EKS</h3>
+        <p>This script is for reference only and will not work out of the box.
+        Also, it assumes the script is run from a locally cloned git repository.
+        <br>
+        <br>
+        'kubeflow' and 'oauth2-proxy' Helm Charts needs to be parameterized for
+        AWS IAM OIDC Issuer to enable access through M2M Service Account Tokens.
+        <br>
+        <br>
+        For required parameterization, please see the following files and
+        replace <code>'https://oidc.eks.<region>.amazonaws.com/id/1234567890'</code> with
+        your AWS IAM OIDC Issuer URL.
+        <li><code>example/helm/values.kubeflow.eks.yaml</code></li>
+        <li><code>example/helm/values.oauth2-proxy.eks.yaml</code></li>
+        <br>
+        Assuming you've cloned this repository and are using it locally, you can
+        parameterize the AWS IAM OIDC Issuer URL with:
+        <br>
+        <code>
+            $ OIDC_ISSUER_URL=https://oidc.eks.<region>.amazonaws.com/id/1234567890
+            <br>
+            $ grep -Rl 'https://oidc.eks.<region>.amazonaws.com/id/1234567890' --exclude 'quickstart*' | xargs sed "s;https://oidc.eks.<region>.amazonaws.com/id/1234567890;\$OIDC_ISSUER_URL;g" -i
+        </code>
+        <br>
+        After this step, this script should work.
+    </section>
+
+    <section>
+        <h3>Verifying the Installation</h3>
+        <p>After completing the installation, use the following commands to verify your setup and perform initial configuration:</p>
+        <ol>
+            <li>Check if the user workgroup exists:<br><pre><code>curl localhost:8080/api/workgroup/exists -H "Authorization: Bearer $(kubectl -n kubeflow-user-example-com create token default-editor)"</code></pre></li>
+            <li>Create a new experiment in Kubeflow Pipelines:<br><pre><code>curl -XPOST localhost:8080/pipeline/apis/v1beta1/experiments -H "Authorization: Bearer $(kubectl -n kubeflow-user-example-com create token default-editor)" -d '{"name": "m2m-experiment", "resource_references": [{"key": {"id": "kubeflow-user-example-com", "type": "NAMESPACE"}, "relationship": "OWNER"}]}'</code></pre></li>
+            <li>List experiments to verify the creation:<br><pre><code>curl "localhost:8080/pipeline/apis/v1beta1/experiments?resource_reference_key.type=NAMESPACE&resource_reference_key.id=kubeflow-user-example-com" -H "Authorization: Bearer $(kubectl -n kubeflow-user-example-com create token default-editor)"</code></pre></li>
+        </ol>
+    </section>
+
+    <section>
+        <h2>Further Information</h2>
+        <p>For more detailed instructions and additional charts, visit our <a href="https://github.com/kromanow94/kubeflow-manifests">GitHub repository</a>.</p>
+    </section>
 </body>
 </html>
