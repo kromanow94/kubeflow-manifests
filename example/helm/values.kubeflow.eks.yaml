@@ -1,0 +1,6 @@
+istioIntegration:
+  m2m:
+    inCluster: false
+    issuer: https://oidc.eks.<region>.amazonaws.com/id/1234567890
+    selfSigned:
+      autoJwksDiscovery: false
