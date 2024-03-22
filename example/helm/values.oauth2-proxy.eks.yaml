@@ -15,7 +15,7 @@ extraArgs:
   - --skip-auth-route=/dex/.*
   - --skip-provider-button=true # go directly to the configured provider
 
-  - --cookie-name=kfis
+  - --cookie-name=kubeflow-oauth2-proxy
   - --cookie-expire=24h
   - --cookie-refresh=1h
 
