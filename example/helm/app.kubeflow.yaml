@@ -18,7 +18,6 @@ spec:
     repoURL: https://github.com/kromanow94/kubeflow-manifests.git
     targetRevision: helmcharts
     path: charts/kubeflow
-    helm: {}
   ignoreDifferences:
   - group: rbac.authorization.k8s.io
     kind: ClusterRole
