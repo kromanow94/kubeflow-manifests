@@ -3,27 +3,25 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  labels:
-    deployed-by: romanok1
   name: argo-workflows
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: kubeflow
     server: https://kubernetes.default.svc
   project: default
   sources:
-  - chart: argo-workflows
-    repoURL: https://argoproj.github.io/argo-helm
-    targetRevision: 0.17.1
-    helm:
-      valueFiles:
-      - $values/example/helm/values.argo-workflows.yaml
-  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: helmcharts
-    ref: values
+    - chart: argo-workflows
+      repoURL: https://argoproj.github.io/argo-helm
+      targetRevision: 0.17.1
+      helm:
+        valueFiles:
+          - $values/example/helm/values.argo-workflows.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
   syncPolicy:
     automated:
       prune: true
@@ -35,4 +33,4 @@ spec:
         maxDuration: 10m
       limit: 5
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

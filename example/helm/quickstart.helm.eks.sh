@@ -1,6 +1,37 @@
 #!/bin/bash
-set -ex
+set -e
 
+cat <<EOF
+WARNING: This script is for reference only and will not work out of the box.
+
+'kubeflow' and 'oauth2-proxy' Helm Charts needs to be parameterized for AWS IAM
+OIDC Issuer to enable access through M2M Service Account Tokens.
+
+For required parameterization, please see the following files and replace
+'https://oidc.eks.<region>.amazonaws.com/id/1234567890' with your AWS IAM OIDC Issuer URL.
+* example/helm/values.kubeflow.eks.yaml
+* example/helm/values.oauth2-proxy.eks.yaml
+
+Assuming you've cloned this repository and are using it locally, you can
+parameterize the AWS IAM OIDC Issuer URL with:
+$ OIDC_ISSUER_URL=https://oidc.eks.<region>.amazonaws.com/id/1234567890
+$ grep -Rl 'https://oidc.eks.<region>.amazonaws.com/id/1234567890' --exclude 'quickstart*' \\
+    | xargs sed "s;https://oidc.eks.<region>.amazonaws.com/id/1234567890;\$OIDC_ISSUER_URL;g" -i
+
+After this step, this script should work.
+
+This script will create 'kubeflow' namespace configured with istio injection and
+install helm releases for each kubeflow dependency and kubeflow itself.
+
+This script will also install the Helm Releases for each dependency in the
+correct order and will wait until the dependencies are ready.
+
+Press 'Ctrl'+'C' to cancel.
+Waiting 10 seconds...
+EOF
+sleep 10
+
+set -x
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Namespace

@@ -1,6 +1,20 @@
 #!/bin/bash
-set -ex
+set -e
 
+cat <<EOF
+This script will install ArgoCD, configure it to enable health assessment
+required for using sync-waves for ArgoCD Apps and deploy App of Apps manifest
+for kubeflow and it's dependencies.
+
+If you only want to apply the App of Apps manifest, cancel this script and execute:
+$ kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.1.2/example/helm/app.app-of-apps.yaml
+
+Press 'Ctrl'+'C' to cancel.
+Waiting 10 seconds...
+EOF
+sleep 10
+
+set -x
 kubectl create namespace argocd || true
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 

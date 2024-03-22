@@ -1,6 +1,19 @@
 #!/bin/bash
-set -ex
+set -e
 
+cat <<EOF
+This script will create 'kubeflow' namespace configured with istio injection and
+install helm releases for each kubeflow dependency and kubeflow itself.
+
+This script will also install the Helm Releases for each dependency in the
+correct order and will wait until the dependencies are ready.
+
+Press 'Ctrl'+'C' to cancel.
+Waiting 10 seconds...
+EOF
+sleep 10
+
+set -x
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Namespace

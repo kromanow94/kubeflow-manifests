@@ -3,27 +3,25 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  labels:
-    deployed-by: romanok1
   name: istio-ingressgateway
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: istio-ingress
     server: https://kubernetes.default.svc
   project: default
   sources:
-  - chart: gateway
-    repoURL: https://istio-release.storage.googleapis.com/charts
-    targetRevision: 1.20.2
-    helm:
-      valueFiles:
-      - $values/example/helm/values.istio-ingressgateway.yaml
-  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: helmcharts
-    ref: values
+    - chart: gateway
+      repoURL: https://istio-release.storage.googleapis.com/charts
+      targetRevision: 1.20.2
+      helm:
+        valueFiles:
+          - $values/example/helm/values.istio-ingressgateway.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
   syncPolicy:
     automated:
       prune: true
@@ -35,4 +33,4 @@ spec:
         maxDuration: 10m
       limit: 5
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

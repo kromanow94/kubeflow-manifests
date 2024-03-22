@@ -3,12 +3,10 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  labels:
-    deployed-by: romanok1
   name: profile-kubeflow-user-example-com
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc

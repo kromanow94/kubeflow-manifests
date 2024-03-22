@@ -3,8 +3,6 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-  labels:
-    deployed-by: romanok1
   name: cert-manager
   namespace: argocd
   finalizers:

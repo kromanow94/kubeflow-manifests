@@ -3,26 +3,24 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  labels:
-    deployed-by: romanok1
   name: kubeflow
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: kubeflow
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: helmcharts
-    path: charts/kubeflow
+    chart: kubeflow
+    repoURL: https://kromanow94.github.io/kubeflow-manifests
+    targetRevision: 0.1.2
   ignoreDifferences:
-  - group: rbac.authorization.k8s.io
-    kind: ClusterRole
-    jsonPointers:
-      - /rules
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      jsonPointers:
+        - /rules
   syncPolicy:
     automated:
       prune: true
@@ -34,7 +32,7 @@ spec:
         maxDuration: 10m
       limit: 5
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true
     managedNamespaceMetadata:
       labels:
         istio-injection: enabled
