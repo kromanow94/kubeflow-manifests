@@ -2,47 +2,47 @@
 Istio Integration object names.
 */}}
 
-{{- define "kubeflow.istio-integration.baseName" -}}
+{{- define "kubeflow.istioIntegration.baseName" -}}
 {{- print "istio-integration" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.name" -}}
+{{- define "kubeflow.istioIntegration.name" -}}
 {{- include "kubeflow.component.name" (
     list
-    (include "kubeflow.istio-integration.baseName" .)
+    (include "kubeflow.istioIntegration.baseName" .)
     .
 )}}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.istioAdminRoleName" -}}
+{{- define "kubeflow.istioIntegration.istioAdminRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "istio-admin" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.istioEditRoleName" -}}
+{{- define "kubeflow.istioIntegration.istioEditRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "istio-edit" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.istioViewRoleName" -}}
+{{- define "kubeflow.istioIntegration.istioViewRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "istio-view" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.requestAuthenticationName" -}}
+{{- define "kubeflow.istioIntegration.m2m.requestAuthenticationName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "m2m" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.selfSigned.jobName" -}}
+{{- define "kubeflow.istioIntegration.m2m.selfSigned.jobName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "configure-self-signed-m2m" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.selfSigned.inClusterClusterRoleBindingName" -}}
+{{- define "kubeflow.istioIntegration.m2m.selfSigned.inClusterClusterRoleBindingName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "unauthenticated-oidc-viewer" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.userAuth.requestAuthenticationName" -}}
+{{- define "kubeflow.istioIntegration.userAuth.requestAuthenticationName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "user-auth" }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.extAuth.authorizationPolicyName" -}}
+{{- define "kubeflow.istioIntegration.extAuth.authorizationPolicyName" -}}
 {{- printf "%s-ext-auth-%s"
   (include "kubeflow.fullname" .)
   .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName
@@ -52,55 +52,55 @@ Istio Integration object names.
 {{/*
 Role Aggregation Rule Labels
 */}}
-{{- define "kubeflow.istio-integration.istioAdminRoleLabel" -}}
-{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.istio-integration.istioAdminRoleName" .) -}}
+{{- define "kubeflow.istioIntegration.istioAdminRoleLabel" -}}
+{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.istioIntegration.istioAdminRoleName" .) -}}
 {{- end }}
 
 {{/*
 Istio Integration object labels.
 */}}
-{{- define "kubeflow.istio-integration.labels" -}}
+{{- define "kubeflow.istioIntegration.labels" -}}
 {{ include "kubeflow.common.labels" . }}
-{{ include "kubeflow.component.labels" (include "kubeflow.istio-integration.name" .) }}
+{{ include "kubeflow.component.labels" (include "kubeflow.istioIntegration.name" .) }}
 {{- end }}
 
 {{/*
 Istio Integration enable and create toggles.
 */}}
-{{- define "kubeflow.istio-integration.enabled" -}}
+{{- define "kubeflow.istioIntegration.enabled" -}}
 {{- .Values.istioIntegration.enabled }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.enabled" -}}
+{{- define "kubeflow.istioIntegration.m2m.enabled" -}}
 {{- and
-  (include "kubeflow.istio-integration.enabled" . | eq "true" )
+  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
   .Values.istioIntegration.m2m.enabled
 }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.selfSigned.autoJwksDiscovery" -}}
+{{- define "kubeflow.istioIntegration.m2m.selfSigned.autoJwksDiscovery" -}}
 {{- and
-  (include "kubeflow.istio-integration.enabled" . | eq "true" )
+  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
   .Values.istioIntegration.m2m.selfSigned.autoJwksDiscovery
 }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.m2m.inCluster" -}}
+{{- define "kubeflow.istioIntegration.m2m.inCluster" -}}
 {{- and
-  (include "kubeflow.istio-integration.enabled" . | eq "true" )
+  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
   .Values.istioIntegration.m2m.inCluster
 }}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.authorizationMode.granular" -}}
+{{- define "kubeflow.istioIntegration.authorizationMode.granular" -}}
 {{- ternary true "" (eq .Values.istioIntegration.authorizationMode "granular") -}}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.authorizationMode.ingressgateway" -}}
+{{- define "kubeflow.istioIntegration.authorizationMode.ingressgateway" -}}
 {{- ternary true "" (eq .Values.istioIntegration.authorizationMode "ingressgateway") -}}
 {{- end }}
 
-{{- define "kubeflow.istio-integration.istioIngressGateway.serviceAccountPrincipal" -}}
+{{- define "kubeflow.istioIntegration.istioIngressGateway.serviceAccountPrincipal" -}}
 {{- printf "%s/ns/%s/sa/%s"
     .Values.clusterDomain
     .Values.istioIntegration.ingressGatewayNamespace

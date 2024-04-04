@@ -1,6 +1,6 @@
 {{- if and
   (include "kubeflow.notebooks.jupyterWebApp.createIstioIntegrationObjects" . | eq "true")
-  (include "kubeflow.istio-integration.authorizationMode.granular" . | eq "true")
+  (include "kubeflow.istioIntegration.authorizationMode.granular" . | eq "true")
 -}}
 
 # NOTE: this AuthorizationPolicy forces traffic through ext authz http extension
