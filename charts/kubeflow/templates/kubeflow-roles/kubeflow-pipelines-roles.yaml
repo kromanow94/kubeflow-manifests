@@ -8,13 +8,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    {{- include "kubeflow.kubeflow-roles.kubeflowEditRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.kubeflow-roles.kubeflowPipelinesEditRoleName" . }}
+    {{- include "kubeflow.kubeflowRoles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflowRoles.kubeflowEditRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflowRoles.kubeflowPipelinesEditRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
-      {{- include "kubeflow.kubeflow-roles.kubeflowPipelinesEditRoleLabel" . | nindent 6 }}
+      {{- include "kubeflow.kubeflowRoles.kubeflowPipelinesEditRoleLabel" . | nindent 6 }}
 rules: []
 
 ---
@@ -23,14 +23,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    {{- include "kubeflow.kubeflow-roles.kubeflowPipelinesEditRoleLabel" . | nindent 4 }}
-    {{- include "kubeflow.kubeflow-roles.kubeflowViewRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.kubeflow-roles.kubeflowPipelinesViewRoleName" . }}
+    {{- include "kubeflow.kubeflowRoles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflowRoles.kubeflowPipelinesEditRoleLabel" . | nindent 4 }}
+    {{- include "kubeflow.kubeflowRoles.kubeflowViewRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflowRoles.kubeflowPipelinesViewRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
   - matchLabels:
-      {{- include "kubeflow.kubeflow-roles.kubeflowPipelinesViewRoleLabel" . | nindent 6 }}
+      {{- include "kubeflow.kubeflowRoles.kubeflowPipelinesViewRoleLabel" . | nindent 6 }}
 rules: []
 
 ---
@@ -39,9 +39,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    {{- include "kubeflow.kubeflow-roles.kubeflowPipelinesEditRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.kubeflow-roles.aggregateToKubeflowPipelinesEditRoleName" . }}
+    {{- include "kubeflow.kubeflowRoles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflowRoles.kubeflowPipelinesEditRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflowRoles.aggregateToKubeflowPipelinesEditRoleName" . }}
 rules:
 - apiGroups:
   - pipelines.kubeflow.org
@@ -107,9 +107,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "kubeflow.kubeflow-roles.labels" . | nindent 4 }}
-    {{- include "kubeflow.kubeflow-roles.kubeflowPipelinesViewRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.kubeflow-roles.aggregateToKubeflowPipelinesViewRoleName" . }}
+    {{- include "kubeflow.kubeflowRoles.labels" . | nindent 4 }}
+    {{- include "kubeflow.kubeflowRoles.kubeflowPipelinesViewRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.kubeflowRoles.aggregateToKubeflowPipelinesViewRoleName" . }}
 rules:
 - apiGroups:
   - pipelines.kubeflow.org

@@ -44,9 +44,9 @@ spec:
           value: {{ include "kubeflow.notebooks.controller.serviceAccountPrincipal" . }}
         - name: KFP_UI_PRINCIPAL
           value: {{ include "kubeflow.pipelines.ui.serviceAccountPrincipal" . }}
-        {{- if (include "kubeflow.istio-integration.enabled" . ) }}
+        {{- if (include "kubeflow.istioIntegration.enabled" . ) }}
         - name: ISTIO_INGRESS_GATEWAY_PRINCIPAL
-          value: {{ include "kubeflow.istio-integration.istioIngressGateway.serviceAccountPrincipal" . }}
+          value: {{ include "kubeflow.istioIntegration.istioIngressGateway.serviceAccountPrincipal" . }}
         {{- end }}
 
         livenessProbe:

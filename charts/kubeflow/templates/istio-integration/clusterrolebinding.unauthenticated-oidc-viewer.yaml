@@ -1,11 +1,11 @@
-{{- if (include "kubeflow.istio-integration.m2m.inCluster" . | eq "true") -}}
+{{- if (include "kubeflow.istioIntegration.m2m.inCluster" . | eq "true") -}}
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.istio-integration.m2m.selfSigned.inClusterClusterRoleBindingName" . }}
+    {{- include "kubeflow.istioIntegration.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.istioIntegration.m2m.selfSigned.inClusterClusterRoleBindingName" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

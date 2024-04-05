@@ -1,6 +1,6 @@
 {{- if and
-  (include "kubeflow.istio-integration.enabled" . | eq "true")
-  (include "kubeflow.istio-integration.authorizationMode.ingressgateway" . | eq "true")
+  (include "kubeflow.istioIntegration.enabled" . | eq "true")
+  (include "kubeflow.istioIntegration.authorizationMode.ingressgateway" . | eq "true")
 -}}
 
 # NOTE: this AuthorizationPolicy forces traffic through ext authz http extension.
@@ -12,8 +12,8 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   labels:
-    {{- include "kubeflow.istio-integration.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.istio-integration.extAuth.authorizationPolicyName" . }}
+    {{- include "kubeflow.istioIntegration.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.istioIntegration.extAuth.authorizationPolicyName" . }}
   namespace: {{ .Values.istioIntegration.ingressGatewayNamespace }}
 spec:
   action: CUSTOM
