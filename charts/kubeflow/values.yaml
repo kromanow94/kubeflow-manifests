@@ -1,3 +1,8 @@
+# NOTE: the manifests were taken from kubeflow/manifests with tag v1.8.0-rc.1 (or v1.8.0-rc.0)
+
+# NOTE: try disabling cache in the ml-pipeline
+# or, try using newer version
+
 # This namespace allows you to define where the services will be installed into
 # if not set then they will use the namespace of the release
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
@@ -649,28 +654,128 @@ pipelines:
     tag: 2.0.1
     pullPolicy: IfNotPresent
   config:
-    # S3 / minio
-    objectStoreConfigSecure: false
-    objectStoreConfigBucketname: mlpipeline
-    objectStoreAccessKey: minio
-    objectStoreSecretKey: minio123
-
-    objectStoreHost: minio
-    objectStorePort: 9000
-    objectStoreRegion: ""
-
-    # DB
-    dbHost: mysql
-    dbPort: 3306
-    dbConfigUser: root
-    # dbConfigPassword: ""  # or "test" or b64(dGVzdA==)
-    dbConfigPassword: mysql1234
-    dbConfigConMaxLifetime: 120s
-    dbConfigDriver: mysql
-    pipelineDb: mlpipeline
-    mlmdDb: metadb
-    cacheDb: cachedb
+    # If this is empty, the kfp backend will automatically configure that with:
+    # "minio://mlpipeline/v2/artifacts"
+    # Please see the following links for referece:
+    # * <=2.1.0: https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/config/env.go#L33
+    # * >=2.2.0: https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L36
+    #
+    # If we want to use s3, we should configure this with something similar to:
+    #   s3://mlpipeline/v2/artifacts
+    #
+    # In 2.2.0 it's also possible to define bucket 'providers', which can be minio, s3 or gcs:
+    # * https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L45
+    # * https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L151
+    # * https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/s3.go#L24
     defaultPipelineRoot: ""
+
+    objectStore:
+      # The Secret Name 'mlpipeline-minio-artifact' is currently hardcoded:
+      # * <=2.1.0:
+      #   https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/objectstore/object_store.go#L292
+      # * >=2.2.0 (state as of 2nd May 2024)
+      #   https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L39
+      #
+      # It's only possible to use either nil or 'mlpipeline-minio-artifact' for
+      # * .Values.pipelines.config.objectStore.existingSecretName
+      # * .Values.pipelines.config.objectStore.accessKey.secretKeyRef.name
+      # * .Values.pipelines.config.objectStore.secretAccessKey.secretKeyRef.name
+      #
+      # If the Secret Name is not provided in neither of the following, it will
+      # be created with plaintext values for compatibility:
+      # * .Values.pipelines.config.objectStore.existingSecretName
+      # * .Values.pipelines.config.objectStore.accessKey.secretKeyRef.name
+      # * .Values.pipelines.config.objectStore.secretAccessKey.secretKeyRef.name
+      existingSecretName:
+      accessKey:
+        value: minio
+        secretKeyRef:
+          name:
+          # The Secret Key 'accesskey' is currently hardcoded:
+          # https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/objectstore/object_store.go#L324
+          # https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L42
+          key: accesskey
+      secretAccessKey:
+        value: minio123
+        secretKeyRef:
+          name:
+          # The Secret Key 'secretkey' is currently hardcoded:
+          # https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/objectstore/object_store.go#L325
+          # https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L41
+          key: secretkey
+      host:
+        value: minio
+        secretKeyRef:
+          name:
+          key: host
+      port:
+        value: 9000
+        secretKeyRef:
+          name:
+          key: port
+      region:
+        value:
+        secretKeyRef:
+          name:
+          key: region
+      secure:
+        value: false
+        secretKeyRef:
+          name:
+          key: secure
+      bucketName:
+        value: mlpipeline
+        secretKeyRef:
+          name:
+          key: bucketName
+
+    db:
+      existingSecretName:
+      user:
+        value: root
+        secretKeyRef:
+          name:
+          key: username
+      password:
+        value: mysql1234
+        secretKeyRef:
+          name:
+          key: password
+      host:
+        value: mysql
+        secretKeyRef:
+          name:
+          key: host
+      port:
+        value: 3306
+        secretKeyRef:
+          name:
+          key: port
+      mlmdDatabaseName:
+        value: metadb
+        secretKeyRef:
+          name:
+          key: mlmdDatabaseName
+      pipelineDatabaseName:
+        value: mlpipeline
+        secretKeyRef:
+          name:
+          key: pipelineDatabaseName
+      cacheDatabaseName:
+        value: cachedb
+        secretKeyRef:
+          name:
+          key: cacheDatabaseName
+      driver:
+        value: mysql
+        secretKeyRef:
+          name:
+          key: driver
+      conMaxLifetime:
+        value: 120s
+        secretKeyRef:
+          name:
+          key: conMaxLifetime
 
   # TODO: cache looks like it's missing a lot of stuff...
   cache:
