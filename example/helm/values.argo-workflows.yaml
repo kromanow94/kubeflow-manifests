@@ -14,18 +14,13 @@ controller:
       database: argo
       host: mysql
       port: 3306
-      passwordSecret:
-        # this is created by Kubeflow
-        key: password
-        name: mysql-secret
-
-        # this is created by mysql Helm Chart
-        # key: mysql-root-password
-        # name: mysql
       tableName: argo_workflows
+      passwordSecret:
+        name: db-credentials
+        key: mysql-root-password
       userNameSecret:
+        name: db-credentials
         key: username
-        name: mysql-secret
     nodeStatusOffLoad: true
 
 server:
@@ -37,11 +32,11 @@ artifactRepository:
   archiveLogs: true
   s3:
     accessKeySecret:
+      name: mlpipeline-minio-artifact
       key: accesskey
-      name: mlpipeline-minio-artifact
     secretKeySecret:
-      key: secretkey
       name: mlpipeline-minio-artifact
+      key: secretkey
     bucket: mlpipeline
     # endpoint: minio-service.kubeflow:9000
     endpoint: minio.kubeflow:9000

@@ -36,7 +36,6 @@ helm upgrade --install mysql mysql \
     --repo https://charts.bitnami.com/bitnami \
     --version 9.21.2 \
     --values values.mysql.yaml \
-    --set auth.existingSecret=${DB_CONFIG_SECRET_NAME} \
     --wait
 
 helm upgrade --install minio minio \
@@ -44,7 +43,6 @@ helm upgrade --install minio minio \
     --repo https://charts.bitnami.com/bitnami \
     --version 13.7.0 \
     --values values.minio.yaml \
-    --set auth.existingSecret=${OBJECTSTORE_CONFIG_SECRET_NAME} \
     --wait
 
 helm upgrade --install cert-manager cert-manager \
@@ -97,21 +95,12 @@ helm upgrade --install argo-workflows argo-workflows \
     --repo https://argoproj.github.io/argo-helm \
     --version 0.17.1 \
     --values values.argo-workflows.yaml \
-    --set "controller.persistence.mysql.userNameSecret.name=${DB_CONFIG_SECRET_NAME}" \
-    --set "controller.persistence.mysql.userNameSecret.key=username" \
-    --set "controller.persistence.mysql.passwordSecret.name=${DB_CONFIG_SECRET_NAME}" \
-    --set "controller.persistence.mysql.passwordSecret.key=mysql-root-password" \
     --wait
 
 helm upgrade --install kubeflow \
     --namespace kubeflow \
     ../../charts/kubeflow \
-    --set "pipelines.config.db.user.secretKeyRef.name=${DB_CONFIG_SECRET_NAME}" \
-    --set "pipelines.config.db.password.secretKeyRef.name=${DB_CONFIG_SECRET_NAME}" \
-    --set "pipelines.config.db.password.secretKeyRef.key=mysql-root-password" \
-    --set "pipelines.config.db.host.secretKeyRef.name=${DB_CONFIG_SECRET_NAME}" \
-    --set "pipelines.config.objectStore.accessKey.secretKeyRef.name=${OBJECTSTORE_CONFIG_SECRET_NAME}" \
-    --set "pipelines.config.objectStore.secretAccessKey.secretKeyRef.name=${OBJECTSTORE_CONFIG_SECRET_NAME}" \
+    --values values.kubeflow.yaml \
     --wait
 
 # Create kubeflow-user-example-com profile for tests.

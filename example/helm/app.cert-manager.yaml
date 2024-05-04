@@ -6,22 +6,22 @@ metadata:
   name: cert-manager
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: cert-manager
     server: https://kubernetes.default.svc
   project: default
   sources:
-  - chart: cert-manager
-    repoURL: https://charts.jetstack.io
-    targetRevision: v1.14.3
-    helm:
-      valueFiles:
-      - $values/example/helm/values.cert-manager.yaml
-  - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: helmcharts
-    ref: values
+    - chart: cert-manager
+      repoURL: https://charts.jetstack.io
+      targetRevision: v1.14.3
+      helm:
+        valueFiles:
+          - $values/example/helm/values.cert-manager.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
   syncPolicy:
     automated:
       prune: true
@@ -33,4 +33,4 @@ spec:
         maxDuration: 10m
       limit: 5
     syncOptions:
-    - CreateNamespace=true
+      - CreateNamespace=true

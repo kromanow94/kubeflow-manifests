@@ -42,6 +42,14 @@ metadata:
   name: kubeflow
 EOF
 
+# Create secret with database credentials for KFP and MySQL
+export DB_CONFIG_SECRET_NAME=db-credentials
+kubectl apply -f "secret.${DB_CONFIG_SECRET_NAME}.yaml"
+
+# Create mlpipeline-minio-artifact K8s Secret holding secrets for KFP and MinIO.
+export OBJECTSTORE_CONFIG_SECRET_NAME=mlpipeline-minio-artifact
+kubectl apply -f "secret.${OBJECTSTORE_CONFIG_SECRET_NAME}.yaml"
+
 helm upgrade --install mysql mysql \
     --namespace kubeflow \
     --repo https://charts.bitnami.com/bitnami \
@@ -101,29 +109,28 @@ helm upgrade --install metacontroller oci://ghcr.io/metacontroller/metacontrolle
     --values values.metacontroller.yaml \
     --wait
 
-# This Helm Chart Release depends on a mysql secret deployed as part of the Kubeflow
-# Helm Chart. The mysql-secret K8s Secret is either hardcoded or hard to modify in
-# Kubeflow Components Code (subcomponents of KF Pipelines).
-# This is the reason why we don't wait for argo-workflows.
-# The initiative to improve parametrization will be handled separately.
 helm upgrade --install argo-workflows argo-workflows \
     --namespace kubeflow \
     --repo https://argoproj.github.io/argo-helm \
     --version 0.17.1 \
-    --values values.argo-workflows.yaml
+    --values values.argo-workflows.yaml \
+    --wait
 
 helm upgrade --install kubeflow ../../charts/kubeflow \
     --namespace kubeflow \
     --values values.kubeflow.eks.yaml \
     --wait
 
-# This is just one object.
+# Create kubeflow-user-example-com profile for tests.
+# Default password for user user@example.com:
+# 12341234
 kubectl apply -f profile.kubeflow-user-example-com.yaml
 
-# When deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
-# minikube and so on), oauth2-proxy has to wait for CRB allowing accessing OIDC
-# Discovery endpoint from anonymous user. This is condifured by kubeflow helm
-# chart.
+# When k8s is deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
+# minikube and so on), oauth2-proxy has to wait for CRB allowing access to OIDC
+# Discovery endpoint from anonymous user. This CRB is deployed by kubeflow helm
+# chart. See the following file for details:
+# charts/kubeflow/templates/istio-integration/clusterrolebinding.unauthenticated-oidc-viewer.yaml
 helm upgrade --install oauth2-proxy oauth2-proxy \
     --namespace oauth2-proxy \
     --create-namespace \
