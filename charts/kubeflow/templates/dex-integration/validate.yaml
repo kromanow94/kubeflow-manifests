@@ -1,7 +1,0 @@
-{{- if (ne .Values.dexIntegration.integrationType "internal" ) -}}
-{{- fail "Currently only 'dexIntegration.integrationType: internal' is supported." -}}
-{{- end }}
-
-{{- if (ne .Values.dexIntegration.integrationMode "istio" ) -}}
-{{- fail "Currently only 'dexIntegration.integrationMode: istio' is supported." -}}
-{{- end }}

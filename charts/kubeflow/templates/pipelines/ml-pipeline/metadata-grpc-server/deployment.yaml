@@ -30,25 +30,20 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.metadataGrpcServer.imagePullPolicy" . }}
 
         env:
-        - name: DBCONFIG_USER
-          value: {{ .Values.pipelines.config.dbConfigUser }}
-        - name: DBCONFIG_PASSWORD
-          value: {{ .Values.pipelines.config.dbConfigPassword | quote }}
-        - name: MYSQL_DATABASE
-          value: {{ .Values.pipelines.config.mlmdDb | quote }}
-        - name: MYSQL_HOST
-          value: {{ .Values.pipelines.config.dbHost }}
-        - name: MYSQL_PORT
-          value: {{ .Values.pipelines.config.dbPort | quote }}
+        {{- include "kubeflow.pipelines.metadataGrpcServer.config.db.user.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.metadataGrpcServer.config.db.password.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.metadataGrpcServer.config.db.host.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.metadataGrpcServer.config.db.port.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.metadataGrpcServer.config.db.mlmdDatabaseName.env.spec" . | nindent 8 }}
 
         command: ["/bin/metadata_store_server"]
         args:
         - --grpc_port={{ .Values.pipelines.metadataGrpcServer.service.port }}
-        - --mysql_config_database=$(MYSQL_DATABASE)
-        - --mysql_config_host=$(MYSQL_HOST)
-        - --mysql_config_port=$(MYSQL_PORT)
-        - --mysql_config_user=$(DBCONFIG_USER)
-        - --mysql_config_password=$(DBCONFIG_PASSWORD)
+        - --mysql_config_user=$({{ include "kubeflow.pipelines.metadataGrpcServer.config.db.user.env.name" . }})
+        - --mysql_config_password=$({{ include "kubeflow.pipelines.metadataGrpcServer.config.db.password.env.name" . }})
+        - --mysql_config_host=$({{ include "kubeflow.pipelines.metadataGrpcServer.config.db.host.env.name" . }})
+        - --mysql_config_port=$({{ include "kubeflow.pipelines.metadataGrpcServer.config.db.port.env.name" . }})
+        - --mysql_config_database=$({{ include "kubeflow.pipelines.metadataGrpcServer.config.db.mlmdDatabaseName.env.name" .}})
         - --enable_database_upgrade=true
 
         ports:

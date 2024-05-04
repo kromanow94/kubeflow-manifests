@@ -41,6 +41,9 @@ spec:
         command: ["python", "/hooks/sync.py"]
 
         env:
+        {{- include "kubeflow.pipelines.profileController.config.objectStore.accessKey.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.profileController.config.objectStore.secretAccessKey.env.spec" . | nindent 8 }}
+
         - name: DISABLE_ISTIO_SIDECAR
           value: {{ .Values.pipelines.profileController.config.disableIstioSidecar | quote }}
         - name: KFP_VERSION
@@ -57,10 +60,6 @@ spec:
           value: {{ $frontendImageName }}
         - name: FRONTEND_TAG
           value: {{ $frontendImageTag | quote }}
-        - name: MINIO_ACCESS_KEY
-          value: {{ .Values.pipelines.config.objectStoreAccessKey }}
-        - name: MINIO_SECRET_KEY
-          value: {{ .Values.pipelines.config.objectStoreSecretKey }}
         - name: METADATA_GRPC_SERVICE_HOST
           value: {{ include "kubeflow.pipelines.metadataGrpcServer.svc.addressWithNs" . }}
         - name: METADATA_GRPC_SERVICE_PORT

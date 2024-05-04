@@ -32,12 +32,12 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.cache.imagePullPolicy" . }}
 
         args:
-        - --db_driver=$(DBCONFIG_DRIVER)
-        - --db_host=$(DBCONFIG_HOST_NAME)
-        - --db_port=$(DBCONFIG_PORT)
-        - --db_name=$(DBCONFIG_DB_NAME)
-        - --db_user=$(DBCONFIG_USER)
-        - --db_password=$(DBCONFIG_PASSWORD)
+        - --db_user=$({{ include "kubeflow.pipelines.cache.config.db.user.env.name" . }})
+        - --db_password=$({{ include "kubeflow.pipelines.cache.config.db.password.env.name" . }})
+        - --db_host=$({{ include "kubeflow.pipelines.cache.config.db.host.env.name" . }})
+        - --db_port=$({{ include "kubeflow.pipelines.cache.config.db.port.env.name" . }})
+        - --db_driver=$({{ include "kubeflow.pipelines.cache.config.db.driver.env.name" . }})
+        - --db_name=$({{ include "kubeflow.pipelines.cache.config.db.cacheDatabaseName.env.name" . }})
         - --namespace_to_watch=$(NAMESPACE_TO_WATCH)
         - --listen_port=$(WEBHOOK_PORT)
         {{- if (include "kubeflow.certManagerIntegration.enabled" . )}}
@@ -46,6 +46,13 @@ spec:
         {{- end }}
 
         env:
+        {{- include "kubeflow.pipelines.cache.config.db.user.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.cache.config.db.password.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.cache.config.db.host.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.cache.config.db.port.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.cache.config.db.driver.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.cache.config.db.cacheDatabaseName.env.spec" . | nindent 8 }}
+
         - name: DEFAULT_CACHE_STALENESS
           value: {{ .Values.pipelines.cache.config.defaultCacheStaleness | quote }}
         - name: MAXIMUM_CACHE_STALENESS
@@ -54,18 +61,6 @@ spec:
           value: {{ .Values.pipelines.cache.config.cacheImage }}
         - name: CACHE_NODE_RESTRICTIONS
           value: {{ .Values.pipelines.cache.config.cacheNodeRestrictions | quote }}
-        - name: DBCONFIG_DRIVER
-          value: {{ .Values.pipelines.config.dbConfigDriver }}
-        - name: DBCONFIG_DB_NAME
-          value: {{ .Values.pipelines.config.cacheDb }}
-        - name: DBCONFIG_HOST_NAME
-          value: {{ .Values.pipelines.config.dbHost }}
-        - name: DBCONFIG_PORT
-          value: {{ .Values.pipelines.config.dbPort | quote }}
-        - name: DBCONFIG_USER
-          value: {{ .Values.pipelines.config.dbConfigUser }}
-        - name: DBCONFIG_PASSWORD
-          value: {{ .Values.pipelines.config.dbConfigPassword | quote }}
         - name: WEBHOOK_PORT
           value: {{ .Values.pipelines.cache.service.port | quote }}
 

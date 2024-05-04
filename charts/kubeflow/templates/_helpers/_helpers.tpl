@@ -364,3 +364,25 @@ https://chat.openai.com/share/c66d86ba-3b98-4942-a605-56b98889a313
 {{- $componentPDB := index . 1 -}}
 {{ toYaml (default $defaultPDB $componentPDB) }}
 {{- end }}
+
+{{/*
+Environment Entries parametrization with plaintext value
+or through Secrets.
+*/}}
+{{- define "kubeflow.component.env.spec" -}}
+{{- $envName := index . 0 -}}
+{{- $defaultSecretName := index . 1 -}}
+{{- $entryConfig := index . 2 -}}
+{{- $secretName := default $defaultSecretName $entryConfig.secretKeyRef.name -}}
+{{- $secretKey := $entryConfig.secretKeyRef.key -}}
+{{- $entryValue := $entryConfig.value -}}
+- name: {{ $envName }}
+  {{- if $secretName }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $secretName }}
+      key: {{ $secretKey }}
+  {{- else }}
+  value: {{ $entryValue | quote }}
+  {{- end }}
+{{- end }}

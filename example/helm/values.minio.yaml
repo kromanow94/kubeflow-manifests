@@ -1,5 +1,2 @@
 commonLabels:
   sidecar.istio.io/inject: "false"
-auth:
-  rootUser: minio
-  rootPassword: minio123
