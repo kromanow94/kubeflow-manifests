@@ -1,2 +1,4 @@
 commonLabels:
   sidecar.istio.io/inject: "false"
+auth:
+  existingSecret: mlpipeline-minio-artifact

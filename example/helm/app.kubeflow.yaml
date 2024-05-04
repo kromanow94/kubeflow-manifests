@@ -12,10 +12,16 @@ spec:
     namespace: kubeflow
     server: https://kubernetes.default.svc
   project: default
-  source:
-    chart: kubeflow
-    repoURL: https://kromanow94.github.io/kubeflow-manifests
-    targetRevision: 0.1.3
+  sources:
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      path: charts/kubeflow
+      helm:
+        valueFiles:
+          - $values/example/helm/values.kubeflow.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
   ignoreDifferences:
     - group: rbac.authorization.k8s.io
       kind: ClusterRole

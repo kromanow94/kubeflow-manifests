@@ -1,5 +1,6 @@
 auth:
   # This will create a new database.
   database: argo
+  existingSecret: db-credentials
 commonLabels:
   sidecar.istio.io/inject: "false"

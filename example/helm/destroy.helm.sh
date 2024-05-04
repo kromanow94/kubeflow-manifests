@@ -38,6 +38,5 @@ helm -n kubeflow uninstall minio --wait
 # MySQL #
 helm -n kubeflow uninstall mysql --wait
 
-# wait for all pods to be deleted and cleanup kubflow namespace #
-kubectl -n kubeflow wait --for=delete pods --all --timeout=60s
-kubectl delete ns kubeflow
+# Kubeflow Secrets #
+kubectl -n argocd delete app kubeflow-secrets
