@@ -109,12 +109,14 @@ Kubeflow Notebooks Controller object labels.
 */}}
 {{- define "kubeflow.notebooks.controller.labels" -}}
 {{ include "kubeflow.common.labels" . }}
-{{ include "kubeflow.component.labels" (include "kubeflow.notebooks.controller.name" .) }}
+{{ include "kubeflow.component.labels" (include "kubeflow.notebooks.name" .) }}
+{{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.notebooks.controller.name" .) }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.selectorLabels" -}}
 {{ include "kubeflow.common.selectorLabels" . }}
-{{ include "kubeflow.component.selectorLabels" (include "kubeflow.notebooks.controller.name" .) }}
+{{ include "kubeflow.component.selectorLabels" (include "kubeflow.notebooks.name" .) }}
+{{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.notebooks.controller.name" .) }}
 {{- end }}
 
 {{/*
@@ -229,7 +231,11 @@ Kubeflow Notebooks Controller Scheduling.
 Kubeflow Notebooks Controller enable and create toggles.
 */}}
 {{- define "kubeflow.notebooks.controller.enabled" -}}
-{{- .Values.notebooks.controller.enabled }}
+{{- ternary true "" (
+    and
+    (include "kubeflow.notebooks.enabled" . | eq "true")
+    .Values.notebooks.controller.enabled
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.autoscaling.enabled" -}}
@@ -241,16 +247,19 @@ Kubeflow Notebooks Controller enable and create toggles.
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.notebooks.controller.enabled" . | eq "true")
-    .Values.notebooks.controller.rbac.create }}
+    .Values.notebooks.controller.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+and
     (include "kubeflow.notebooks.controller.enabled" . | eq "true")
     .Values.notebooks.controller.serviceAccount.create
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.controller.pdb.create" -}}

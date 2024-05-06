@@ -35,6 +35,7 @@ defaults:
   tolerations: []
   affinity: {}
   topologySpreadConstraints:
+  terminationGracePeriodSeconds:
   containerSecurityContext:
 
 centraldashboard:
@@ -571,6 +572,139 @@ notebooks:
         enabled: false
         idleTimeMinutes: 1440
         idleCheckPeriodMinutes: 1
+  volumesWebApp:
+    enabled: true
+    image:
+      repository: kubeflownotebookswg/volumes-web-app
+      registryOverwrite:
+      tagOverwrite:
+      pullPolicyOverwrite:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    containerSecurityContext:
+    config:
+      urlPrefix: /volumes
+      secureCookies: true
+      viewer:
+        image:
+          repository: filebrowser
+          registryOverwrite: filebrowser
+          tagOverwrite: v2.23.0
+        serviceAccountName: default-editor
+  pvcviewerController:
+    enabled: true
+    manager:
+      image:
+        repository: kubeflownotebookswg/pvcviewer-controller
+        registryOverwrite:
+        tagOverwrite:
+        pullPolicyOverwrite:
+      service:
+        create: true
+        annotations:
+        type: ClusterIP
+      resources:
+        {}
+        # limits:
+        #   cpu: 500m
+        #   memory: 128Mi
+        # requests:
+        #   cpu: 10m
+        #   memory: 64Mi
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+    kubeRbacProxy:
+      image:
+        repository: kubebuilder/kube-rbac-proxy
+        registryOverwrite: gcr.io
+        tagOverwrite: v0.13.1
+        pullPolicyOverwrite:
+      service:
+        create: true
+        annotations:
+        type: ClusterIP
+      resources:
+        {}
+        # limits:
+        #   cpu: 500m
+        #   memory: 128Mi
+        # requests:
+        #   cpu: 5m
+        #   memory: 64Mi
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    podDisruptionBudget: {}
+    rbac:
+      create: true
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    nodeSelector:
+    tolerations:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/arch
+              operator: In
+              values:
+              - amd64
+              - arm64
+              - ppc64le
+              - s390x
+            - key: kubernetes.io/os
+              operator: In
+              values:
+              - linux
+    topologySpreadConstraints:
+    terminationGracePeriodSeconds: 10
+    securityContext:
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
 
 profilesController:
   enabled: true

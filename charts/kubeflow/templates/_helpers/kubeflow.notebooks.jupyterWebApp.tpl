@@ -13,14 +13,19 @@ Kubeflow Notebooks Jupyter Web App object names.
 )}}
 {{- end }}
 
+{{/*
+Kubeflow Notebooks Jupyter Web App object labels.
+*/}}
 {{- define "kubeflow.notebooks.jupyterWebApp.labels" -}}
 {{ include "kubeflow.common.labels" . }}
-{{ include "kubeflow.component.labels" (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
+{{ include "kubeflow.component.labels" (include "kubeflow.notebooks.name" .) }}
+{{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.selectorLabels" -}}
 {{ include "kubeflow.common.selectorLabels" . }}
-{{ include "kubeflow.component.selectorLabels" (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
+{{ include "kubeflow.component.selectorLabels" (include "kubeflow.notebooks.name" .) }}
+{{ include "kubeflow.component.subcomponent.labels" (include "kubeflow.notebooks.jupyterWebApp.name" .) }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.image" -}}
@@ -85,8 +90,15 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "notebooks-ui-view" }}
 {{- end }}
 
+{{/*
+Kubeflow Notebooks Jupyter Web App enable and create toggles.
+*/}}
 {{- define "kubeflow.notebooks.jupyterWebApp.enabled" -}}
-{{- and .Values.notebooks.enabled .Values.notebooks.jupyterWebApp.enabled }}
+{{- ternary true "" (
+    and
+    (include "kubeflow.notebooks.enabled" . | eq "true")
+    .Values.notebooks.jupyterWebApp.enabled
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.createIstioIntegrationObjects" -}}
@@ -98,16 +110,19 @@ Kubeflow Notebooks Jupyter Web App object names.
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.rbac.createRoles" -}}
-{{- and
+{{- ternary true "" (
+    and
     (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true")
-    .Values.notebooks.jupyterWebApp.rbac.create }}
+    .Values.notebooks.jupyterWebApp.rbac.create
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.createServiceAccount" -}}
-{{- and
+{{- ternary true "" (
+and
     (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true")
     .Values.notebooks.jupyterWebApp.serviceAccount.create
-}}
+)}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.logos.createConfigMap" -}}
