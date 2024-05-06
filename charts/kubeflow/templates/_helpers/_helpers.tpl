@@ -349,6 +349,16 @@ https://chat.openai.com/share/c66d86ba-3b98-4942-a605-56b98889a313
 {{- end }}
 {{- end }}
 
+{{- define "kubeflow.component.terminationGracePeriodSeconds" -}}
+{{- $defaultTerminationGracePeriodSeconds := index . 0 -}}
+{{- $componentTerminationGracePeriodSeconds := index . 1 -}}
+{{- if $componentTerminationGracePeriodSeconds -}}
+  {{- toYaml $componentTerminationGracePeriodSeconds }}
+{{- else if $defaultTerminationGracePeriodSeconds -}}
+  {{- toYaml $defaultTerminationGracePeriodSeconds }}
+{{- end }}
+{{- end }}
+
 {{- define "kubeflow.component.pdb.create" -}}
 {{- $componentEnabled := index . 0 -}}
 {{- $defaultPDB := index . 1 -}}
