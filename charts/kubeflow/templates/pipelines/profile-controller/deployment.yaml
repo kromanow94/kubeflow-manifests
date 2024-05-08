@@ -41,6 +41,7 @@ spec:
         command: ["python", "/hooks/sync.py"]
 
         env:
+        {{- include "kubeflow.pipelines.profileController.config.objectStore.host.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.profileController.config.objectStore.accessKey.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.profileController.config.objectStore.secretAccessKey.env.spec" . | nindent 8 }}
 

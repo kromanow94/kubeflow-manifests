@@ -29,9 +29,9 @@ def main():
 def get_settings_from_env(controller_port=None,
                           visualization_server_image=None, frontend_image=None,
                           visualization_server_tag=None, frontend_tag=None, disable_istio_sidecar=None,
-                          minio_access_key=None, minio_secret_key=None, kfp_default_pipeline_root=None,
-                          metadata_grpc_service_host=None, metadata_grpc_service_port=None,
-                          ml_pipeline_sa_principal=None):
+                          minio_host=None, minio_access_key=None, minio_secret_key=None,
+                          kfp_default_pipeline_root=None, metadata_grpc_service_host=None,
+                          metadata_grpc_service_port=None, ml_pipeline_sa_principal=None):
     """
     Returns a dict of settings from environment variables relevant to the controller
 
@@ -45,6 +45,7 @@ def get_settings_from_env(controller_port=None,
         frontend_image: gcr.io/ml-pipeline/frontend
         frontend_tag: value of KFP_VERSION environment variable
         disable_istio_sidecar: Required (no default)
+        minio_host: Not required (no default)
         minio_access_key: Required (no default)
         minio_secret_key: Required (no default)
         metadata_grpc_service_host: Required (no default)
@@ -81,6 +82,10 @@ def get_settings_from_env(controller_port=None,
         disable_istio_sidecar if disable_istio_sidecar is not None \
             else os.environ.get("DISABLE_ISTIO_SIDECAR") == "true"
 
+    settings["minio_host"] = \
+        minio_host or \
+        os.environ.get("MINIO_HOST")
+
     settings["minio_access_key"] = \
         minio_access_key or \
         base64.b64encode(bytes(os.environ.get("MINIO_ACCESS_KEY"), 'utf-8')).decode('utf-8')
@@ -111,8 +116,8 @@ def get_settings_from_env(controller_port=None,
 
 def server_factory(visualization_server_image,
                    visualization_server_tag, frontend_image, frontend_tag,
-                   disable_istio_sidecar, minio_access_key,
-                   minio_secret_key, kfp_default_pipeline_root=None,
+                   disable_istio_sidecar, minio_access_key, minio_secret_key,
+                   minio_host=None, kfp_default_pipeline_root=None,
                    metadata_grpc_service_host=None, metadata_grpc_service_port=None,
                    ml_pipeline_sa_principal=None, url="", controller_port=8080):
     """
@@ -320,6 +325,10 @@ def server_factory(visualization_server_image,
                                         "containerPort": 3000
                                     }],
                                     "env": [
+                                        {
+                                            "name": "MINIO_HOST",
+                                            "value": minio_host,
+                                        },
                                         {
                                             "name": "MINIO_ACCESS_KEY",
                                             "valueFrom": {
