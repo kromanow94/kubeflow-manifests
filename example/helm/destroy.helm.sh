@@ -38,5 +38,5 @@ helm -n kubeflow uninstall minio --wait
 # MySQL #
 helm -n kubeflow uninstall mysql --wait
 
-# Kubeflow Secrets #
-kubectl -n argocd delete app kubeflow-secrets
+# Kubeflow Namespace #
+kubectl delete namespace kubeflow

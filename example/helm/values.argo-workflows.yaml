@@ -22,6 +22,78 @@ controller:
         name: db-credentials
         key: username
     nodeStatusOffLoad: true
+  workflowDefaults:
+    spec:
+      # The Pipeline Run Steps in a KF Profile require information about where is the ObjectStore.
+      # In KFP <= 2.1.0, the approach to ObjectStore configuration depends on the schema of the Pipeline Root.
+      # By default, pipeline root is configured with "minio://mlpipeline/v2/artifacts", which makes the
+      # ObjectStore schema to be 'minio://'.
+      # If the schema is 'minio://' and there is no additional information on the ObjectStore,
+      # it will fallback to the default 'minio-service.kubeflow:9000'. To provide additional details
+      # on where is the non-default minio endpoint, we have to provide env variables to the KF Pipeline Step Pods:
+      # * MINIO_SERVICE_SERVICE_HOST
+      # * MINIO_SERVICE_SERVICE_PORT
+      #
+      # KFP v2 includes a launcher that performs KF Step preparation.
+      # * KFP <= 2.1.0: the launcher can only configure non-default PipelineRoot
+      #   through the 'kfp-launcher' CM in KF Profile.
+      #   https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/config/env.go
+      # * KFP >= 2.2.0: the launcher can also get ObjectStore configuration from
+      #   the 'kfp-launcher' CM in KF Profile.
+      #   https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L38
+      #   https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/config/env.go#L151
+      #
+      # In this values.yaml file for argo-workflows we configure
+      # MINIO_SERVICE_SERVICE_HOST and MINIO_SERVICE_SERVICE_PORT for all of the
+      # Pods created as Argo Workflow Nodes so the KFP v2 Launcher always know
+      # where is the minio endpoint.
+      # The minio endpoint is not `minio-service` because the `minio-service` K8s Service was maintained
+      # as part of the Kubeflow Kustomization manifests from kubeflow/manifests repo. Here we are using
+      # the minio service deployed from the MinIO Helm Chart.
+
+      # The Pipeline Run Steps in a KF Profile require information about where is the ml-pipeline service.
+      # This is needed for Pipeline Step cache.
+      # By default, the ml-pipeline service is first being discovered through the env variables:
+      # * ML_PIPELINE_SERVICE_HOST
+      # * ML_PIPELINE_SERVICE_PORT_GRPC
+      # If the env variables are not present, the default ml-pipeline address is
+      # used: "ml-pipeline.kubeflow:8887"
+      # * KFP <= 2.1.0:
+      #   https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/cacheutils/cache.go#L127
+      #   https://github.com/kubeflow/pipelines/blob/2.1.0/backend/src/v2/cacheutils/cache.go#L26
+      # * KFP >= 2.2.0:
+      #   https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/cacheutils/cache.go#L127
+      #   https://github.com/kubeflow/pipelines/blob/2.2.0/backend/src/v2/cacheutils/cache.go#L26
+      #
+      # These env variables are not present in the KFP Steps because they're created automatically by
+      # kubernetes if the K8s Svc exists in specific namespace. The 'ml-pipeline' service exists only in
+      # 'kubeflow' namespace so the ML_PIPELINE_SERVICE_HOST and ML_PIPELINE_SERVICE_PORT_GRPC env variables
+      # are only automatically injected for pods in 'kubeflow' namespace.
+      #
+      # In this values.yaml file for argo-workflows we configure
+      # ML_PIPELINE_SERVICE_HOST and ML_PIPELINE_SERVICE_PORT_GRPC for all of
+      # the Pods created for Argo Workflow Nodes so the KFP v2 Launcher always
+      # know where is the ml-pipeline endpoint.
+      # Assuming the Helm Release is named 'kubeflow' and the namespace
+      # installation is 'kubeflow', the default pointing to
+      # "ml-pipeline.kubeflow:8887" is correct but if a different name or
+      # namespace is required for the Helm Release, it would be enough to change
+      # the values for the env variables here.
+      podSpecPatch: |
+        containers:
+        - name: main
+          env:
+            - name: MINIO_SERVICE_SERVICE_HOST
+              value: minio.kubeflow
+            - name: MINIO_SERVICE_SERVICE_PORT
+              value: "9000"
+
+            - name: ML_PIPELINE_SERVICE_HOST
+              value: ml-pipeline.kubeflow
+            - name: ML_PIPELINE_SERVICE_PORT_HTTP
+              value: "8888"
+            - name: ML_PIPELINE_SERVICE_PORT_GRPC
+              value: "8887"
 
 server:
   enabled: false
