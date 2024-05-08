@@ -33,6 +33,7 @@ spec:
         imagePullPolicy: {{ include "kubeflow.pipelines.ui.imagePullPolicy" . }}
 
         env:
+        {{- include "kubeflow.pipelines.ui.config.objectStore.host.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.ui.config.objectStore.accessKey.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.ui.config.objectStore.secretAccessKey.env.spec" . | nindent 8 }}
 
