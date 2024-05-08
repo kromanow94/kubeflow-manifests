@@ -71,11 +71,14 @@ Kubeflow Notebooks Jupyter Web App object labels.
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.mainClusterRoleName" -}}
-{{- include "kubeflow.notebooks.jupyterWebApp.name" . }}
+{{- printf "%s-%s"
+    (include "kubeflow.fullname" .)
+    (include "kubeflow.notebooks.jupyterWebApp.name" .)
+}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.mainClusterRoleBindingName" -}}
-{{- include "kubeflow.notebooks.jupyterWebApp.name" . }}
+{{- include "kubeflow.notebooks.jupyterWebApp.mainClusterRoleName" . }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.jupyterWebApp.kfNbUiAdminClusterRoleName" -}}

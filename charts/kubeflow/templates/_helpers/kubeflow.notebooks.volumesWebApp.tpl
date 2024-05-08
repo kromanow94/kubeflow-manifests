@@ -66,11 +66,14 @@ Kubeflow Notebooks Volumes Web App object labels.
 {{- end }}
 
 {{- define "kubeflow.notebooks.volumesWebApp.mainClusterRoleName" -}}
-{{- include "kubeflow.notebooks.volumesWebApp.name" . }}
+{{- printf "%s-%s"
+    (include "kubeflow.fullname" .)
+    (include "kubeflow.notebooks.volumesWebApp.name" .)
+}}
 {{- end }}
 
 {{- define "kubeflow.notebooks.volumesWebApp.mainClusterRoleBindingName" -}}
-{{- include "kubeflow.notebooks.volumesWebApp.name" . }}
+{{- include "kubeflow.notebooks.volumesWebApp.mainClusterRoleName" . }}
 {{- end }}
 
 {{- define "kubeflow.notebooks.volumesWebApp.kfVolUiAdminClusterRoleName" -}}
