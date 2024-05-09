@@ -27,6 +27,10 @@ spec:
       kind: ClusterRole
       jsonPointers:
         - /rules
+    - group: admissionregistration.k8s.io
+      jqPathExpressions:
+        - .webhooks[] | .clientConfig.caBundle
+      kind: MutatingWebhookConfiguration
   syncPolicy:
     automated:
       prune: true
