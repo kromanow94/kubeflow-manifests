@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: kubeflow-0.2.0
+    targetRevision: helmcharts
     path: example/helm
     directory:
       include: "app.*"
