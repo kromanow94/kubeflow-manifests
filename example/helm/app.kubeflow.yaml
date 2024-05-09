@@ -14,13 +14,13 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: helmcharts
+      targetRevision: kubeflow-0.2.0
       path: charts/kubeflow
       helm:
         valueFiles:
           - $values/example/helm/values.kubeflow.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: helmcharts
+      targetRevision: kubeflow-0.2.0
       ref: values
   ignoreDifferences:
     - group: rbac.authorization.k8s.io
