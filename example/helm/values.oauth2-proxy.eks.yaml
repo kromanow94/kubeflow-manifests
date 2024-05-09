@@ -1,6 +1,6 @@
 extraArgs:
   - --skip-jwt-bearer-tokens=true
-  - --extra-jwt-issuers=https://oidc.eks.<region>.amazonaws.com/id/1234567890=https://kubernetes.default.svc
+  - --extra-jwt-issuers=https://oidc.eks.<region>.amazonaws.com/id/1234567890=https://kubernetes.default.svc,https://oidc.eks.<region>.amazonaws.com/id/1234567890=pipelines.kubeflow.org
   - --set-xauthrequest=true
   - --set-authorization-header=true
   - --code-challenge-method=S256

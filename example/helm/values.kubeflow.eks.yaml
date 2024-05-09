@@ -25,3 +25,10 @@ pipelines:
       secretAccessKey:
         secretKeyRef:
           name: mlpipeline-minio-artifact
+
+notebooks:
+  jupyterWebApp:
+    spawnerFormDefaults:
+      configurations:
+        value:
+          - access-ml-pipeline
