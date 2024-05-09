@@ -57,7 +57,7 @@ Kubeflow Admission Webhook object names.
 {{- end }}
 
 {{- define "kubeflow.admissionWebhook.kfPdViewName" -}}
-{{- printf "poddefaults-edit" }}
+{{- printf "poddefaults-view" }}
 {{- end }}
 
 {{- define "kubeflow.admissionWebhook.kfPdAdminClusterRoleName" -}}
