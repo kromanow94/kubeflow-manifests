@@ -13,4 +13,5 @@ kustomize build kserve | kubectl apply -f -
 kustomize build models-web-app/overlays/kubeflow | kubectl apply -f -
 
 # kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout 600s
+cd -
 ./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
