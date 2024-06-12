@@ -20,11 +20,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Show where we are
-      run: |
-        pwd
-        ls -la
-
     - name: Install KinD
       run: ./tests/gh-actions/install_kind.sh
 
