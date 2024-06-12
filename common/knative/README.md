@@ -4,17 +4,17 @@
 
 The manifests for Knative Serving are based off the following:
 
-  - [Knative serving (v1.10.2)](https://github.com/knative/serving/releases/tag/knative-v1.10.2)
-  - [Knative ingress controller for Istio (v1.10.1)](https://github.com/knative-sandbox/net-istio/releases/tag/knative-v1.10.1)
+  - [Knative serving (v1.12.4)](https://github.com/knative/serving/releases/tag/knative-v1.12.4)
+  - [Knative ingress controller for Istio (v1.12.3)](https://github.com/knative-extensions/net-istio/releases/tag/knative-v1.12.3)
 
 1. Download the knative-serving manifests with the following commands:
 
     ```sh
     # No need to install serving-crds.
     # See: https://github.com/knative/serving/issues/9945
-    wget -O knative-serving/base/upstream/serving-core.yaml 'https://github.com/knative/serving/releases/download/knative-v1.10.2/serving-core.yaml'
-    wget -O knative-serving/base/upstream/net-istio.yaml 'https://github.com/knative-sandbox/net-istio/releases/download/knative-v1.10.1/net-istio.yaml'
-    wget -O knative-serving-post-install-jobs/base/serving-post-install-jobs.yaml 'https://github.com/knative/serving/releases/download/knative-v1.10.2/serving-post-install-jobs.yaml'
+    wget -O knative-serving/base/upstream/serving-core.yaml 'https://github.com/knative/serving/releases/download/knative-v1.12.4/serving-core.yaml'
+    wget -O knative-serving/base/upstream/net-istio.yaml 'https://github.com/knative-extensions/net-istio/releases/download/knative-v1.12.3/net-istio.yaml'
+    wget -O knative-serving-post-install-jobs/base/serving-post-install-jobs.yaml 'https://github.com/knative/serving/releases/download/knative-v1.12.4/serving-post-install-jobs.yaml'
     ```
 
 1. Remove all comments, since `yq` does not handle them correctly. See:
@@ -36,17 +36,6 @@ The manifests for Knative Serving are based off the following:
     yq eval -i 'explode(.)' knative-serving-post-install-jobs/base/serving-post-install-jobs.yaml
     ```
 
-1. Remove the `knative-ingress-gateway` Gateway, since we use the Kubeflow
-   gateway. We will make this into a patch once we update kustomize to v4,
-   which supports removing CRs with patches. See:
-   https://github.com/kubernetes-sigs/kustomize/issues/3694
-
-    ```sh
-    yq eval -i 'select((.kind == "Gateway" and .metadata.name == "knative-ingress-gateway") | not)' knative-serving/base/upstream/net-istio.yaml
-    ```
-
-    NOTE: You'll need to remove a redundant `{}` at the end of the `knative-serving/base/upstream/net-istio.yaml` file.
-
 1. Set `metadata.name` in the serving post-install job, to be deploy-able with
    `kustomize` and `kubectl apply`:
 
@@ -56,33 +45,29 @@ The manifests for Knative Serving are based off the following:
     yq eval -i 'select(.kind == "Job" and .metadata.generateName == "storage-version-migration-serving-") | .metadata.name = "storage-version-migration-serving"' knative-serving-post-install-jobs/base/serving-post-install-jobs.yaml
     ```
 
-
-NOTE: You'll need to remove a redundant `{}` at the end of the `knative-serving/base/upstream/net-istio.yaml` and 
-`knative-serving/base/upstream/serving-core.yaml` files.
-
 ### Changes from upstream
 
-- In `knative-serving/base/upstream/net-istio.yaml`, the `knative-ingress-gateway` Gateway is removed since we use the Kubeflow gateway.
+- The `knative-ingress-gateway` Gateway is removed since we use the Kubeflow gateway.
 - In `config-istio`, the Knative gateway is set to use `gateway.kubeflow.kubeflow-gateway`.
 - In `config-deployment`, `progressDeadline` is set to `600s` as sometimes large models need longer than
   the default of `120s` to start the containers.
 
 ## Knative-Eventing
 
-The manifests for Knative Eventing are based off the [v1.10.1 release](https://github.com/knative/eventing/releases/tag/knative-v1.10.1).
+The manifests for Knative Eventing are based off the [v1.12.6 release](https://github.com/knative/eventing/releases/tag/knative-v1.12.6).
 
-  - [Eventing Core](https://github.com/knative/eventing/releases/download/knative-v1.10.1/eventing-core.yaml)
-  - [In-Memory Channel](https://github.com/knative/eventing/releases/download/knative-v1.10.1/in-memory-channel.yaml)
-  - [MT Channel Broker](https://github.com/knative/eventing/releases/download/knative-v1.10.1/mt-channel-broker.yaml)
+  - [Eventing Core](https://github.com/knative/eventing/releases/download/knative-v1.12.6/eventing-core.yaml)
+  - [In-Memory Channel](https://github.com/knative/eventing/releases/download/knative-v1.12.6/in-memory-channel.yaml)
+  - [MT Channel Broker](https://github.com/knative/eventing/releases/download/knative-v1.12.6/mt-channel-broker.yaml)
 
 
 1. Download the knative-eventing manifests with the following commands:
 
     ```sh
-    wget -O knative-eventing/base/upstream/eventing-core.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.10.1/eventing-core.yaml'
-    wget -O knative-eventing/base/upstream/in-memory-channel.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.10.1/in-memory-channel.yaml'
-    wget -O knative-eventing/base/upstream/mt-channel-broker.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.10.1/mt-channel-broker.yaml'
-    wget -O knative-eventing-post-install-jobs/base/eventing-post-install.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.10.1/eventing-post-install.yaml'
+    wget -O knative-eventing/base/upstream/eventing-core.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.12.6/eventing-core.yaml'
+    wget -O knative-eventing/base/upstream/in-memory-channel.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.12.6/in-memory-channel.yaml'
+    wget -O knative-eventing/base/upstream/mt-channel-broker.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.12.6/mt-channel-broker.yaml'
+    wget -O knative-eventing-post-install-jobs/base/eventing-post-install.yaml 'https://github.com/knative/eventing/releases/download/knative-v1.12.6/eventing-post-install.yaml'
     ```
 
 1. Remove all comments, since `yq` does not handle them correctly. See:
