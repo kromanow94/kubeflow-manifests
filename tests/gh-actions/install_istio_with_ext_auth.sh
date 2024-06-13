@@ -8,9 +8,6 @@ kustomize build istio-install/overlays/oauth2-proxy | kubectl apply -f -
 cd -
 
 echo "Waiting for all Istio Pods to become ready..."
-
-# kubectl wait --for=condition=Ready pods --all -n istio-system --timeout 300s
-# ./tests/gh-actions/wait_for_pods_running_or_completed.sh --namespace istio-system
 kubectl wait --for=condition=Ready pods --all -n istio-system --timeout=300s \
   --field-selector=status.phase!=Succeeded
 
