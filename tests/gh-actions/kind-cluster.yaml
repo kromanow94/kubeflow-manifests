@@ -20,16 +20,7 @@ kubeadmConfigPatches:
 nodes:
 - role: control-plane
   image: kindest/node:v1.29.4@sha256:3abb816a5b1061fb15c6e9e60856ec40d56b7b52bcea5f5f1350bc6e2320b6f8
-  extraMounts:
-  - containerPath: /var/lib/kubelet/config.json
-    hostPath: /home/kromanow94/work/actions-runner/_work/kubeflow-manifests/kubeflow-manifests/tests/dockerconfig.kromanow94.tmp.json
 - role: worker
   image: kindest/node:v1.29.4@sha256:3abb816a5b1061fb15c6e9e60856ec40d56b7b52bcea5f5f1350bc6e2320b6f8
-  extraMounts:
-  - containerPath: /var/lib/kubelet/config.json
-    hostPath: /home/kromanow94/work/actions-runner/_work/kubeflow-manifests/kubeflow-manifests/tests/dockerconfig.kromanow94.tmp.json
 - role: worker
   image: kindest/node:v1.29.4@sha256:3abb816a5b1061fb15c6e9e60856ec40d56b7b52bcea5f5f1350bc6e2320b6f8
-  extraMounts:
-  - containerPath: /var/lib/kubelet/config.json
-    hostPath: /home/kromanow94/work/actions-runner/_work/kubeflow-manifests/kubeflow-manifests/tests/dockerconfig.kromanow94.tmp.json
