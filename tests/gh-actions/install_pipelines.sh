@@ -10,4 +10,6 @@ sleep 60
 
 # kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout 600s
 cd -
-./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+# ./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=600s \
+  --field-selector=status.phase!=Succeeded

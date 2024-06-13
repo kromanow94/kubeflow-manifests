@@ -10,6 +10,8 @@ kustomize build common/istio-cni-1-21/cluster-local-gateway/base | kubectl apply
 kustomize build common/istio-cni-1-21/kubeflow-istio-resources/base | kubectl apply -f -
 
 # kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout 600s
-./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+# ./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=600s \
+  --field-selector=status.phase!=Succeeded
 
 kubectl patch cm config-domain --patch '{"data":{"example.com":""}}' -n knative-serving

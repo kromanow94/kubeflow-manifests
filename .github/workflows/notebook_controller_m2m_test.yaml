@@ -50,7 +50,9 @@ jobs:
         kustomize build apps/jupyter/notebook-controller/upstream/overlays/kubeflow/ | kubectl apply -f -
 
         # kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout 300s
-        ./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+        # ./tests/gh-actions/wait_for_pods_running_or_completed.sh --all-namespaces
+        kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=300s \
+          --field-selector=status.phase!=Succeeded
 
     - name: Create KF Profile
       run: kustomize build common/user-namespace/base | kubectl apply -f -
