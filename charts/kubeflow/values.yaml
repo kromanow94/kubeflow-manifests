@@ -8,6 +8,10 @@
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
 namespace: ""
 
+
+crds:
+  # -- Defines whether the kubeflow CRDs have to be installed or not.
+  install: true
 # one of ['cluster', 'namespace']
 # 'namespace' is not yet fully supported.
 # Maybe rename to 'deploymentScope'?
