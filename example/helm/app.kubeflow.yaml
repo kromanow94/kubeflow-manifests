@@ -13,12 +13,12 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    - repoURL: https://github.com/doncorsean/gitops.git
       targetRevision: helmcharts
       path: charts/kubeflow
       helm:
         valueFiles:
-          - $values/example/helm/values.kubeflow.yaml
+          - $values/example/helm/values.kubeflow.eks.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
