@@ -10,9 +10,9 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   source:
-    repoURL: https://github.com/doncorsean/gitops.git
+    repoURL: https://github.com/doncorsean/kubeflow-manifests.git
     targetRevision: helmcharts
     path: example/helm
     directory:

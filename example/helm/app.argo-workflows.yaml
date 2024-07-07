@@ -1,9 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: argo-kubeflow-workflows
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-  name: argo-workflows
+  name: argo-kubeflow-workflows
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -11,7 +14,7 @@ spec:
   destination:
     namespace: kubeflow
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   sources:
     - chart: argo-workflows
       repoURL: https://argoproj.github.io/argo-helm
@@ -19,7 +22,7 @@ spec:
       helm:
         valueFiles:
           - $values/example/helm/values.argo-workflows.yaml
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
   syncPolicy:

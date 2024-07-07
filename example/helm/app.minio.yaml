@@ -11,7 +11,7 @@ spec:
   destination:
     namespace: kubeflow
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   sources:
     - chart: minio
       repoURL: https://charts.bitnami.com/bitnami
@@ -19,7 +19,7 @@ spec:
       helm:
         valueFiles:
           - $values/example/helm/values.minio.yaml
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
   syncPolicy:

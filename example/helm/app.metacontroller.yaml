@@ -11,7 +11,7 @@ spec:
   destination:
     namespace: metacontroller
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   sources:
     - chart: metacontroller-helm
       repoURL: ghcr.io/metacontroller
@@ -19,7 +19,7 @@ spec:
       helm:
         valueFiles:
           - $values/example/helm/values.metacontroller.yaml
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
   syncPolicy:

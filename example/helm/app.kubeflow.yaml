@@ -11,15 +11,15 @@ spec:
   destination:
     namespace: kubeflow
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   sources:
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       path: charts/kubeflow
       helm:
         valueFiles:
           - $values/example/helm/values.kubeflow.eks.yaml
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
   ignoreDifferences:

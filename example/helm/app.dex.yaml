@@ -11,7 +11,7 @@ spec:
   destination:
     namespace: dex
     server: https://kubernetes.default.svc
-  project: default
+  project: kubeflow
   sources:
     - chart: dex
       repoURL: https://charts.dexidp.io
@@ -19,7 +19,7 @@ spec:
       helm:
         valueFiles:
           - $values/example/helm/values.dex.yaml
-    - repoURL: https://github.com/doncorsean/gitops.git
+    - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
   syncPolicy:
