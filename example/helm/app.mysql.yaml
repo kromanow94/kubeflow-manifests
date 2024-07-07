@@ -19,7 +19,7 @@ spec:
       helm:
         valueFiles:
           - $values/example/helm/values.mysql.yaml
-    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+    - repoURL: https://github.com/doncorsean/gitops.git
       targetRevision: helmcharts
       ref: values
   syncPolicy:
