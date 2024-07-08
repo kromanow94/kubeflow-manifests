@@ -1,7 +1,7 @@
 namespace: kubeflow
 istioIntegration:
   authentication:
-    enabled: false
+    enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   gateway:
     selector:
