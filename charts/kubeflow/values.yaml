@@ -1514,6 +1514,8 @@ certManagerIntegration:
 
 istioIntegration:
   enabled: true
+  authentication:
+    enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   rootNamespace: istio-system
   ingressGatewayNamespace: istio-ingress
