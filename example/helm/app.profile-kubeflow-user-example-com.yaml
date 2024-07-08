@@ -2,10 +2,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   labels:
-    app.kubernetes.io/name: profile-kubeflow-user-example-com
+    app.kubernetes.io/name: profile-kubeflow-user-oceandrivegraphics-com
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-  name: profile-kubeflow-user-example-com
+  name: profile-kubeflow-user-oceandrivegraphics-com
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io

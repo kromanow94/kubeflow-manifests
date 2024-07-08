@@ -13,7 +13,7 @@ apiVersion: kubeflow.org/v1alpha1
 kind: PodDefault
 metadata:
   name: access-ml-pipeline
-  namespace: kubeflow-user-example-com
+  namespace: kubeflow-user-oceandrivegraphics-com
 spec:
   desc: Allow access to Kubeflow Pipelines
   selector:
