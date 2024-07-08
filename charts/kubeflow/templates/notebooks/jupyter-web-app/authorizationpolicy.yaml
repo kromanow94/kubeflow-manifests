@@ -11,10 +11,10 @@ spec:
   selector:
     matchLabels:
       {{- include "kubeflow.notebooks.jupyterWebApp.selectorLabels" . | nindent 6 }}
+
   rules:
-  - from:
-    - source:
-        namespaces:
-        - {{ .Values.istioIntegration.ingressGatewayNamespace }}
+    - to:
+        - operation:
+            hosts: [ "{{ .Values.istioIntegration.authentication.host }}" ]
 
 {{- end }}
