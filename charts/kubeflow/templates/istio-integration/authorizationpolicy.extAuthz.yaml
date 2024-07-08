@@ -23,10 +23,10 @@ spec:
   {{- else }}
   action: ALLOW
   {{- end }}
-  rules:
-    - to:
-      - operation:
-          notPaths: []
+  rules: []
+#    - to:
+#      - operation:
+#          notPaths:
 #          - /favicon*
 #          - /webcomponentsjs*
 #          - /vendor.bundle.js
