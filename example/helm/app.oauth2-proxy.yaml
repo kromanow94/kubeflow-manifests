@@ -18,7 +18,7 @@ spec:
       targetRevision: 6.24.1
       helm:
         valueFiles:
-          - $values/example/helm/values.oauth2-proxy.yaml
+          - $values/example/helm/values.oauth2-proxy.eks.yaml
     - repoURL: https://github.com/doncorsean/kubeflow-manifests.git
       targetRevision: helmcharts
       ref: values
