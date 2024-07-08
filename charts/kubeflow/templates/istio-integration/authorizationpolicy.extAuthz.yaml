@@ -24,7 +24,7 @@ spec:
   rules:
     - to:
       - operation:
-          hosts: ["{{ .Values.istioIntegration.host }}"]
+          hosts: ["{{ .Values.istioIntegration.authentication.host }}"]
           notPaths:
           - /favicon*
           - /webcomponentsjs*

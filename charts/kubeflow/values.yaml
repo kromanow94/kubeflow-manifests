@@ -1516,6 +1516,7 @@ istioIntegration:
   enabled: true
   authentication:
     enabled: true
+    # host: kubeflow.<your domain>.com # Used to isolate istio-ingress AuthorizationPolicy to kubeflow subdomain i.e. kubeflow.<your domain>.com
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
   rootNamespace: istio-system
   ingressGatewayNamespace: istio-ingress
