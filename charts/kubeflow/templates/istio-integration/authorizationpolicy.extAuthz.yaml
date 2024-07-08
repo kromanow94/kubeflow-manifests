@@ -1,6 +1,8 @@
+{{- if .Values.istioIntegration.authentication.enabled }}
 {{- if and
   (include "kubeflow.istioIntegration.enabled" . | eq "true")
   (include "kubeflow.istioIntegration.authorizationMode.ingressgateway" . | eq "true")
+
 -}}
 
 # NOTE: this AuthorizationPolicy forces traffic through ext authz http extension.
@@ -16,26 +18,23 @@ metadata:
   name: {{ include "kubeflow.istioIntegration.extAuth.authorizationPolicyName" . }}
   namespace: {{ .Values.istioIntegration.ingressGatewayNamespace }}
 spec:
-  {{- if .Values.istioIntegration.authentication.enabled }}
   action: CUSTOM
   provider:
     name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
-  {{- else }}
-  action: ALLOW
-  {{- end }}
-#  rules: []
-#    - to:
-#      - operation:
-#          notPaths:
-#          - /favicon*
-#          - /webcomponentsjs*
-#          - /vendor.bundle.js
-#          - /app.bundle.js
-#          - /dashboard_lib.bundle.js
-#          - /assets*
-#          - /app.css
+  rules:
+    - to:
+      - operation:
+          notPaths:
+          - /favicon*
+          - /webcomponentsjs*
+          - /vendor.bundle.js
+          - /app.bundle.js
+          - /dashboard_lib.bundle.js
+          - /assets*
+          - /app.css
   selector:
     matchLabels:
       {{- toYaml .Values.istioIntegration.gateway.selector | nindent 6 }}
 
+{{- end }}
 {{- end }}
