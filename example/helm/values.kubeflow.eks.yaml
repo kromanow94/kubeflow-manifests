@@ -3,6 +3,24 @@ istioIntegration:
     selector:
       app: istio-origin-gateway
       istio: origin-gateway
+  servers:
+    - hosts:
+        - kubeflow.oceandrivegraphics.com
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+      tls:
+        httpsRedirect: true
+    - hosts:
+        - kubeflow.oceandrivegraphics.com
+      port:
+        name: http-443
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: kubeflow-tls-secret
+        mode: SIMPLE
   m2m:
     inCluster: false
     issuer: https://oidc.eks.<region>.amazonaws.com/id/1234567890
