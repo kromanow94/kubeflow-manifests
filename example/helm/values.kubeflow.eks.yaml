@@ -1,4 +1,6 @@
 istioIntegration:
+#  envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
+  envoyExtAuthzHttpExtensionProviderName: false
   gateway:
     selector:
       app: istio-origin-gateway
