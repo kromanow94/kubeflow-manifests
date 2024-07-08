@@ -1,5 +1,6 @@
 namespace: kubeflow
 istioIntegration:
+  kubeflowHost: kubeflow.oceandrivegraphics.com
   authentication:
     enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy

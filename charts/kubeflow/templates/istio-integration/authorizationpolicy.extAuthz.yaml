@@ -24,7 +24,7 @@ spec:
   rules:
     - to:
       - operation:
-          hosts: ["kubeflow.oceandrivegraphics.com"]
+          hosts: ["{{ .Values.istioIntegration.kubeflowHost }}"]
           notPaths:
           - /favicon*
           - /webcomponentsjs*
