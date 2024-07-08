@@ -23,7 +23,7 @@ spec:
   {{- else }}
   action: ALLOW
   {{- end }}
-  rules: []
+#  rules: []
 #    - to:
 #      - operation:
 #          notPaths:
