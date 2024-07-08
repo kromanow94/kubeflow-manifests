@@ -20,17 +20,22 @@ spec:
   action: CUSTOM
   provider:
     name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
+#  rules:
+#    - to:
+#      - operation:
+#          notPaths:
+#          - /favicon*
+#          - /webcomponentsjs*
+#          - /vendor.bundle.js
+#          - /app.bundle.js
+#          - /dashboard_lib.bundle.js
+#          - /assets*
+#          - /app.css
   rules:
-    - to:
-      - operation:
-          notPaths:
-          - /favicon*
-          - /webcomponentsjs*
-          - /vendor.bundle.js
-          - /app.bundle.js
-          - /dashboard_lib.bundle.js
-          - /assets*
-          - /app.css
+    - from:
+        - source:
+            namespaces:
+              - { { .Values.istioIntegration.ingressGatewayNamespace } }
   selector:
     matchLabels:
       {{- include "kubeflow.centraldashboard.selectorLabels" . | nindent 6 }}
