@@ -1,9 +1,8 @@
 istioIntegration:
-  istioIntegration:
-    gateway:
-      selector:
-        app: istio-origin-gateway
-        istio: origin-gateway
+  gateway:
+    selector:
+      app: istio-origin-gateway
+      istio: origin-gateway
   m2m:
     inCluster: false
     issuer: https://oidc.eks.<region>.amazonaws.com/id/1234567890
