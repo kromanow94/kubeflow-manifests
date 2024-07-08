@@ -26,14 +26,14 @@ spec:
   rules:
     - to:
       - operation:
-          notPaths:
-          - /favicon*
-          - /webcomponentsjs*
-          - /vendor.bundle.js
-          - /app.bundle.js
-          - /dashboard_lib.bundle.js
-          - /assets*
-          - /app.css
+          notPaths: []
+#          - /favicon*
+#          - /webcomponentsjs*
+#          - /vendor.bundle.js
+#          - /app.bundle.js
+#          - /dashboard_lib.bundle.js
+#          - /assets*
+#          - /app.css
   selector:
     matchLabels:
       {{- toYaml .Values.istioIntegration.gateway.selector | nindent 6 }}
