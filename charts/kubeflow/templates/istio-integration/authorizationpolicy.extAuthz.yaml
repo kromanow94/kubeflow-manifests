@@ -16,7 +16,8 @@ metadata:
   name: {{ include "kubeflow.istioIntegration.extAuth.authorizationPolicyName" . }}
   namespace: {{ .Values.istioIntegration.ingressGatewayNamespace }}
 spec:
-  action: CUSTOM
+#  action: CUSTOM
+  action: ALLOW
   provider:
     name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
   rules:
