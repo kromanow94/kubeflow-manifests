@@ -24,7 +24,7 @@ spec:
   rules:
     - to:
       - operation:
-          hosts: ["{{ .Values.istioIntegration.kubeflowHost }}"]
+          hosts: ["{{ .Values.istioIntegration.host }}"]
           notPaths:
           - /favicon*
           - /webcomponentsjs*
