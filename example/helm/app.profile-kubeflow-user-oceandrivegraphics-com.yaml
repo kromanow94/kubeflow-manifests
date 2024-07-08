@@ -18,7 +18,7 @@ spec:
     targetRevision: helmcharts
     path: example/helm
     directory:
-      include: profile.kubeflow-user-example-com.yaml
+      include: profile.kubeflow-user-oceandrivegraphics-com.yaml
   syncPolicy:
     automated:
       prune: true

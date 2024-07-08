@@ -1,3 +1,5 @@
+auth:
+  userHeaderName: kubeflow-userid
 istioIntegration:
   authentication:
     enabled: true

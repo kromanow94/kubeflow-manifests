@@ -1,5 +1,5 @@
 {{- if (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true") -}}
-
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,5 +21,18 @@ spec:
     {{- include "kubeflow.notebooks.jupyterWebApp.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: {{ .Values.notebooks.jupyterWebApp.service.type }}
-
+---
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.svc.name" . }}-telemetry
+spec:
+  accessLogging:
+    - providers:
+        - name: envoy
+  selector:
+    matchLabels:
+      service.istio.io/canonical-name: {{ include "kubeflow.notebooks.jupyterWebApp.svc.name" . }}
+  tracing:
+    - disableSpanReporting: false
 {{- end }}
