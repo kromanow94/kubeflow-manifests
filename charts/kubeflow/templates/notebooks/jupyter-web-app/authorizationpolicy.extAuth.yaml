@@ -21,7 +21,9 @@ spec:
   provider:
     name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
   rules:
-    - {}
+    - to:
+        - operation:
+            hosts: [ "{{ .Values.istioIntegration.authentication.host }}" ]
   selector:
     matchLabels:
       {{- include "kubeflow.notebooks.jupyterWebApp.selectorLabels" . | nindent 6 }}
