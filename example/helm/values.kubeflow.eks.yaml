@@ -1,6 +1,6 @@
 namespace: kubeflow
 istioIntegration:
-  kubeflowHost: kubeflow.oceandrivegraphics.com
+  kubeflowHost: kubeflow.oceandrivegraphics.com # Used to isolate istio-ingress AuthorizationPolicy to kubeflow subdomain i.e. kubeflow.<your domain>.com
   authentication:
     enabled: true
   envoyExtAuthzHttpExtensionProviderName: oauth2-proxy
