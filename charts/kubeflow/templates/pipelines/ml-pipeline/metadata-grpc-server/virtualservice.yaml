@@ -24,5 +24,13 @@ spec:
         host: {{ include "kubeflow.pipelines.metadataEnvoy.svc.fqdn" . }}
         port:
           number: 9090
+    headers:
+      request:
+        add:
+          x-forwarded-prefix: {{ .Values.notebooks.volumesWebApp.config.urlPrefix }}
+          Tracing-Context: {{ include "kubeflow.pipelines.metadataGrpcServer.name" . }}
+      response:
+        add:
+          Tracing-Context: {{ include "kubeflow.pipelines.metadataGrpcServer.name" . }}
 
 {{- end }}

@@ -27,5 +27,9 @@ spec:
       request:
         add:
           x-forwarded-prefix: {{ .Values.profilesController.kfam.config.urlPrefix }}
+          Tracing-Context: {{ include "kubeflow.profilesController.kfam.name" . }}
+      response:
+        add:
+          Tracing-Context: {{ include "kubeflow.profilesController.kfam.name" . }}
     
 {{- end }}

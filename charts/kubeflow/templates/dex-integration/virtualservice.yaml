@@ -25,5 +25,13 @@ spec:
         host: {{ include "kubeflow.dexIntegration.svc.fqdn" . }}
         port:
           number: {{ .Values.dexIntegration.svc.port }}
+    headers:
+      request:
+        add:
+          x-forwarded-prefix: {{ .Values.notebooks.volumesWebApp.config.urlPrefix }}
+          Tracing-Context: {{ $vsName }}
+      response:
+        add:
+          Tracing-Context: {{ $vsName }}
 
 {{- end }}

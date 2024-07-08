@@ -24,5 +24,13 @@ spec:
         port:
           number: 80
     timeout: 300s
+    headers:
+      request:
+        add:
+          x-forwarded-prefix: {{ .Values.notebooks.volumesWebApp.config.urlPrefix }}
+          Tracing-Context: {{ include "kubeflow.pipelines.ui.name" . }}
+      response:
+        add:
+          Tracing-Context: {{ include "kubeflow.pipelines.ui.name" . }}
 
 {{- end }}

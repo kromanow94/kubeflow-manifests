@@ -27,5 +27,9 @@ spec:
       request:
         add:
           x-forwarded-prefix: {{ .Values.notebooks.jupyterWebApp.urlPrefix }}
+          Tracing-Context: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
+      response:
+        add:
+          Tracing-Context: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
 
 {{- end }}
