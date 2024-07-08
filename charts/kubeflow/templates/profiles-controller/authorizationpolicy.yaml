@@ -13,15 +13,11 @@ metadata:
 spec:
   action: ALLOW
   rules:
-    - to:
-        - operation:
-            hosts: [ "{{ .Values.istioIntegration.authentication.host }}" ]
-#  rules:
-#    - from:
-#        - source:
-#            principals:
-#              # TODO: change me
-#              - cluster.local/ns/{{ $namespace }}/sa/{{ $centraldashboardSaName }}
+    - from:
+        - source:
+            principals:
+              # TODO: change me
+              - cluster.local/ns/{{ $namespace }}/sa/{{ $centraldashboardSaName }}
   selector:
     matchLabels:
       {{- include "kubeflow.profilesController.selectorLabels" . | nindent 6 }}
