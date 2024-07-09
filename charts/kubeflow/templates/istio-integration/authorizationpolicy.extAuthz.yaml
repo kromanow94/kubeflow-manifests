@@ -36,12 +36,12 @@ spec:
           - /dashboard_lib.bundle.js
           - /assets*
           - /app.css
-    - from:
-      - operation:
-          hosts: [
-            "{{ .Values.istioIntegration.authentication.host }}",
-            "test.kubeflow-user-oceandrivegraphics-com.svc.cluster.local"
-          ]
+#    - from:
+#      - operation:
+#          hosts: [
+#            "{{ .Values.istioIntegration.authentication.host }}",
+#            "test.kubeflow-user-oceandrivegraphics-com.svc.cluster.local"
+#          ]
   selector:
     matchLabels:
       {{- toYaml .Values.istioIntegration.gateway.selector | nindent 6 }}
