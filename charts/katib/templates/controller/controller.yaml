@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: katib-controller
+  name: {{ .Values.controller.name }}
   namespace: kubeflow
   labels:
     katib.kubeflow.org/component: controller

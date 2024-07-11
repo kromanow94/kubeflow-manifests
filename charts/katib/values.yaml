@@ -1,3 +1,5 @@
+controller:
+  name: katib-controller
 database:
   type: postgres # valid values mysql, postgres
   name: postgres # Shouldn't this go into a "katib" db?
