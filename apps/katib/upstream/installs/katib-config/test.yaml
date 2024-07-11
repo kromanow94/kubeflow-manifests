@@ -1,37 +1,36 @@
-database:
-  type: postgres # valid values mysql, postgres
-  name: postgres # Shouldn't this go into a "katib" db?
-  secret:
-    create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
-    name: katib-db-secrets
-    data:  # Should be migrated to AVP or similar so not in plaintext
-      DB_USER: a2F0aWI=  # katib
-      DB_PASSWORD: a2F0aWI=  # katib
-config:
-  init:
-    certGenerator:
-      enable: true
-    controller:
-      webhookPort: 8443
-      trialResources:
+apiVersion: v1
+data:
+  katib-config.yaml: |
+    ---
+    apiVersion: config.kubeflow.org/v1beta1
+    kind: KatibConfig
+    init:
+      certGenerator:
+        enable: true
+      controller:
+        trialResources:
         - Job.v1.batch
         - TFJob.v1.kubeflow.org
         - PyTorchJob.v1.kubeflow.org
         - MPIJob.v1.kubeflow.org
         - XGBoostJob.v1.kubeflow.org
         - MXJob.v1.kubeflow.org
-  runtime:
-    metricsCollectors:
-      - kind: StdOut
-        image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0-rc.0
-      - kind: File
-        image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0-rc.0
-      - kind: TensorFlowEvent
-        image: docker.io/kubeflowkatib/tfevent-metrics-collector:v0.17.0-rc.0
+        webhookPort: 8443
+    runtime:
+      earlyStoppings:
+      - algorithmName: medianstop
+        image: docker.io/kubeflowkatib/earlystopping-medianstop:v0.17.0-rc.0
+      metricsCollectors:
+      - image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0-rc.0
+        kind: StdOut
+      - image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0-rc.0
+        kind: File
+      - image: docker.io/kubeflowkatib/tfevent-metrics-collector:v0.17.0-rc.0
+        kind: TensorFlowEvent
         resources:
           limits:
             memory: 1Gi
-    suggestions:
+      suggestions:
       - algorithmName: random
         image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.17.0-rc.0
       - algorithmName: tpe
@@ -59,10 +58,7 @@ config:
         image: docker.io/kubeflowkatib/suggestion-pbt:v0.17.0-rc.0
         persistentVolumeClaimSpec:
           accessModes:
-            - ReadWriteMany
+          - ReadWriteMany
           resources:
             requests:
               storage: 5Gi
-    earlyStoppings:
-      - algorithmName: medianstop
-        image: docker.io/kubeflowkatib/earlystopping-medianstop:v0.17.0-rc.0
