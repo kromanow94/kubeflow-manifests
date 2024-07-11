@@ -17,7 +17,7 @@ extraArgs:
 
   - --cookie-name=kubeflow-oauth2-proxy
   - --cookie-expire=24h
-  - --cookie-refresh=1h
+  - --cookie-refresh=12h
 
   - --ssl-insecure-skip-verify=true # has to be set for kubernetes self-signed issuer
 

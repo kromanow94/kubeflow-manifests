@@ -1,0 +1,6 @@
+dependencies:
+- name: katib
+  repository: file://../katib
+  version: 0.0.1
+digest: sha256:9feac28d9cd9b845b0105903395e9dc5272af21b0ba33d2c5b54596d3a9a0348
+generated: "2024-07-11T12:17:05.098751-04:00"
