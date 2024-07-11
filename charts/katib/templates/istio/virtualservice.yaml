@@ -5,7 +5,7 @@ kind: VirtualService
 metadata:
   labels:
     {{- include "kubeflow.katib.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.name" . }}
+  name: {{ include "kubeflow.katib-ui.baseName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   gateways:
