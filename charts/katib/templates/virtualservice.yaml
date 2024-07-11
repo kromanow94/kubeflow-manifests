@@ -15,7 +15,7 @@ spec:
   http:
     - match:
         - uri:
-            prefix: /{{ .Values.istioIntegration.urlPrefix }}
+            prefix: {{ .Values.istioIntegration.urlPrefix }}/
       rewrite:
         uri: /
       route:

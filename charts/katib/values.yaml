@@ -2,7 +2,7 @@ clusterDomain: cluster.local
 controller:
   name: katib-controller
 istioIntegration:
-  urlPrefix: katib
+  urlPrefix: /katib
   enabled: true
   gateway:
     name: kubeflow-gateway
