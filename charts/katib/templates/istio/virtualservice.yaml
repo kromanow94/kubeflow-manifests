@@ -27,8 +27,8 @@ spec:
         request:
           add:
             x-forwarded-prefix: {{ .Values.istioIntegration.urlPrefix }}
-            Tracing-Context: {{ include "kubeflow.katib.name" . }}
+            Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
         response:
           add:
-            Tracing-Context: {{ include "kubeflow.katib.name" . }}
+            Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
 {{- end }}
