@@ -1,4 +1,4 @@
-{{- if .Values.createIstioIntegrationObjects }}
+{{- if .Values.istioIntegration.create }}
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -31,5 +31,4 @@ spec:
         response:
           add:
             Tracing-Context: {{ include "kubeflow.katib.name" . }}
-
 {{- end }}

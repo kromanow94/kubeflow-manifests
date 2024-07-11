@@ -2,13 +2,12 @@ clusterDomain: cluster.local
 controller:
   name: katib-controller
 istioIntegration:
+  create: true
   urlPrefix: /katib
   enabled: true
+  authorizationMode: ingressgateway
   gateway:
     name: kubeflow-gateway
-    selector:
-      istio: ingressgateway
-createIstioIntegrationObjects: true
 database:
   type: postgres # valid values mysql, postgres
   name: postgres # Shouldn't this go into a "katib" db?
