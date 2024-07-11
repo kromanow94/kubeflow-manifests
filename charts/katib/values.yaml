@@ -1,2 +1,2 @@
 database:
-  type: postgres # valid values mysql, postgres
+  type: mysql # valid values mysql, postgres

@@ -8,10 +8,10 @@
 # This is helpful when installing Kubeflow as a chart dependency (sub chart).
 namespace: ""
 
-
-crds:
-  # -- Defines whether the kubeflow CRDs have to be installed or not.
-  install: true
+# Katib chart config
+katib:
+  database:
+    type: postgres # valid values mysql, postgres
 # one of ['cluster', 'namespace']
 # 'namespace' is not yet fully supported.
 # Maybe rename to 'deploymentScope'?
