@@ -23,7 +23,10 @@ spec:
           image: docker.io/kubeflowkatib/katib-db-manager
           envFrom:
             - secretRef:
-                name: {{ .Values.database.credentials.name }}
+                name: {{ .Values.database.secret.name }}
+          env:
+            - name: DB_NAME
+              value: {{ .Values.database.name }}
           command:
             - "./katib-db-manager"
           ports:
