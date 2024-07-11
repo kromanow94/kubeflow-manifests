@@ -23,7 +23,7 @@ spec:
           image: docker.io/kubeflowkatib/katib-db-manager
           env:
             - name: DB_NAME
-              value: "mysql"
+              value: {{ .Values.database.type }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
