@@ -1,6 +1,6 @@
 database:
   type: postgres # valid values mysql, postgres
-  name: katib
+  name: postgres # Shouldn't this go into a "katib" db?
   secret:
     create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
     name: katib-db-secrets
