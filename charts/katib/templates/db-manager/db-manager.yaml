@@ -27,7 +27,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: katib-{{ include "katib.db-secret" . }}-secrets
+                  name: {{ .Values.database.credentials.name }}
                   key: MYSQL_ROOT_PASSWORD
           command:
             - "./katib-db-manager"
