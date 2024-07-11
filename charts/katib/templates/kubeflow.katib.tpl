@@ -5,10 +5,25 @@ Kubeflow katib object names.
 {{- printf "katib" }}
 {{- end }}
 
+{{/*
+Kubeflow katib object names.
+*/}}
+{{- define "kubeflow.katib-ui.baseName" -}}
+{{- printf "katib-ui" }}
+{{- end }}
+
 {{- define "kubeflow.katib.name" -}}
 {{- include "kubeflow.component.name" (
     list
     (include "kubeflow.katib.baseName" .)
+    .
+)}}
+{{- end }}
+
+{{- define "kubeflow.katib-ui.name" -}}
+{{- include "kubeflow.component.name" (
+    list
+    (include "kubeflow.katib-ui.baseName" .)
     .
 )}}
 {{- end }}
@@ -78,7 +93,7 @@ Kubeflow katib Service.
 {{ include "kubeflow.component.svc.fqdn"  (
     list
     .
-    (include "kubeflow.katib.name" .)
+    (include "kubeflow.katib-ui.baseName" .)
 )}}
 {{- end }}
 
