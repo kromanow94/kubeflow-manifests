@@ -12,7 +12,7 @@ database:
 config:
   init:
     certGenerator:
-      enable: true
+      enable: false
     controller:
       webhookPort: 8443
       trialResources:
