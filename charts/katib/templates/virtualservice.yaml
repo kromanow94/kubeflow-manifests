@@ -1,0 +1,35 @@
+{{- if .Values.createIstioIntegrationObjects }}
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    {{- include "kubeflow.katib.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  gateways:
+    - {{ .Values.istioIntegration.gateway.name }}
+  hosts:
+    - '*'
+  http:
+    - match:
+        - uri:
+            prefix: /{{ .Values.istioIntegration.urlPrefix }}
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: {{ include "kubeflow.katib.svc.fqdn" . }}
+            port:
+              number: 80
+      headers:
+        request:
+          add:
+            x-forwarded-prefix: {{ .Values.istioIntegration.urlPrefix }}
+            Tracing-Context: {{ include "kubeflow.katib.name" . }}
+        response:
+          add:
+            Tracing-Context: {{ include "kubeflow.katib.name" . }}
+
+{{- end }}
