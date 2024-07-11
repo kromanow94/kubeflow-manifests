@@ -3,8 +3,7 @@ database:
   credentials:
     create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
     name: katib-postgres-secrets
-    secret:  # use proper credentials correlating to the appropriate db declared above. Should be migrated to AVP or similar so not in plaintext
-#      MYSQL_ROOT_PASSWORD: dGVzdA==  # "test"
-      POSTGRES_USER: a2F0aWI=  # katib
-      POSTGRES_PASSWORD: a2F0aWI=  # katib
-      POSTGRES_DB: a2F0aWI=  # katib
+    secret:  # Should be migrated to AVP or similar so not in plaintext
+      DB_NAME: a2F0aWI=  # katib
+      DB_USER: a2F0aWI=  # katib
+      DB_PASSWORD: a2F0aWI=  # katib
