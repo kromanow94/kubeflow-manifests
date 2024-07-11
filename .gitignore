@@ -1,7 +1,8 @@
 *.idea
 .vscode
 .DS_Store
-rendered
+charts/**/charts
+charts/**/rendered
 **/*.pyc
 
 # Swap
