@@ -210,6 +210,13 @@ Kubeflow katib enable and create toggles.
 {{- .Values.enabled }}
 {{- end }}
 
+{{/*
+Kubeflow katib enable and create toggles.
+*/}}
+{{- define "kubeflow.katib.controller.enabled" -}}
+{{- .Values.controller.enabled }}
+{{- end }}
+
 {{- define "kubeflow.katib.createIstioIntegrationObjects" -}}
 {{- ternary true "" (
     and

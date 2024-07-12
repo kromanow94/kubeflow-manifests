@@ -1,30 +1,36 @@
-{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
----
+{{- if (include "kubeflow.katib.controller.enabled" . | eq "true") -}}
+
+{{- $autoscalingEnabled := include "kubeflow.katib.controller.autoscaling.enabled" . -}}
+{{- $replicas := include "kubeflow.katib.controller.autoscaling.minReplicas" . -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.controller.name }}
   labels:
-    katib.kubeflow.org/component: controller
+    {{- include "kubeflow.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.controller.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
-  replicas: 1
+  {{- if (eq $autoscalingEnabled "false") }}
+  replicas: {{ $replicas }}
+  {{- end }}
+
   selector:
     matchLabels:
-      katib.kubeflow.org/component: controller
+      {{- include "kubeflow.katib.controller.selectorLabels" . | nindent 6 }}
+
   template:
     metadata:
       labels:
-        katib.kubeflow.org/component: controller
-        katib.kubeflow.org/metrics-collector-injection: disabled
+        {{- include "kubeflow.katib.controller.selectorLabels" . | nindent 8 }}
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
         sidecar.istio.io/inject: "false"
     spec:
-      serviceAccountName: katib-controller
       containers:
-        - name: katib-controller
-          image: docker.io/kubeflowkatib/katib-controller
+        - name: {{ include "kubeflow.katib.controller.baseName" . }}
+          image: {{ include "kubeflow.katib.controller.image" . }} # docker.io/kubeflowkatib/katib-controller
           command: ["./katib-controller"]
           args:
             - --katib-config=/katib-config.yaml
@@ -59,6 +65,11 @@ spec:
               name: katib-config
               subPath: katib-config.yaml
               readOnly: true
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kubeflow.katib.controller.serviceAccountName" . }}
       volumes:
         - name: cert
           secret:

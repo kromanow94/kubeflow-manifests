@@ -1,18 +1,24 @@
 {{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
+{{- if (include "kubeflow.katib.dbmanager.enabled" . | eq "true") -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: katib-db-manager
-  namespace: kubeflow
+  {{- with .Values.dbmanager.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
-    katib.kubeflow.org/component: db-manager
+    {{- include "kubeflow.katib.dbmanager.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.dbmanager.svc.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.dbmanager.service.type }}
   ports:
     - port: 6789
       protocol: TCP
       name: api
   selector:
-    katib.kubeflow.org/component: db-manager
+    {{- include "kubeflow.katib.dbmanager.selectorLabels" . | nindent 4 }}
+{{- end }}
 {{- end }}

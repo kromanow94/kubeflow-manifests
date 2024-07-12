@@ -1,7 +1,71 @@
 enabled: true
 clusterDomain: cluster.local
+defaults:
+  image:
+    registry: docker.io
+    # tag: "latest"
+    tag: v1.8.0
+    pullPolicy: IfNotPresent
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+  podDisruptionBudget: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints:
+  terminationGracePeriodSeconds:
+  containerSecurityContext:
 controller:
+  enabled: true
   name: katib-controller
+  image:
+    repository: kubeflowkatib/katib-controller
+    registryOverwrite:
+    tagOverwrite:
+    pullPolicyOverwrite:
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled:
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
+  service:
+    create: true
+    annotations:
+      prometheus.io/port: "8080"
+      prometheus.io/scheme: http
+      prometheus.io/scrape: "true"
+  serviceAccount:
+    create: true
+    name:
+    annotations:
+dbmanager:
+  enabled: true
+  name: katib-db-manager
+  image:
+    repository: kubeflowkatib/katib-db-manager
+    registryOverwrite:
+    tagOverwrite:
+    pullPolicyOverwrite:
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled:
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
+  annotations:
+    sidecar.istio.io/inject: "false"
+  service:
+    create: true
+    annotations:
+    type: ClusterIP
 urlPrefix: /katib
 istioIntegration:
   create: true

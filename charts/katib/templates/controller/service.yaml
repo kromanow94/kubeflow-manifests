@@ -1,16 +1,17 @@
 {{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
+{{- if (include "kubeflow.katib.controller.enabled" . | eq "true") -}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: katib-controller
-  namespace: kubeflow
-  labels:
-    katib.kubeflow.org/component: controller
+  {{- with .Values.controller.service.annotations }}
   annotations:
-    prometheus.io/port: "8080"
-    prometheus.io/scheme: http
-    prometheus.io/scrape: "true"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kubeflow.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.controller.svc.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   ports:
     - port: 443
@@ -24,5 +25,6 @@ spec:
       port: 18080
       targetPort: 18080
   selector:
-    katib.kubeflow.org/component: controller
+    {{- include "kubeflow.katib.controller.selectorLabels" . | nindent 4 }}
+{{- end }}
 {{- end }}
