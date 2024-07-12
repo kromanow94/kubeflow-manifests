@@ -8,7 +8,7 @@ Kubeflow katib object names.
 {{/*
 Kubeflow katib object names.
 */}}
-{{- define "kubeflow.katib-ui.baseName" -}}
+{{- define "kubeflow.katib.ui.baseName" -}}
 {{- printf "katib-ui" }}
 {{- end }}
 
@@ -20,10 +20,10 @@ Kubeflow katib object names.
 )}}
 {{- end }}
 
-{{- define "kubeflow.katib-ui.name" -}}
+{{- define "kubeflow.katib.ui.name" -}}
 {{- include "kubeflow.component.name" (
     list
-    (include "kubeflow.katib-ui.baseName" .)
+    (include "kubeflow.katib.ui.baseName" .)
     .
 )}}
 {{- end }}
@@ -93,7 +93,7 @@ Kubeflow katib Service.
 {{ include "kubeflow.component.svc.fqdn"  (
     list
     .
-    (include "kubeflow.katib-ui.baseName" .)
+    (include "kubeflow.katib.ui.baseName" .)
 )}}
 {{- end }}
 
@@ -108,6 +108,11 @@ Kubeflow katib object labels.
 {{- define "kubeflow.katib.selectorLabels" -}}
 {{ include "kubeflow.common.selectorLabels" . }}
 {{ include "kubeflow.component.selectorLabels" (include "kubeflow.katib.name" .) }}
+{{- end }}
+
+{{- define "kubeflow.katib.ui.selectorLabels" -}}
+{{ include "kubeflow.common.selectorLabels" . }}
+{{ include "kubeflow.component.selectorLabels" (include "kubeflow.katib.ui.name" .) }}
 {{- end }}
 
 {{/*

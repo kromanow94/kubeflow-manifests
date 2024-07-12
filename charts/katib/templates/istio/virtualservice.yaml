@@ -5,7 +5,7 @@ kind: VirtualService
 metadata:
   labels:
     {{- include "kubeflow.katib.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.katib-ui.baseName" . }}
+  name: {{ include "kubeflow.katib.ui.baseName" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   gateways:
@@ -26,8 +26,8 @@ spec:
       headers:
         request:
           add:
-            Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
+            Tracing-Context: {{ include "kubeflow.katib.ui.baseName" . }}
         response:
           add:
-            Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
+            Tracing-Context: {{ include "kubeflow.katib.ui.baseName" . }}
 {{- end }}

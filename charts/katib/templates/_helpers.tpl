@@ -66,3 +66,11 @@ https://github.com/helm/helm/issues/5358
     $ctx.Values.clusterDomain
 }}
 {{- end }}
+
+Changing this function will reflect on all component and subcomponent names.
+*/}}
+{{- define "kubeflow.component.name" -}}
+{{- $componentName := index . 0 -}}
+{{- $context := index . 1 -}}
+{{- $componentName }}
+{{- end }}

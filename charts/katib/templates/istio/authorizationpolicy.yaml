@@ -10,7 +10,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      {{- include "kubeflow.katib.selectorLabels" . | nindent 6 }}
+      {{- include "kubeflow.katib.ui.selectorLabels" . | nindent 6 }}
   rules:
   - from:
     - source:
