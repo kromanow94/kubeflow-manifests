@@ -76,7 +76,22 @@ dbmanager:
         POSTGRES_USER: a2F0aWI=  # katib
         POSTGRES_PASSWORD: a2F0aWI=  # katib
         POSTGRES_DB: a2F0aWI=  # katib
-urlPrefix: /katib
+ui:
+  enabled: true
+  name: katib-ui
+  urlPrefix: /katib
+  image:
+    repository: kubeflowkatib/katib-ui
+    registryOverwrite:
+    tagOverwrite:
+    pullPolicyOverwrite:
+  serviceAccount:
+    create: true
+    name:
+    annotations:
+  service:
+    create: true
+    annotations:
 istioIntegration:
   create: true
   enabled: true

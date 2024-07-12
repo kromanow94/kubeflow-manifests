@@ -5,8 +5,8 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   labels:
-    {{- include "kubeflow.katib.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.name" . }}
+    {{- include "kubeflow.katib.ui.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.ui.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   gateways:
