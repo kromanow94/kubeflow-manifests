@@ -25,11 +25,11 @@ config:
       webhookPort: 8443
       trialResources:
         - Job.v1.batch
-        - TFJob.v1.kubeflow.org
-        - PyTorchJob.v1.kubeflow.org
-        - MPIJob.v1.kubeflow.org
-        - XGBoostJob.v1.kubeflow.org
-        - MXJob.v1.kubeflow.org
+#        - TFJob.v1.kubeflow.org
+#        - PyTorchJob.v1.kubeflow.org
+#        - MPIJob.v1.kubeflow.org
+#        - XGBoostJob.v1.kubeflow.org
+#        - MXJob.v1.kubeflow.org
   runtime:
     metricsCollectors:
       - kind: StdOut
