@@ -17,7 +17,7 @@ spec:
         - uri:
             prefix: {{ .Values.urlPrefix }}/
       rewrite:
-        uri: /
+        uri: {{ .Values.urlPrefix }}
       route:
         - destination:
             host: {{ include "kubeflow.katib.svc.fqdn" . }}
