@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: kserve-crd
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kserve
+  project: default
+  sources:
+    - repoURL: https://github.com/kserve/kserve
+      targetRevision: v0.11.2
+      path: charts/kserve-crd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+      - CreateNamespace=true

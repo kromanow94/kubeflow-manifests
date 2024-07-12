@@ -1,0 +1,10 @@
+{{- if .Values.knativeIntegration.knativeEventing.enabled }}
+apiVersion: operator.knative.dev/v1beta1
+kind: KnativeEventing
+metadata:
+  name: knative-eventing
+  namespace: {{ .Values.knativeIntegration.knativeEventing.namespace }}
+spec:
+  version: {{ .Values.knativeIntegration.knativeEventing.version | quote }}
+{{- end }}
+

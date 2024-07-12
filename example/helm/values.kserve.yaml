@@ -1,0 +1,129 @@
+kserve:
+  version: &defaultVersion v0.11.2
+  modelmeshVersion: &defaultModelMeshVersion v0.11.2
+  agent:
+    image: kserve/agent
+    tag: *defaultVersion
+  router:
+    image: kserve/router
+    tag: *defaultVersion
+  storage:
+    image: kserve/storage-initializer
+    tag: *defaultVersion
+    enableModelcar: false
+    cpuModelcar: 10m
+    memoryModelcar: 15Mi
+    caBundleConfigMapName: ""
+    caBundleVolumeMountPath: "/etc/ssl/custom-certs"
+    storageSpecSecretName: storage-config
+    storageSecretNameAnnotation: serving.kserve.io/secretName
+    s3:
+      endpoint: "s3.eu-central-1.amazonaws.com"
+      region: "eu-central-1"
+      # accessKeyIdName: AWS_ACCESS_KEY_ID
+      # secretAccessKeyName: AWS_SECRET_ACCESS_KEY
+      # useHttps: ""
+      # verifySSL: ""
+      # useVirtualBucket: ""
+      # useAnonymousCredential: ""
+      # CABundle: ""
+  metricsaggregator:
+    enableMetricAggregation: "false"
+    enablePrometheusScraping: "false"
+  controller:
+    deploymentMode: "Serverless"
+    rbacProxyImage: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.1
+    gateway:
+      domain: example.com
+      domainTemplate: "{{ .Name }}-{{ .Namespace }}.{{ .IngressDomain }}"
+      urlScheme: http
+      disableIstioVirtualHost: false
+      disableIngressCreation: false
+      localGateway:
+        gateway: kubeflow/kubeflow-gateway
+        gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
+        # gateway: knative-serving/knative-local-gateway
+        # gatewayService: knative-local-gateway.istio-system.svc.cluster.local
+      ingressGateway:
+        gateway: kubeflow/kubeflow-gateway
+        # gateway: knative-serving/knative-ingress-gateway
+        gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
+        className: istio
+    nodeSelector: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    affinity: {}
+    image: kserve/kserve-controller
+    tag: *defaultVersion
+    resources:
+      limits:
+        cpu: 100m
+        memory: 300Mi
+      requests:
+        cpu: 100m
+        memory: 300Mi
+  modelmesh:
+    enabled: false
+    controller:
+      nodeSelector: {}
+      tolerations: []
+      topologySpreadConstraints: []
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: control-plane
+                      operator: In
+                      values:
+                        - modelmesh-controller
+                topologyKey: topology.kubernetes.io/zone
+      image: kserve/modelmesh-controller
+      tag: *defaultModelMeshVersion
+    config:
+      modelmeshImage: kserve/modelmesh
+      modelmeshImageTag: *defaultModelMeshVersion
+      modelmeshRuntimeAdapterImage: kserve/modelmesh-runtime-adapter
+      modelmeshRuntimeAdapterImageTag: *defaultModelMeshVersion
+      restProxyImage: kserve/rest-proxy
+      restProxyImageTag: *defaultModelMeshVersion
+      podsPerRuntime: 2
+  servingruntime:
+    modelNamePlaceholder: "{{.Name}}"
+    tensorflow:
+      image: tensorflow/serving
+      tag: 2.6.2
+    mlserver:
+      image: docker.io/seldonio/mlserver
+      tag: 1.3.2
+      modelClassPlaceholder: "{{.Labels.modelClass}}"
+    sklearnserver:
+      image: kserve/sklearnserver
+      tag: *defaultVersion
+    xgbserver:
+      image: kserve/xgbserver
+      tag: *defaultVersion
+    huggingfaceserver:
+      image: kserve/huggingfaceserver
+      tag: *defaultVersion
+    tritonserver:
+      image: nvcr.io/nvidia/tritonserver
+      tag: 23.05-py3
+    pmmlserver:
+      image: kserve/pmmlserver
+      tag: *defaultVersion
+    paddleserver:
+      image: kserve/paddleserver
+      tag: *defaultVersion
+    lgbserver:
+      image: kserve/lgbserver
+      tag: *defaultVersion
+    torchserve:
+      image: pytorch/torchserve-kfs
+      tag: 0.9.0
+      serviceEnvelopePlaceholder: "{{.Labels.serviceEnvelope}}"
+    art:
+      image: kserve/art-explainer
+      defaultVersion: *defaultVersion
