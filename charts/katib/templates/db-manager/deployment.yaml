@@ -25,7 +25,7 @@ spec:
         {{- include "kubeflow.katib.dbmanager.selectorLabels" . | nindent 8 }}
       {{- with .Values.dbmanager.annotations }}
       annotations:
-        {{- toYaml . | nindent 4 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
       containers:
