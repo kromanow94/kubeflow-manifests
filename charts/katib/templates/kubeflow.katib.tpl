@@ -207,7 +207,7 @@ Kubeflow katib Scheduling.
 Kubeflow katib enable and create toggles.
 */}}
 {{- define "kubeflow.katib.enabled" -}}
-{{- .Values.katib.enabled }}
+{{- .Values.enabled }}
 {{- end }}
 
 {{- define "kubeflow.katib.createIstioIntegrationObjects" -}}
