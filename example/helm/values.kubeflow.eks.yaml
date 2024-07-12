@@ -1,3 +1,5 @@
+katib:
+  enabled: false
 auth:
   userHeaderName: kubeflow-userid
 istioIntegration:
