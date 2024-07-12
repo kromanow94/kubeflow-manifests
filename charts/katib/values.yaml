@@ -75,6 +75,7 @@ dbmanager:
       data: # Should be migrated to AVP or similar so not in plaintext
         POSTGRES_USER: a2F0aWI=  # katib
         POSTGRES_PASSWORD: a2F0aWI=  # katib
+        POSTGRES_DB: a2F0aWI=  # katib
 urlPrefix: /katib
 istioIntegration:
   create: true
