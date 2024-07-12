@@ -15,9 +15,9 @@ spec:
   http:
     - match:
         - uri:
-            prefix: {{ .Values.istioIntegration.urlPrefix }}/
+            prefix: {{ .Values.urlPrefix }}/
       rewrite:
-        uri: /
+        uri: {{ .Values.urlPrefix }}
       route:
         - destination:
             host: {{ include "kubeflow.katib.svc.fqdn" . }}
@@ -26,7 +26,7 @@ spec:
       headers:
         request:
           add:
-            x-forwarded-prefix: {{ .Values.istioIntegration.urlPrefix }}
+            x-forwarded-prefix: {{ .Values.urlPrefix }}
             Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
         response:
           add:

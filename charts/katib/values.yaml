@@ -1,9 +1,9 @@
 clusterDomain: cluster.local
 controller:
   name: katib-controller
+urlPrefix: /katib
 istioIntegration:
   create: true
-  urlPrefix: /katib
   enabled: true
   authorizationMode: ingressgateway
   gateway:
