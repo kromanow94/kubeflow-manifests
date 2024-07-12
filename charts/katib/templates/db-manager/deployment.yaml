@@ -37,6 +37,11 @@ spec:
           env:
             - name: DB_NAME
               value: {{ .Values.dbmanager.database.name }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbmanager.database.secret.name }}
+                  key: {{ .Values.dbmanager.database.dbSecretPasswordKey }}
           command:
             - "./katib-db-manager"
           ports:
