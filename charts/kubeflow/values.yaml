@@ -145,7 +145,7 @@ centraldashboard:
           icon: kubeflow:models
         - type: item
           link: /katib/
-          text: Experiments (AutoML)
+          text: Experiments (Katib)
           icon: kubeflow:katib
         - type: item
           text: Experiments (KFP)
