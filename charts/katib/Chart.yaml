@@ -22,7 +22,8 @@ version: 0.0.1
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "0.16.0"
-dependencies:
-  - name: training-operator
-    version: 0.0.1
-    repository: file://../training-operator
+# does this make sense. Katib seems to have dependency on these CRD's but maybe this dependency is considered optional?
+#dependencies:
+#  - name: training-operator
+#    version: 0.0.1
+#    repository: file://../training-operator
