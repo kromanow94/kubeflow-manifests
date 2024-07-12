@@ -23,37 +23,41 @@ Environment names for database config.
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L46
 {{- define "kubeflow.pipelines.mlPipeline.config.db.user.env.name" -}}
-{{- "DBCONFIG_USER" }}
+{{- "DBCONFIG_MYSQLCONFIG_USER" }}
 {{- end }}
 
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L47
 {{- define "kubeflow.pipelines.mlPipeline.config.db.password.env.name" -}}
-{{- "DBCONFIG_PASSWORD" }}
+{{- "DBCONFIG_MYSQLCONFIG_PASSWORD" }}
 {{- end }}
 
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L44
 {{- define "kubeflow.pipelines.mlPipeline.config.db.host.env.name" -}}
-{{- "DBCONFIG_HOST" }}
+{{- "DBCONFIG_MYSQLCONFIG_HOST" }}
 {{- end }}
 
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L45
 {{- define "kubeflow.pipelines.mlPipeline.config.db.port.env.name" -}}
-{{- "DBCONFIG_PORT" }}
+{{- "DBCONFIG_MYSQLCONFIG_PORT" }}
 {{- end }}
 
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L48
 {{- define "kubeflow.pipelines.mlPipeline.config.db.pipelineDatabaseName.env.name" -}}
-{{- "DBCONFIG_DBNAME" }}
+{{- "DBCONFIG_MYSQLCONFIG_DBNAME" }}
 {{- end }}
 
 # This env name is currently hardcoded:
 # https://github.com/kubeflow/pipelines/blob/63ca91850a9f42a357f3417110a3011ddbf43290/backend/src/apiserver/client_manager.go#L53
 {{- define "kubeflow.pipelines.mlPipeline.config.db.conMaxLifetime.env.name" -}}
 {{- "DBCONFIG_CONMAXLIFETIME" }}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.config.db.driver.env.name" -}}
+{{- "DB_DRIVER_NAME" }}
 {{- end }}
 
 {{/*
@@ -158,6 +162,15 @@ value or through Secrets.
     (include "kubeflow.pipelines.mlPipeline.config.db.conMaxLifetime.env.name" . )
     .Values.pipelines.config.db.existingSecretName
     .Values.pipelines.config.db.conMaxLifetime
+) }}
+{{- end }}
+
+{{- define "kubeflow.pipelines.mlPipeline.config.db.driver.env.spec" -}}
+{{- include "kubeflow.component.env.spec" (
+    list
+    (include "kubeflow.pipelines.mlPipeline.config.db.driver.env.name" . )
+    .Values.pipelines.config.db.existingSecretName
+    .Values.pipelines.config.db.driver
 ) }}
 {{- end }}
 

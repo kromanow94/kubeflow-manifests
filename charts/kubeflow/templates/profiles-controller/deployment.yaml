@@ -40,6 +40,14 @@ spec:
         - {{ default "" .Values.profilesController.config.workloadIdentity | quote }}
 
         env:
+        - name: ADMIN
+          value: {{ default "" .Values.profilesController.config.admin | quote }}
+        - name: WORKLOAD_IDENTITY
+          value: {{ default "" .Values.profilesController.config.workloadIdentity | quote }}
+        - name: USERID_HEADER
+          value: {{ .Values.auth.userHeaderName | quote }}
+        - name: USERID_PREFIX
+          value: {{ default "" .Values.auth.userIdPrefix | quote }}
         - name: NOTEBOOK_CONTROLLER_PRINCIPAL
           value: {{ include "kubeflow.notebooks.controller.serviceAccountPrincipal" . }}
         - name: KFP_UI_PRINCIPAL
@@ -72,6 +80,7 @@ spec:
       - name: kfam
         image: {{ include "kubeflow.profilesController.kfam.image" . }}
         imagePullPolicy: {{ include "kubeflow.profilesController.kfam.imagePullPolicy" . }}
+
         command:
         - /access-management
         - "-cluster-admin"
@@ -80,6 +89,25 @@ spec:
         - {{ .Values.auth.userHeaderName | quote }}
         - "-userid-prefix"
         - {{ default "" .Values.auth.userIdPrefix | quote }}
+
+        env:
+        - name: ADMIN
+          value: {{ default "" .Values.profilesController.config.admin | quote }}
+        - name: WORKLOAD_IDENTITY
+          value: {{ default "" .Values.profilesController.config.workloadIdentity | quote }}
+        - name: USERID_HEADER
+          value: {{ .Values.auth.userHeaderName | quote }}
+        - name: USERID_PREFIX
+          value: {{ default "" .Values.auth.userIdPrefix | quote }}
+        - name: NOTEBOOK_CONTROLLER_PRINCIPAL
+          value: {{ include "kubeflow.notebooks.controller.serviceAccountPrincipal" . }}
+        - name: KFP_UI_PRINCIPAL
+          value: {{ include "kubeflow.pipelines.ui.serviceAccountPrincipal" . }}
+        {{- if (include "kubeflow.istioIntegration.enabled" . ) }}
+        - name: ISTIO_INGRESS_GATEWAY_PRINCIPAL
+          value: {{ include "kubeflow.istioIntegration.istioIngressGateway.serviceAccountPrincipal" . }}
+        {{- end }}
+
         livenessProbe:
           httpGet:
             path: /metrics

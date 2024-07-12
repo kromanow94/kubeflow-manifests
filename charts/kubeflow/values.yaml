@@ -1,5 +1,3 @@
-# NOTE: the manifests were taken from kubeflow/manifests with tag v1.8.0-rc.1 (or v1.8.0-rc.0)
-
 # NOTE: try disabling cache in the ml-pipeline
 # or, try using newer version
 
@@ -300,15 +298,15 @@ notebooks:
       ################################################################
       image:
         # the default container image
-        value: kubeflownotebookswg/jupyter-scipy:v1.8.0-rc.0
+        value: kubeflownotebookswg/jupyter-scipy:v1.8.0
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/jupyter-scipy:v1.8.0-rc.0
-          - kubeflownotebookswg/jupyter-pytorch-full:v1.8.0-rc.0
-          - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.8.0-rc.0
-          - kubeflownotebookswg/jupyter-tensorflow-full:v1.8.0-rc.0
-          - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.8.0-rc.0
+          - kubeflownotebookswg/jupyter-scipy:v1.8.0
+          - kubeflownotebookswg/jupyter-pytorch-full:v1.8.0
+          - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.8.0
+          - kubeflownotebookswg/jupyter-tensorflow-full:v1.8.0
+          - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.8.0
 
       ################################################################
       # VSCode-like Container Images (Group 1)
@@ -323,11 +321,11 @@ notebooks:
       ################################################################
       imageGroupOne:
         # the default container image
-        value: kubeflownotebookswg/codeserver-python:v1.8.0-rc.0
+        value: kubeflownotebookswg/codeserver-python:v1.8.0
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/codeserver-python:v1.8.0-rc.0
+          - kubeflownotebookswg/codeserver-python:v1.8.0
 
       ################################################################
       # RStudio-like Container Images (Group 2)
@@ -344,11 +342,11 @@ notebooks:
       ################################################################
       imageGroupTwo:
         # the default container image
-        value: kubeflownotebookswg/rstudio-tidyverse:v1.8.0-rc.0
+        value: kubeflownotebookswg/rstudio-tidyverse:v1.8.0
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/rstudio-tidyverse:v1.8.0-rc.0
+          - kubeflownotebookswg/rstudio-tidyverse:v1.8.0
 
       ################################################################
       # CPU Resources
@@ -392,12 +390,11 @@ notebooks:
           # the list of available vendors in the dropdown
           #  `limitsKey` - what will be set as the actual limit
           #  `uiName` - what will be displayed in the dropdown UI
-          vendors: []
-          #vendors:
-          #  - limitsKey: "nvidia.com/gpu"
-          #    uiName: "NVIDIA"
-          #  - limitsKey: "amd.com/gpu"
-          #    uiName: "AMD"
+          vendors:
+            - limitsKey: "nvidia.com/gpu"
+              uiName: "NVIDIA"
+            - limitsKey: "amd.com/gpu"
+              uiName: "AMD"
 
           # the default value of the limit
           # (possible values: "none", "1", "2", "4", "8")
@@ -823,7 +820,7 @@ pipelines:
   # the container images are stored in a different registry.
   image:
     registry: gcr.io/ml-pipeline
-    tag: 2.0.1
+    tag: 2.0.5
     pullPolicy: IfNotPresent
   config:
     # If this is empty, the kfp backend will automatically configure that with:
@@ -1322,7 +1319,7 @@ pipelines:
     image:
       registryOverwrite: gcr.io/tfx-oss-public
       repository: ml_metadata_store_server
-      tagOverwrite: 1.5.0
+      tagOverwrite: 1.14.0
       pullPolicyOverwrite:
     resources:
       # requests:
