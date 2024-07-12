@@ -33,10 +33,10 @@ spec:
           image: {{ include "kubeflow.katib.dbmanager.image" . }} # docker.io/kubeflowkatib/katib-db-manager
           envFrom:
             - secretRef:
-                name: {{ .Values.database.secret.name }}
+                name: {{ .Values.dbmanager.database.secret.name }}
           env:
             - name: DB_NAME
-              value: {{ .Values.database.name }}
+              value: {{ .Values.dbmanager.database.name }}
           command:
             - "./katib-db-manager"
           ports:

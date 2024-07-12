@@ -66,6 +66,15 @@ dbmanager:
     create: true
     annotations:
     type: ClusterIP
+  database:
+    type: postgres # valid values mysql, postgres
+    name: postgres # Shouldn't this go into a "katib" db?
+    secret:
+      create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
+      name: katib-db-secrets
+      data: # Should be migrated to AVP or similar so not in plaintext
+        DB_USER: a2F0aWI=  # katib
+        DB_PASSWORD: a2F0aWI=  # katib
 urlPrefix: /katib
 istioIntegration:
   create: true
@@ -73,15 +82,6 @@ istioIntegration:
   authorizationMode: ingressgateway
   gateway:
     name: kubeflow-gateway
-database:
-  type: postgres # valid values mysql, postgres
-  name: postgres # Shouldn't this go into a "katib" db?
-  secret:
-    create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
-    name: katib-db-secrets
-    data:  # Should be migrated to AVP or similar so not in plaintext
-      DB_USER: a2F0aWI=  # katib
-      DB_PASSWORD: a2F0aWI=  # katib
 config:
   init:
     certGenerator:
