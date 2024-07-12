@@ -1,5 +1,7 @@
 katib:
-  enabled: false
+  enabled: true
+  database:
+    type: postgres # valid values mysql, postgres
 auth:
   userHeaderName: kubeflow-userid
 istioIntegration:
