@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -146,3 +147,4 @@ subjects:
   - kind: ServiceAccount
     name: katib-controller
     namespace: kubeflow
+{{- end }}

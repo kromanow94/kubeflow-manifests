@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 {{- if .Values.database.type | eq "mysql" }}
 ---
 apiVersion: v1
@@ -11,4 +12,5 @@ spec:
   resources:
     requests:
       storage: 10Gi
+{{- end }}
 {{- end }}

@@ -239,3 +239,10 @@ Kubeflow katib enable and create toggles.
     .Values.katib.podDisruptionBudget
 )}}
 {{- end }}
+
+{{/*
+Kubeflow Katib enable.
+*/}}
+{{- define "kubeflow.katib.enabled" -}}
+{{- .Values.katib.enabled }}
+{{- end }}

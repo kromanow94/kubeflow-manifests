@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 {{- if and
   ( .Values.istioIntegration.create )
   ( .Values.istioIntegration.authorizationMode | eq "granular")
@@ -26,4 +27,5 @@ spec:
     matchLabels:
       {{- include "kubeflow.katib.selectorLabels" . | nindent 6 }}
 
+{{- end }}
 {{- end }}

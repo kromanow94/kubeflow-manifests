@@ -1,3 +1,4 @@
+enabled: true
 clusterDomain: cluster.local
 controller:
   name: katib-controller

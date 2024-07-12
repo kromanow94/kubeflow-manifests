@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 {{- if .Values.istioIntegration.create }}
 ---
 apiVersion: networking.istio.io/v1beta1
@@ -31,4 +32,5 @@ spec:
         response:
           add:
             Tracing-Context: {{ include "kubeflow.katib.ui.baseName" . }}
+{{- end }}
 {{- end }}

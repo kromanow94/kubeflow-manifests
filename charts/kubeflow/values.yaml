@@ -10,6 +10,7 @@ namespace: ""
 
 # Katib chart config
 katib:
+  enabled: true
   database:
     type: postgres # valid values mysql, postgres
 # one of ['cluster', 'namespace']

@@ -1,9 +1,9 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.controller.name }}
-  namespace: kubeflow
   labels:
     katib.kubeflow.org/component: controller
 spec:
@@ -67,3 +67,4 @@ spec:
         - name: katib-config
           configMap:
             name: katib-config
+{{- end }}

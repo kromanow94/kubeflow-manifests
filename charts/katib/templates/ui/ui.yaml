@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -34,3 +35,4 @@ spec:
             - name: ui
               containerPort: 8080
       serviceAccountName: katib-ui
+{{- end }}

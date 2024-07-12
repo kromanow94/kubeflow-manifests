@@ -1,3 +1,4 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
 ---
 apiVersion: v1
 kind: Service
@@ -14,3 +15,4 @@ spec:
       name: api
   selector:
     katib.kubeflow.org/component: db-manager
+{{- end }}
