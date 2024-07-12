@@ -28,12 +28,10 @@ spec:
           args:
             - --datadir
             - /var/lib/mysql/datadir
+          envFrom:
+            - secretRef:
+                name: katib-db-secrets
           env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: katib-mysql-secrets
-                  key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_ALLOW_EMPTY_PASSWORD
               value: "true"
             - name: MYSQL_DATABASE
