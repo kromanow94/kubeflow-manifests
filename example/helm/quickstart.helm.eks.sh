@@ -1,6 +1,20 @@
 #!/bin/bash
 set -e
 
+KUBEFLOW_QUICKSTART_TMP_DIR="${KUBEFLOW_QUICKSTART_TMP_DIR:-/tmp/kubeflow.quickstart.cache}"
+
+KSERVE_VERSION="${KSERVE_VERSION:-v0.11.2}"
+
+KSERVE_HELM_CHART_ARCHIVE_URL="${KSERVE_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-${KSERVE_VERSION}.tgz}"
+KSERVE_HELM_CHART_TGZ_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve.${KSERVE_VERSION}.tgz"
+KSERVE_HELM_CHART_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve.${KSERVE_VERSION}"
+
+KSERVE_CRD_HELM_CHART_ARCHIVE_URL="${KSERVE_CRD_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-crd-${KSERVE_VERSION}.tgz}"
+KSERVE_CRD_HELM_CHART_TGZ_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve-crd.${KSERVE_VERSION}.tgz"
+KSERVE_CRD_HELM_CHART_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve-crd.${KSERVE_VERSION}"
+
+mkdir -p "${KUBEFLOW_QUICKSTART_TMP_DIR}"
+
 cat <<EOF
 WARNING: This script is for reference only and will not work out of the box.
 Also, it assumes the script is run from a locally cloned git repository.
@@ -41,6 +55,9 @@ metadata:
     istio-injection: enabled
   name: kubeflow
 EOF
+
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/namespace.knative-serving.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/namespace.knative-eventing.yaml
 
 # Create secret with database credentials for KFP and MySQL
 export DB_CONFIG_SECRET_NAME=db-credentials
@@ -116,6 +133,62 @@ helm upgrade --install argo-workflows argo-workflows \
     --values values.argo-workflows.yaml \
     --wait
 
+
+# KNative Operator installation. 
+# Using the latest v1.13.0 operator version, results in a compatibility error 
+# with underlying Kubernetes installation: "minKubernetesVersion >= 1.26"
+kubectl apply -f \
+    https://github.com/knative/operator/releases/download/knative-v1.11.0/operator.yaml
+
+# Download kserve-crd Helm Chart from GitHub Release.
+# kserve-crd is available at Helm Chart Repository only from version v0.12.0.
+# https://github.com/kserve/kserve/pkgs/container/charts%2Fkserve-crd
+if [ ! -e "${KSERVE_CRD_HELM_CHART_TGZ_PATH}" ]; then
+    wget \
+        --no-clobber \
+        "${KSERVE_CRD_HELM_CHART_ARCHIVE_URL}" \
+        -O "${KSERVE_CRD_HELM_CHART_TGZ_PATH}"
+fi
+if [ ! -e "${KSERVE_CRD_HELM_CHART_PATH}" ]; then
+    mkdir -p "${KSERVE_CRD_HELM_CHART_PATH}"
+    tar \
+        -xf "${KSERVE_CRD_HELM_CHART_TGZ_PATH}" \
+        -C "${KSERVE_CRD_HELM_CHART_PATH}" \
+        --strip-components=1
+fi
+
+# Download kserve Helm Chart from GitHub Release.
+# kserve is available at Helm Chart Repository only from version v0.12.0.
+# https://github.com/kserve/kserve/pkgs/container/charts%2Fkserve
+if [ ! -e "${KSERVE_HELM_CHART_TGZ_PATH}" ]; then
+    wget \
+        --no-clobber \
+        "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
+        -O "${KSERVE_HELM_CHART_TGZ_PATH}"
+fi
+if [ ! -e "${KSERVE_HELM_CHART_PATH}" ]; then
+    mkdir -p "${KSERVE_HELM_CHART_PATH}"
+    tar \
+        -xf "${KSERVE_HELM_CHART_TGZ_PATH}" \
+        -C "${KSERVE_HELM_CHART_PATH}" \
+        --strip-components=1
+fi
+
+helm upgrade --install kserve-crd "${KSERVE_CRD_HELM_CHART_PATH}" \
+    --namespace kserve \
+    --create-namespace \
+    --wait
+
+helm upgrade --install kserve "${KSERVE_HELM_CHART_PATH}" \
+    --namespace kserve \
+    --create-namespace \
+    --values values.kserve.yaml \
+    --wait
+
+# TODO:  # NOTE(romanok1): is this still valid?
+# - add remaining knative/kserve integrations (AuthorizationPolicies, any user-profile annotations etc)
+
+# Kubeflow fatchart
 helm upgrade --install kubeflow ../../charts/kubeflow \
     --namespace kubeflow \
     --values values.kubeflow.eks.yaml \

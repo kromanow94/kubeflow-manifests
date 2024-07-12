@@ -35,6 +35,10 @@ kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests
 kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.istio-base.yaml
 kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.istiod.yaml
 kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.metacontroller.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.knative-namespaces.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.knative-operator.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve-crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve.yaml
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be
