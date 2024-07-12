@@ -27,7 +27,6 @@ spec:
     headers:
       request:
         add:
-          x-forwarded-prefix: {{ .Values.notebooks.volumesWebApp.config.urlPrefix }}
           Tracing-Context: {{ include "kubeflow.pipelines.ui.name" . }}
       response:
         add:

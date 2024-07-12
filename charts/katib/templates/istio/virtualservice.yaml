@@ -17,7 +17,7 @@ spec:
         - uri:
             prefix: {{ .Values.urlPrefix }}/
       rewrite:
-        uri: {{ .Values.urlPrefix }}
+        uri: /
       route:
         - destination:
             host: {{ include "kubeflow.katib.svc.fqdn" . }}
@@ -26,7 +26,6 @@ spec:
       headers:
         request:
           add:
-            x-forwarded-prefix: {{ .Values.urlPrefix }}
             Tracing-Context: {{ include "kubeflow.katib-ui.baseName" . }}
         response:
           add:
