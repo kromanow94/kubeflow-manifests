@@ -3,8 +3,8 @@ clusterDomain: cluster.local
 defaults:
   image:
     registry: docker.io
-    tag: "latest"
-#    tag: v1.8.0
+#    tag: "latest"
+    tag: v0.16.0
     pullPolicy: IfNotPresent
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
