@@ -60,7 +60,7 @@
         Apps manifest for Kubeflow and its dependencies.</p>
         <ol>
             <li>Create a Kubernetes cluster:<br><pre><code>kind create cluster</code></pre></li>
-            <li>Execute the quickstart script:<br><pre><code>curl -qs https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.2.0/example/helm/quickstart.apps-of-apps.sh | bash</code></pre></li>
+            <li>Execute the quickstart script:<br><pre><code>curl -qs https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/kubeflow-0.2.0/example/helm/quickstart.app-of-apps.sh | bash</code></pre></li>
             <li>Forward the istio-ingressgateway port:<br><pre><code>nohup kubectl -n istio-ingress port-forward service/istio-ingressgateway 8080:80 &</code></pre></li>
         </ol>
 
