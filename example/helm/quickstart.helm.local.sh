@@ -1,19 +1,12 @@
 #!/bin/bash
 set -e
 
-KUBEFLOW_QUICKSTART_TMP_DIR="${KUBEFLOW_QUICKSTART_TMP_DIR:-/tmp/kubeflow.quickstart.cache}"
+KNATIVE_OPERATOR_VERSION="${KNATIVE_OPERATOR_VERSION:-1.11.12}"
+KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL="${KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL:-https://github.com/knative/operator/releases/download/knative-v${KNATIVE_OPERATOR_VERSION}/knative-operator-${KNATIVE_OPERATOR_VERSION}.tgz}"
 
-KSERVE_VERSION="${KSERVE_VERSION:-v0.11.2}"
-
-KSERVE_HELM_CHART_ARCHIVE_URL="${KSERVE_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-${KSERVE_VERSION}.tgz}"
-KSERVE_HELM_CHART_TGZ_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve.${KSERVE_VERSION}.tgz"
-KSERVE_HELM_CHART_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve.${KSERVE_VERSION}"
-
-KSERVE_CRD_HELM_CHART_ARCHIVE_URL="${KSERVE_CRD_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-crd-${KSERVE_VERSION}.tgz}"
-KSERVE_CRD_HELM_CHART_TGZ_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve-crd.${KSERVE_VERSION}.tgz"
-KSERVE_CRD_HELM_CHART_PATH="${KUBEFLOW_QUICKSTART_TMP_DIR}/kserve-crd.${KSERVE_VERSION}"
-
-mkdir -p "${KUBEFLOW_QUICKSTART_TMP_DIR}"
+KSERVE_VERSION="${KSERVE_VERSION:-0.11.2}"
+KSERVE_HELM_CHART_ARCHIVE_URL="${KSERVE_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/v${KSERVE_VERSION}/helm-chart-kserve-v${KSERVE_VERSION}.tgz}"
+KSERVE_CRD_HELM_CHART_ARCHIVE_URL="${KSERVE_CRD_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/v${KSERVE_VERSION}/helm-chart-kserve-crd-v${KSERVE_VERSION}.tgz}"
 
 cat <<EOF
 This script will create 'kubeflow' namespace configured with istio injection and
@@ -28,7 +21,7 @@ EOF
 sleep 10
 set -x
 
-# Create namespaces
+# Kubeflow Namespace #
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Namespace
@@ -38,9 +31,6 @@ metadata:
   name: kubeflow
 EOF
 
-kubectl apply -f namespace.knative-serving.yaml
-kubectl apply -f namespace.knative-eventing.yaml
-
 # Create secret with database credentials for KFP and MySQL
 export DB_CONFIG_SECRET_NAME=db-credentials
 kubectl apply -f "secret.${DB_CONFIG_SECRET_NAME}.yaml"
@@ -49,6 +39,7 @@ kubectl apply -f "secret.${DB_CONFIG_SECRET_NAME}.yaml"
 export OBJECTSTORE_CONFIG_SECRET_NAME=mlpipeline-minio-artifact
 kubectl apply -f "secret.${OBJECTSTORE_CONFIG_SECRET_NAME}.yaml"
 
+# MySQL #
 helm upgrade --install mysql mysql \
     --namespace kubeflow \
     --repo https://charts.bitnami.com/bitnami \
@@ -56,6 +47,7 @@ helm upgrade --install mysql mysql \
     --values values.mysql.yaml \
     --wait
 
+# MinIO #
 helm upgrade --install minio minio \
     --namespace kubeflow \
     --repo https://charts.bitnami.com/bitnami \
@@ -63,6 +55,7 @@ helm upgrade --install minio minio \
     --values values.minio.yaml \
     --wait
 
+# cert-manager #
 helm upgrade --install cert-manager cert-manager \
     --namespace cert-manager \
     --create-namespace \
@@ -71,6 +64,7 @@ helm upgrade --install cert-manager cert-manager \
     --values values.cert-manager.yaml \
     --wait
 
+# Dex #
 helm upgrade --install dex dex \
     --namespace dex \
     --create-namespace \
@@ -79,6 +73,7 @@ helm upgrade --install dex dex \
     --values values.dex.yaml \
     --wait
 
+# Istio Base #
 helm upgrade --install istio-base base \
     --namespace istio-system \
     --create-namespace \
@@ -86,6 +81,7 @@ helm upgrade --install istio-base base \
     --version 1.20.2 \
     --wait
 
+# Istio Discovery #
 helm upgrade --install istiod istiod \
     --namespace istio-system \
     --repo https://istio-release.storage.googleapis.com/charts \
@@ -93,6 +89,7 @@ helm upgrade --install istiod istiod \
     --values values.istiod.yaml \
     --wait
 
+# Istio Ingress Gateway #
 helm upgrade --install istio-ingressgateway gateway \
     --namespace istio-ingress \
     --create-namespace \
@@ -101,6 +98,7 @@ helm upgrade --install istio-ingressgateway gateway \
     --values values.istio-ingressgateway.yaml \
     --wait
 
+# Metacontroller #
 helm upgrade --install metacontroller oci://ghcr.io/metacontroller/metacontroller-helm \
     --namespace metacontroller \
     --create-namespace \
@@ -108,6 +106,7 @@ helm upgrade --install metacontroller oci://ghcr.io/metacontroller/metacontrolle
     --values values.metacontroller.yaml \
     --wait
 
+# Argo Workflows #
 helm upgrade --install argo-workflows argo-workflows \
     --namespace kubeflow \
     --repo https://argoproj.github.io/argo-helm \
@@ -115,68 +114,41 @@ helm upgrade --install argo-workflows argo-workflows \
     --values values.argo-workflows.yaml \
     --wait
 
-# KNative Operator installation.
-# Using the latest v1.13.0 operator version, results in a compatibility error
-# with underlying Kubernetes installation: "minKubernetesVersion >= 1.26"
-kubectl apply -f \
-    https://github.com/knative/operator/releases/download/knative-v1.11.0/operator.yaml
-
-# Download kserve-crd Helm Chart from GitHub Release.
-# kserve-crd is available at Helm Chart Repository only from version v0.12.0.
-# https://github.com/kserve/kserve/pkgs/container/charts%2Fkserve-crd
-if [ ! -e "${KSERVE_CRD_HELM_CHART_TGZ_PATH}" ]; then
-    wget \
-        --no-clobber \
-        "${KSERVE_CRD_HELM_CHART_ARCHIVE_URL}" \
-        -O "${KSERVE_CRD_HELM_CHART_TGZ_PATH}"
-fi
-if [ ! -e "${KSERVE_CRD_HELM_CHART_PATH}" ]; then
-    mkdir -p "${KSERVE_CRD_HELM_CHART_PATH}"
-    tar \
-        -xf "${KSERVE_CRD_HELM_CHART_TGZ_PATH}" \
-        -C "${KSERVE_CRD_HELM_CHART_PATH}" \
-        --strip-components=1
-fi
-
-# Download kserve Helm Chart from GitHub Release.
-# kserve is available at Helm Chart Repository only from version v0.12.0.
-# https://github.com/kserve/kserve/pkgs/container/charts%2Fkserve
-if [ ! -e "${KSERVE_HELM_CHART_TGZ_PATH}" ]; then
-    wget \
-        --no-clobber \
-        "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
-        -O "${KSERVE_HELM_CHART_TGZ_PATH}"
-fi
-if [ ! -e "${KSERVE_HELM_CHART_PATH}" ]; then
-    mkdir -p "${KSERVE_HELM_CHART_PATH}"
-    tar \
-        -xf "${KSERVE_HELM_CHART_TGZ_PATH}" \
-        -C "${KSERVE_HELM_CHART_PATH}" \
-        --strip-components=1
-fi
-
-helm upgrade --install kserve-crd "${KSERVE_CRD_HELM_CHART_PATH}" \
-    --namespace kserve \
+# KNative Operator #
+kubectl apply -f namespace.knative-serving.yaml
+kubectl apply -f namespace.knative-eventing.yaml
+helm upgrade --install knative-operator "${KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL}" \
+    --namespace knative \
     --create-namespace \
     --wait
 
-helm upgrade --install kserve "${KSERVE_HELM_CHART_PATH}" \
-    --namespace kserve \
+# KServe CRDs #
+helm upgrade --install kserve-crd "${KSERVE_CRD_HELM_CHART_ARCHIVE_URL}" \
+    --namespace kubeflow \
+    --create-namespace \
+    --wait
+
+# KServe #
+helm upgrade --install kserve "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
+    --namespace kubeflow \
     --create-namespace \
     --values values.kserve.yaml \
     --wait
 
+# Kubeflow #
 helm upgrade --install kubeflow \
     --namespace kubeflow \
     ../../charts/kubeflow \
     --values values.kubeflow.yaml \
     --wait
 
+# Kubeflow Profile #
 # Create kubeflow-user-example-com profile for tests.
 # Default password for user user@example.com:
 # 12341234
 kubectl apply -f profile.kubeflow-user-example-com.yaml
 
+# oauth2-proxy #
 # When k8s is deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
 # minikube and so on), oauth2-proxy has to wait for CRB allowing access to OIDC
 # Discovery endpoint from anonymous user. This CRB is deployed by kubeflow helm

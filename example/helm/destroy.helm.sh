@@ -8,22 +8,31 @@ helm -n oauth2-proxy uninstall oauth2-proxy --wait=true
 kubectl delete profile kubeflow-user-example-com
 kubectl wait --for=delete namespace/kubeflow-user-example-com --timeout=120s
 
-# Kubeflow Instance #
+# Kubeflow #
 helm -n kubeflow uninstall kubeflow --wait
 
-# Argo WF #
+# KServe #
+helm -n kubeflow uninstall kserve
+helm -n kubeflow uninstall kserve-crd
+
+# Knative #
+helm -n knative uninstall knative-operator
+kubectl delete ns knative-serving
+kubectl delete ns knative-eventing
+
+# Argo Workflows #
 helm -n kubeflow uninstall argo-workflows --wait
 
 # Metacontroller #
 helm -n metacontroller uninstall metacontroller --wait
 
-# istio-ingressgateway #
+# Istio Ingress Gateway #
 helm -n istio-ingress uninstall istio-ingressgateway --wait
 
-# istiod #
+# Istio Discovery #
 helm -n istio-system uninstall istiod --wait
 
-# istio-base #
+# Istio Base #
 helm -n istio-system uninstall istio-base --wait
 
 # Dex #
