@@ -86,7 +86,7 @@ katib:
             POSTGRES_USER: a2F0aWI=  # katib
             POSTGRES_PASSWORD: a2F0aWI=  # katib
             POSTGRES_DB: a2F0aWI=  # katib
-        existingSecretName: katib-db-secrets
+        existingSecretName: # katib-db-secrets
         driver:
           value: postgres
           secretKeyRef:
