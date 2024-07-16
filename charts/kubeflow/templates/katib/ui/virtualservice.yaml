@@ -21,7 +21,7 @@ spec:
         uri: /
       route:
         - destination:
-            host: {{ include "kubeflow.katib.svc.fqdn" . }}
+            host: {{ include "kubeflow.katib.ui.svc.fqdn" . }}
             port:
               number: 80
       headers:
