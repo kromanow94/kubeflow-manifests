@@ -272,16 +272,20 @@ and
 Environment names for database config.
 */}}
 
+{{- define "kubeflow.katib.dbmanager.config.db.driver.env.name" -}}
+{{- "DB_NAME" }}
+{{- end }}
+
 {{- define "kubeflow.katib.dbmanager.config.db.host.env.name" -}}
-{{- "DB_HOST" }}
+{{- "KATIB_MYSQL_DB_HOST" }}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.config.db.port.env.name" -}}
-{{- "DB_PORT" }}
+{{- "KATIB_MYSQL_DB_PORT" }}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.config.db.databaseName.env.name" -}}
-{{- "DB_NAME" }}
+{{- "KATIB_MYSQL_DB_DATABASE" }}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.config.db.user.env.name" -}}

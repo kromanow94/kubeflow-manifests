@@ -32,6 +32,7 @@ spec:
         - name: {{ include "kubeflow.katib.dbmanager.baseName" . }}
           image: {{ include "kubeflow.katib.dbmanager.image" . }} # docker.io/kubeflowkatib/katib-db-manager
           env:
+            {{- include "kubeflow.katib.dbmanager.config.db.driver.env.spec" . | nindent 12 }}
             {{- include "kubeflow.katib.dbmanager.config.db.host.env.spec" . | nindent 12 }}
             {{- include "kubeflow.katib.dbmanager.config.db.port.env.spec" . | nindent 12 }}
             {{- include "kubeflow.katib.dbmanager.config.db.databaseName.env.spec" . | nindent 12 }}

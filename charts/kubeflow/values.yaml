@@ -92,7 +92,7 @@ katib:
           secretKeyRef:
             name:
             key: driver
-        host:
+        host: # I fear this is not consumed by the dbmanager app
           value: postgres
           secretKeyRef:
             name:
