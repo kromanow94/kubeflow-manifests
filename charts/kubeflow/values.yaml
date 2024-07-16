@@ -79,13 +79,6 @@ katib:
       type: ClusterIP
     config:
       db:
-        secret:
-          create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
-          name: katib-db-secrets
-          data: # Should be migrated to AVP or similar so not in plaintext
-            POSTGRES_USER: a2F0aWI=  # katib
-            POSTGRES_PASSWORD: a2F0aWI=  # katib
-            POSTGRES_DB: a2F0aWI=  # katib
         existingSecretName: # katib-db-secrets
         driver:
           value: mysql
@@ -108,12 +101,12 @@ katib:
             name:
             key: databaseName
         user:
-          value: a2F0aWI=  # katib
+          value: katib
           secretKeyRef:
             name:
             key: username
         password:
-          value: a2F0aWI=  # katib
+          value: katib1234
           secretKeyRef:
             name:
             key: password

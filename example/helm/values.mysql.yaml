@@ -4,12 +4,12 @@ auth:
   existingSecret: db-credentials
 commonLabels:
   sidecar.istio.io/inject: "false"
-initdbScripts:
-  my_init_script.sh: |
-    #!/bin/sh
-    if [[ $(hostname) == *master* ]]; then
-      echo "Master node"
-      mysql -P 3306 -uroot -pmysql1234 -e "create database katib";
-    else
-      echo "No master node"
-    fi
+#initdbScripts:
+#  my_init_script.sh: |
+#    #!/bin/sh
+#    if [[ $(hostname) == *master* ]]; then
+#      echo "Master node"
+#      mysql -P 3306 -uroot -pmysql1234 -e "create database katib";
+#    else
+#      echo "No master node"
+#    fi
