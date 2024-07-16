@@ -271,7 +271,9 @@ and
 {{/*
 Environment names for database config.
 */}}
-
+{{/*
+FYI, This env var is actually the driver
+*/}}
 {{- define "kubeflow.katib.dbmanager.config.db.driver.env.name" -}}
 {{- "DB_NAME" }}
 {{- end }}
