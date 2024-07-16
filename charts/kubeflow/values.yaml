@@ -103,7 +103,7 @@ katib:
             name:
             key: port
         databaseName:
-          value: katib # Was postgres, shouldn't this go into a "katib" db?
+          value: postgres # Was postgres, shouldn't this go into a "katib" db?
           secretKeyRef:
             name:
             key: databaseName
