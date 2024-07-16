@@ -92,7 +92,7 @@ katib:
           secretKeyRef:
             name:
             key: driver
-        host: # I fear this is not consumed by the dbmanager app
+        host:
           value: postgres
           secretKeyRef:
             name:
@@ -103,7 +103,7 @@ katib:
             name:
             key: port
         databaseName:
-          value: mysql # Was postgres/mysql, shouldn't this go into a "katib" db?
+          value: katib # Was postgres/mysql, shouldn't this go into a "katib" db?
           secretKeyRef:
             name:
             key: databaseName
