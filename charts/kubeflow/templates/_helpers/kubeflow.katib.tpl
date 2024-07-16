@@ -2,7 +2,7 @@
 Kubeflow Katib Controller object names.
 */}}
 {{- define "kubeflow.katib.baseName" -}}
-{{- printf "katib-controller" }}
+{{- printf "katib" }}
 {{- end }}
 
 {{- define "kubeflow.katib.name" -}}
