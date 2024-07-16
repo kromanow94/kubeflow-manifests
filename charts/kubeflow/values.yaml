@@ -10,6 +10,7 @@ namespace: ""
 
 # Katib chart config
 katib:
+  urlPrefix: /katib
   enabled: true
   defaults:
     image:
