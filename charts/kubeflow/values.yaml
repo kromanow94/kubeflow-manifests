@@ -77,17 +77,46 @@ katib:
       create: true
       annotations:
       type: ClusterIP
-    dbSecretPasswordKey: POSTGRES_PASSWORD
-    database:
-      type: postgres # valid values mysql, postgres
-      name: postgres # Shouldn't this go into a "katib" db?
-      secret:
-        create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
-        name: katib-db-secrets
-        data: # Should be migrated to AVP or similar so not in plaintext
-          POSTGRES_USER: a2F0aWI=  # katib
-          POSTGRES_PASSWORD: a2F0aWI=  # katib
-          POSTGRES_DB: a2F0aWI=  # katib
+    config:
+      db:
+        secret:
+          create: true # Set to false to manually create proper secret if no programatic secret provider is available AVP etc https://argocd-vault-plugin.readthedocs.io/en/stable/config/
+          name: katib-db-secrets
+          data: # Should be migrated to AVP or similar so not in plaintext
+            POSTGRES_USER: a2F0aWI=  # katib
+            POSTGRES_PASSWORD: a2F0aWI=  # katib
+            POSTGRES_DB: a2F0aWI=  # katib
+        existingSecretName: # katib-db-secrets
+        driver:
+          value: postgres
+          secretKeyRef:
+            name:
+            key: driver
+        host:
+          value: postgres
+          secretKeyRef:
+            name:
+            key: host
+        port:
+          value: 3306
+          secretKeyRef:
+            name:
+            key: port
+        databaseName:
+          value: katib # Was postgres, shouldn't this go into a "katib" db?
+          secretKeyRef:
+            name:
+            key: databaseName
+        user:
+          value: a2F0aWI=  # katib
+          secretKeyRef:
+            name:
+            key: username
+        password:
+          value: a2F0aWI=  # katib
+          secretKeyRef:
+            name:
+            key: password
   ui:
     enabled: true
     name: katib-ui

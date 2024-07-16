@@ -17,7 +17,7 @@ Kubeflow Katib dbmanager object names.
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.katib.dbmanager.name" .)
-    .Values.katib.dbmanager.serviceAccount
+    .Values.dbmanager.serviceAccount
 )}}
 {{- end }}
 
@@ -122,16 +122,16 @@ Kubeflow Katib dbmanager container image settings.
 {{- define "kubeflow.katib.dbmanager.image" -}}
 {{ include "kubeflow.component.image" (
     list
-    .Values.katib.defaults.image
-    .Values.katib.dbmanager.image
+    .Values.defaults.image
+    .Values.dbmanager.image
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.imagePullPolicy" -}}
 {{ include "kubeflow.component.imagePullPolicy" (
     list
-    .Values.katib.defaults.image
-    .Values.katib.dbmanager.image
+    .Values.defaults.image
+    .Values.dbmanager.image
 )}}
 {{- end }}
 
@@ -141,40 +141,40 @@ Kubeflow Katib dbmanager Autoscaling and Availability.
 {{- define "kubeflow.katib.dbmanager.autoscaling.minReplicas" -}}
 {{ include "kubeflow.component.autoscaling.minReplicas" (
     list
-    .Values.katib.defaults.autoscaling
-    .Values.katib.dbmanager.autoscaling
+    .Values.defaults.autoscaling
+    .Values.dbmanager.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.autoscaling.maxReplicas" -}}
 {{ include "kubeflow.component.autoscaling.maxReplicas" (
     list
-    .Values.katib.defaults.autoscaling
-    .Values.katib.dbmanager.autoscaling
+    .Values.defaults.autoscaling
+    .Values.dbmanager.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.autoscaling.targetCPUUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" (
     list
-    .Values.katib.defaults.autoscaling
-    .Values.katib.dbmanager.autoscaling
+    .Values.defaults.autoscaling
+    .Values.dbmanager.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.autoscaling.targetMemoryUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (
     list
-    .Values.katib.defaults.autoscaling
-    .Values.katib.dbmanager.autoscaling
+    .Values.defaults.autoscaling
+    .Values.dbmanager.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.pdb.values" -}}
 {{- include "kubeflow.component.pdb.values" (
     list
-    .Values.katib.defaults.podDisruptionBudget
-    .Values.katib.dbmanager.podDisruptionBudget
+    .Values.defaults.podDisruptionBudget
+    .Values.dbmanager.podDisruptionBudget
 )}}
 {{- end }}
 
@@ -184,8 +184,8 @@ Kubeflow Katib dbmanager Security Context.
 {{- define "kubeflow.katib.dbmanager.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
     list
-    .Values.katib.defaults.containerSecurityContext
-    .Values.katib.dbmanager.containerSecurityContext
+    .Values.defaults.containerSecurityContext
+    .Values.dbmanager.containerSecurityContext
 )}}
 {{- end }}
 
@@ -195,32 +195,32 @@ Kubeflow Katib dbmanager Scheduling.
 {{- define "kubeflow.katib.dbmanager.topologySpreadConstraints" -}}
 {{ include "kubeflow.component.topologySpreadConstraints" (
     list
-    .Values.katib.defaults.topologySpreadConstraints
-    .Values.katib.dbmanager.topologySpreadConstraints
+    .Values.defaults.topologySpreadConstraints
+    .Values.dbmanager.topologySpreadConstraints
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.nodeSelector" -}}
 {{ include "kubeflow.component.nodeSelector" (
     list
-    .Values.katib.defaults.nodeSelector
-    .Values.katib.dbmanager.nodeSelector
+    .Values.defaults.nodeSelector
+    .Values.dbmanager.nodeSelector
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.tolerations" -}}
 {{ include "kubeflow.component.tolerations" (
     list
-    .Values.katib.defaults.tolerations
-    .Values.katib.dbmanager.tolerations
+    .Values.defaults.tolerations
+    .Values.dbmanager.tolerations
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.affinity" -}}
 {{ include "kubeflow.component.affinity" (
     list
-    .Values.katib.defaults.affinity
-    .Values.katib.dbmanager.affinity
+    .Values.defaults.affinity
+    .Values.dbmanager.affinity
 )}}
 {{- end }}
 
@@ -231,15 +231,15 @@ Kubeflow Katib dbmanager enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.enabled" . | eq "true")
-    .Values.katib.dbmanager.enabled
+    .Values.dbmanager.enabled
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.dbmanager.autoscaling.enabled" -}}
 {{ include "kubeflow.component.autoscaling.enabled" (
     list
-    .Values.katib.defaults.autoscaling
-    .Values.katib.dbmanager.autoscaling
+    .Values.defaults.autoscaling
+    .Values.dbmanager.autoscaling
 )}}
 {{- end }}
 
@@ -247,7 +247,7 @@ Kubeflow Katib dbmanager enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.dbmanager.enabled" . | eq "true")
-    .Values.katib.dbmanager.rbac.create
+    .Values.dbmanager.rbac.create
 )}}
 {{- end }}
 
@@ -255,7 +255,7 @@ Kubeflow Katib dbmanager enable and create toggles.
 {{- ternary true "" (
 and
     (include "kubeflow.katib.dbmanager.enabled" . | eq "true")
-    .Values.katib.dbmanager.serviceAccount.create
+    .Values.dbmanager.serviceAccount.create
 )}}
 {{- end }}
 
@@ -263,90 +263,7 @@ and
 {{- include "kubeflow.component.pdb.create" (
     list
     (include "kubeflow.katib.dbmanager.enabled" .)
-    .Values.katib.defaults.podDisruptionBudget
-    .Values.katib.dbmanager.podDisruptionBudget
+    .Values.defaults.podDisruptionBudget
+    .Values.dbmanager.podDisruptionBudget
 )}}
-{{- end }}
-
-{{/*
-Environment names for database config.
-*/}}
-
-{{- define "kubeflow.katib.dbmanager.config.db.host.env.name" -}}
-{{- "DB_HOST" }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.port.env.name" -}}
-{{- "DB_PORT" }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.databaseName.env.name" -}}
-{{- "DB_NAME" }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.user.env.name" -}}
-{{- "DB_USER" }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.password.env.name" -}}
-{{- "DB_PASSWORD" }}
-{{- end }}
-
-{{/*
-Environment Entries parametrization for database configuration with plaintext
-value or through Secrets.
-*/}}
-
-{{- define "kubeflow.katib.dbmanager.config.db.driver.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.driver.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.driver
-) }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.host.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.host.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.host
-) }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.port.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.port.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.port
-) }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.databaseName.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.databaseName.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.databaseName
-) }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.user.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.user.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.user
-) }}
-{{- end }}
-
-{{- define "kubeflow.katib.dbmanager.config.db.password.env.spec" -}}
-{{- include "kubeflow.component.env.spec" (
-    list
-    (include "kubeflow.katib.dbmanager.config.db.password.env.name" . )
-    .Values.katib.dbmanager.config.db.existingSecretName
-    .Values.katib.dbmanager.config.db.password
-) }}
 {{- end }}

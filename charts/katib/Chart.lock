@@ -1,0 +1,6 @@
+dependencies:
+- name: training-operator
+  repository: file://../training-operator
+  version: 0.0.1
+digest: sha256:b4407ad38b798f50257b7c0c1b98d224fd014f2e6aa2a4028fda405253d6c7ba
+generated: "2024-07-11T21:02:55.340808-04:00"
