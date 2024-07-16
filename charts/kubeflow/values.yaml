@@ -88,7 +88,7 @@ katib:
             POSTGRES_DB: a2F0aWI=  # katib
         existingSecretName: # katib-db-secrets
         driver:
-          value: postgres
+          value: mysql
           secretKeyRef:
             name:
             key: driver
@@ -103,7 +103,7 @@ katib:
             name:
             key: port
         databaseName:
-          value: postgres # Was postgres, shouldn't this go into a "katib" db?
+          value: mysql # Was postgres/mysql, shouldn't this go into a "katib" db?
           secretKeyRef:
             name:
             key: databaseName
