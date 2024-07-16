@@ -93,7 +93,7 @@ katib:
             name:
             key: driver
         host:
-          value: postgres
+          value: katib-mysql-host
           secretKeyRef:
             name:
             key: host
