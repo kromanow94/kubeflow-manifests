@@ -17,7 +17,7 @@ Kubeflow Katib ui object names.
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.katib.ui.name" .)
-    .Values.ui.serviceAccount
+    .Values.katib.ui.serviceAccount
 )}}
 {{- end }}
 
@@ -122,16 +122,16 @@ Kubeflow Katib ui container image settings.
 {{- define "kubeflow.katib.ui.image" -}}
 {{ include "kubeflow.component.image" (
     list
-    .Values.defaults.image
-    .Values.ui.image
+    .Values.katib.defaults.image
+    .Values.katib.ui.image
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.imagePullPolicy" -}}
 {{ include "kubeflow.component.imagePullPolicy" (
     list
-    .Values.defaults.image
-    .Values.ui.image
+    .Values.katib.defaults.image
+    .Values.katib.ui.image
 )}}
 {{- end }}
 
@@ -141,40 +141,40 @@ Kubeflow Katib ui Autoscaling and Availability.
 {{- define "kubeflow.katib.ui.autoscaling.minReplicas" -}}
 {{ include "kubeflow.component.autoscaling.minReplicas" (
     list
-    .Values.defaults.autoscaling
-    .Values.ui.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.ui.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.autoscaling.maxReplicas" -}}
 {{ include "kubeflow.component.autoscaling.maxReplicas" (
     list
-    .Values.defaults.autoscaling
-    .Values.ui.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.ui.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.autoscaling.targetCPUUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" (
     list
-    .Values.defaults.autoscaling
-    .Values.ui.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.ui.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.autoscaling.targetMemoryUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (
     list
-    .Values.defaults.autoscaling
-    .Values.ui.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.ui.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.pdb.values" -}}
 {{- include "kubeflow.component.pdb.values" (
     list
-    .Values.defaults.podDisruptionBudget
-    .Values.ui.podDisruptionBudget
+    .Values.katib.defaults.podDisruptionBudget
+    .Values.katib.ui.podDisruptionBudget
 )}}
 {{- end }}
 
@@ -184,8 +184,8 @@ Kubeflow Katib ui Security Context.
 {{- define "kubeflow.katib.ui.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
     list
-    .Values.defaults.containerSecurityContext
-    .Values.ui.containerSecurityContext
+    .Values.katib.defaults.containerSecurityContext
+    .Values.katib.ui.containerSecurityContext
 )}}
 {{- end }}
 
@@ -195,32 +195,32 @@ Kubeflow Katib ui Scheduling.
 {{- define "kubeflow.katib.ui.topologySpreadConstraints" -}}
 {{ include "kubeflow.component.topologySpreadConstraints" (
     list
-    .Values.defaults.topologySpreadConstraints
-    .Values.ui.topologySpreadConstraints
+    .Values.katib.defaults.topologySpreadConstraints
+    .Values.katib.ui.topologySpreadConstraints
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.nodeSelector" -}}
 {{ include "kubeflow.component.nodeSelector" (
     list
-    .Values.defaults.nodeSelector
-    .Values.ui.nodeSelector
+    .Values.katib.defaults.nodeSelector
+    .Values.katib.ui.nodeSelector
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.tolerations" -}}
 {{ include "kubeflow.component.tolerations" (
     list
-    .Values.defaults.tolerations
-    .Values.ui.tolerations
+    .Values.katib.defaults.tolerations
+    .Values.katib.ui.tolerations
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.affinity" -}}
 {{ include "kubeflow.component.affinity" (
     list
-    .Values.defaults.affinity
-    .Values.ui.affinity
+    .Values.katib.defaults.affinity
+    .Values.katib.ui.affinity
 )}}
 {{- end }}
 
@@ -231,15 +231,15 @@ Kubeflow Katib ui enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.enabled" . | eq "true")
-    .Values.ui.enabled
+    .Values.katib.ui.enabled
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.ui.autoscaling.enabled" -}}
 {{ include "kubeflow.component.autoscaling.enabled" (
     list
-    .Values.defaults.autoscaling
-    .Values.ui.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.ui.autoscaling
 )}}
 {{- end }}
 
@@ -247,7 +247,7 @@ Kubeflow Katib ui enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.ui.enabled" . | eq "true")
-    .Values.ui.rbac.create
+    .Values.katib.ui.rbac.create
 )}}
 {{- end }}
 
@@ -255,7 +255,7 @@ Kubeflow Katib ui enable and create toggles.
 {{- ternary true "" (
 and
     (include "kubeflow.katib.ui.enabled" . | eq "true")
-    .Values.ui.serviceAccount.create
+    .Values.katib.ui.serviceAccount.create
 )}}
 {{- end }}
 
@@ -263,7 +263,7 @@ and
 {{- include "kubeflow.component.pdb.create" (
     list
     (include "kubeflow.katib.ui.enabled" .)
-    .Values.defaults.podDisruptionBudget
-    .Values.ui.podDisruptionBudget
+    .Values.katib.defaults.podDisruptionBudget
+    .Values.katib.ui.podDisruptionBudget
 )}}
 {{- end }}

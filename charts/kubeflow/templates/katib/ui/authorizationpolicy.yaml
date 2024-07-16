@@ -1,5 +1,5 @@
 {{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
-{{- if .Values.istioIntegration.create }}
+{{- if .Values.katib.istioIntegration.create }}
 
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
@@ -16,7 +16,7 @@ spec:
   - from:
     - source:
         namespaces:
-        - {{ .Values.istioIntegration.ingressGatewayNamespace | default "istio-ingress" }}
+        - {{ .Values.katib.istioIntegration.ingressGatewayNamespace | default "istio-ingress" }}
 
 {{- end }}
 {{- end }}

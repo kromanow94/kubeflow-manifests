@@ -65,7 +65,7 @@ spec:
               name: katib-config
               subPath: katib-config.yaml
               readOnly: true
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.katib.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}

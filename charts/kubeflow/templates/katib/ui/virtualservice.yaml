@@ -1,5 +1,5 @@
 {{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
-{{- if .Values.istioIntegration.create }}
+{{- if .Values.katib.istioIntegration.create }}
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -10,13 +10,13 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   gateways:
-    - {{ .Values.istioIntegration.gateway.name }}
+    - {{ .Values.katib.istioIntegration.gateway.name }}
   hosts:
     - '*'
   http:
     - match:
         - uri:
-            prefix: {{ .Values.urlPrefix }}/
+            prefix: {{ .Values.katib.urlPrefix }}/
       rewrite:
         uri: /
       route:
@@ -27,7 +27,7 @@ spec:
       headers:
         request:
           add:
-            x-forwarded-prefix: {{ .Values.urlPrefix }}
+            x-forwarded-prefix: {{ .Values.katib.urlPrefix }}
             Tracing-Context: {{ include "kubeflow.katib.ui.baseName" . }}
         response:
           add:

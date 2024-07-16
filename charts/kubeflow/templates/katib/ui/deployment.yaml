@@ -24,7 +24,7 @@ spec:
     metadata:
       labels:
         {{- include "kubeflow.katib.ui.selectorLabels" . | nindent 8 }}
-      {{- with .Values.ui.annotations }}
+      {{- with .Values.katib.ui.annotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

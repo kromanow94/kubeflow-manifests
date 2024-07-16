@@ -17,7 +17,7 @@ Kubeflow Katib Controller object names.
 {{- include "kubeflow.component.serviceAccountName"  (
     list
     (include "kubeflow.katib.controller.name" .)
-    .Values.controller.serviceAccount
+    .Values.katib.controller.serviceAccount
 )}}
 {{- end }}
 
@@ -122,16 +122,16 @@ Kubeflow Katib Controller container image settings.
 {{- define "kubeflow.katib.controller.image" -}}
 {{ include "kubeflow.component.image" (
     list
-    .Values.defaults.image
-    .Values.controller.image
+    .Values.katib.defaults.image
+    .Values.katib.controller.image
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.imagePullPolicy" -}}
 {{ include "kubeflow.component.imagePullPolicy" (
     list
-    .Values.defaults.image
-    .Values.controller.image
+    .Values.katib.defaults.image
+    .Values.katib.controller.image
 )}}
 {{- end }}
 
@@ -141,40 +141,40 @@ Kubeflow Katib Controller Autoscaling and Availability.
 {{- define "kubeflow.katib.controller.autoscaling.minReplicas" -}}
 {{ include "kubeflow.component.autoscaling.minReplicas" (
     list
-    .Values.defaults.autoscaling
-    .Values.controller.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.controller.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.autoscaling.maxReplicas" -}}
 {{ include "kubeflow.component.autoscaling.maxReplicas" (
     list
-    .Values.defaults.autoscaling
-    .Values.controller.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.controller.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.autoscaling.targetCPUUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetCPUUtilizationPercentage" (
     list
-    .Values.defaults.autoscaling
-    .Values.controller.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.controller.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.autoscaling.targetMemoryUtilizationPercentage" -}}
 {{ include "kubeflow.component.autoscaling.targetMemoryUtilizationPercentage" (
     list
-    .Values.defaults.autoscaling
-    .Values.controller.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.controller.autoscaling
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.pdb.values" -}}
 {{- include "kubeflow.component.pdb.values" (
     list
-    .Values.defaults.podDisruptionBudget
-    .Values.controller.podDisruptionBudget
+    .Values.katib.defaults.podDisruptionBudget
+    .Values.katib.controller.podDisruptionBudget
 )}}
 {{- end }}
 
@@ -184,8 +184,8 @@ Kubeflow Katib Controller Security Context.
 {{- define "kubeflow.katib.controller.containerSecurityContext" -}}
 {{ include "kubeflow.component.containerSecurityContext" (
     list
-    .Values.defaults.containerSecurityContext
-    .Values.controller.containerSecurityContext
+    .Values.katib.defaults.containerSecurityContext
+    .Values.katib.controller.containerSecurityContext
 )}}
 {{- end }}
 
@@ -195,32 +195,32 @@ Kubeflow Katib Controller Scheduling.
 {{- define "kubeflow.katib.controller.topologySpreadConstraints" -}}
 {{ include "kubeflow.component.topologySpreadConstraints" (
     list
-    .Values.defaults.topologySpreadConstraints
-    .Values.controller.topologySpreadConstraints
+    .Values.katib.defaults.topologySpreadConstraints
+    .Values.katib.controller.topologySpreadConstraints
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.nodeSelector" -}}
 {{ include "kubeflow.component.nodeSelector" (
     list
-    .Values.defaults.nodeSelector
-    .Values.controller.nodeSelector
+    .Values.katib.defaults.nodeSelector
+    .Values.katib.controller.nodeSelector
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.tolerations" -}}
 {{ include "kubeflow.component.tolerations" (
     list
-    .Values.defaults.tolerations
-    .Values.controller.tolerations
+    .Values.katib.defaults.tolerations
+    .Values.katib.controller.tolerations
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.affinity" -}}
 {{ include "kubeflow.component.affinity" (
     list
-    .Values.defaults.affinity
-    .Values.controller.affinity
+    .Values.katib.defaults.affinity
+    .Values.katib.controller.affinity
 )}}
 {{- end }}
 
@@ -231,15 +231,15 @@ Kubeflow Katib Controller enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.enabled" . | eq "true")
-    .Values.controller.enabled
+    .Values.katib.controller.enabled
 )}}
 {{- end }}
 
 {{- define "kubeflow.katib.controller.autoscaling.enabled" -}}
 {{ include "kubeflow.component.autoscaling.enabled" (
     list
-    .Values.defaults.autoscaling
-    .Values.controller.autoscaling
+    .Values.katib.defaults.autoscaling
+    .Values.katib.controller.autoscaling
 )}}
 {{- end }}
 
@@ -247,7 +247,7 @@ Kubeflow Katib Controller enable and create toggles.
 {{- ternary true "" (
     and
     (include "kubeflow.katib.controller.enabled" . | eq "true")
-    .Values.controller.rbac.create
+    .Values.katib.controller.rbac.create
 )}}
 {{- end }}
 
@@ -255,7 +255,7 @@ Kubeflow Katib Controller enable and create toggles.
 {{- ternary true "" (
 and
     (include "kubeflow.katib.controller.enabled" . | eq "true")
-    .Values.controller.serviceAccount.create
+    .Values.katib.controller.serviceAccount.create
 )}}
 {{- end }}
 
@@ -263,7 +263,7 @@ and
 {{- include "kubeflow.component.pdb.create" (
     list
     (include "kubeflow.katib.controller.enabled" .)
-    .Values.defaults.podDisruptionBudget
-    .Values.controller.podDisruptionBudget
+    .Values.katib.defaults.podDisruptionBudget
+    .Values.katib.controller.podDisruptionBudget
 )}}
 {{- end }}

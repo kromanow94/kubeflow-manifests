@@ -6,10 +6,10 @@ metadata:
   name: katib-webhook-cert
 spec:
   isCA: true
-  commonName: {{ .Values.controller.name }}.{{ .Release.Namespace }}.svc
+  commonName: {{ .Values.katib.controller.name }}.{{ .Release.Namespace }}.svc
   dnsNames:
-    - {{ .Values.controller.name }}.{{- .Release.Namespace }}.svc
-    - {{ .Values.controller.name }}.{{- .Release.Namespace }}.svc.cluster.local
+    - {{ .Values.katib.controller.name }}.{{- .Release.Namespace }}.svc
+    - {{ .Values.katib.controller.name }}.{{- .Release.Namespace }}.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: katib-selfsigned-issuer

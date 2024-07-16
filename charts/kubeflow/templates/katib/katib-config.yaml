@@ -8,5 +8,5 @@ data:
     ---
     apiVersion: config.kubeflow.org/v1beta1
     kind: KatibConfig
-    {{ .Values.config | toYaml | nindent 4 }}
+    {{ .Values.katib.config | toYaml | nindent 4 }}
 {{- end }}

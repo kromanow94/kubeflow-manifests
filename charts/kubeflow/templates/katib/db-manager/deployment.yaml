@@ -23,7 +23,7 @@ spec:
     metadata:
       labels:
         {{- include "kubeflow.katib.dbmanager.selectorLabels" . | nindent 8 }}
-      {{- with .Values.dbmanager.annotations }}
+      {{- with .Values.katib.dbmanager.annotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -33,15 +33,15 @@ spec:
           image: {{ include "kubeflow.katib.dbmanager.image" . }} # docker.io/kubeflowkatib/katib-db-manager
           envFrom:
             - secretRef:
-                name: {{ .Values.dbmanager.database.secret.name }}
+                name: {{ .Values.katib.dbmanager.database.secret.name }}
           env:
             - name: DB_NAME
-              value: {{ .Values.dbmanager.database.name }}
+              value: {{ .Values.katib.dbmanager.database.name }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.dbmanager.database.secret.name }}
-                  key: {{ .Values.dbmanager.database.dbSecretPasswordKey }}
+                  name: {{ .Values.katib.dbmanager.database.secret.name }}
+                  key: {{ .Values.katib.dbmanager.dbSecretPasswordKey }}
           command:
             - "./katib-db-manager"
           ports:
@@ -53,7 +53,7 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 60
             failureThreshold: 5
-      {{- with .Values.imagePullSecrets }}
+      {{- with .Values.katib.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
