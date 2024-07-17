@@ -10,6 +10,10 @@ Dex validations.
 {{- fail "Currently only 'dexIntegration.integrationMode: istio' is supported." -}}
 {{- end }}
 
+{{- if (ne .Values.pipelines.config.db.driver.value "mysql" ) -}}
+{{- fail "Currently only 'pipelines.config.db.driver: mysql' is supported." -}}
+{{- end }}
+
 {{/*
 Kubeflow Pipelines validations.
 */}}

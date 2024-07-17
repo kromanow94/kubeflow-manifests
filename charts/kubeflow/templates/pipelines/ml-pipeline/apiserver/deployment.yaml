@@ -39,6 +39,7 @@ spec:
         {{- include "kubeflow.pipelines.mlPipeline.config.db.port.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.mlPipeline.config.db.pipelineDatabaseName.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.mlPipeline.config.db.conMaxLifetime.env.spec" . | nindent 8 }}
+        {{- include "kubeflow.pipelines.mlPipeline.config.db.driver.env.spec" . | nindent 8 }}
 
         {{- include "kubeflow.pipelines.mlPipeline.config.objectStore.accessKey.env.spec" . | nindent 8 }}
         {{- include "kubeflow.pipelines.mlPipeline.config.objectStore.secretAccessKey.env.spec" . | nindent 8 }}
