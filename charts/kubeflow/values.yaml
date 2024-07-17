@@ -1947,12 +1947,6 @@ knativeIntegration:
               service: cluster-local-gateway.istio-ingress.svc.cluster.local
         domain: {}
           # example.com: ""
-        # ------  Below is from previous definition, probably from Alin.
-        autoscaler:
-         stable-window: 60s
-         max-scale-up-rate: "10.0"
-        defaults:
-          container-concurrency: "1"
 
   # Eventing config
   knativeEventing:
@@ -1963,7 +1957,3 @@ knativeIntegration:
     # put directly to the KnativeEventing CRD under .spec.
     operatorSpec:
       version: 1.10.2
-
-  # Istio integration configuration
-  istioIntegration:
-    enabled: true

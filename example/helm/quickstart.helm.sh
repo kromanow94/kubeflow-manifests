@@ -136,7 +136,7 @@ helm upgrade --install kubeflow-crds kubeflow-crds \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kubeflow-crds.yaml" \
     --wait
 
-# Kubeflow fatchart #
+# Kubeflow #
 helm upgrade --install kubeflow kubeflow \
     --namespace kubeflow \
     --repo https://kromanow94.github.io/kubeflow-manifests \
