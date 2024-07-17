@@ -15,6 +15,12 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+auth:
+  userHeaderName: kubeflow-userid
+  userIdPrefix: ""
+
+clusterDomain: cluster.local
+
 defaults:
   image:
     registry: docker.io
@@ -1889,108 +1895,75 @@ dexIntegration:
       class:
       annotations:
 
-auth:
-  userHeaderName: kubeflow-userid
-  userIdPrefix: ""
-
-clusterDomain: cluster.local
-# apiVersion: v1
-# data:
-#   ConMaxLifeTime: 120s
-#   DEFAULT_CACHE_STALENESS: ""
-#   MAXIMUM_CACHE_STALENESS: ""
-#   appName: pipeline
-#   appVersion: 2.0.1
-#   autoUpdatePipelineDefaultVersion: "true"
-#   bucketName: mlpipeline
-#   cacheDb: cachedb
-#   cacheImage: gcr.io/google-containers/busybox
-#   cacheNodeRestrictions: "false"
-#   cronScheduleTimezone: UTC
-#   dbHost: mysql
-#   dbPort: "3306"
-#   defaultPipelineRoot: ""
-#   mlmdDb: metadb
-#   pipelineDb: mlpipeline
-#   warning: |
-#     1. Do not use kubectl to edit this configmap, because some values are used
-#     during kustomize build. Instead, change the configmap and apply the entire
-#     kustomize manifests again.
-#     2. After updating the configmap, some deployments may need to be restarted
-#     until the changes take effect. A quick way to restart all deployments in a
-#     namespace: `kubectl rollout restart deployment -n <your-namespace>`.
-# kind: ConfigMap
-# metadata:
-#   labels:
-#     app.kubernetes.io/component: ml-pipeline
-#     app.kubernetes.io/name: kubeflow-pipelines
-#     application-crd-id: kubeflow-pipelines
-#   name: pipeline-install-config
-#   namespace: kubeflow
-
 knativeIntegration:
-  # Version default
-  version: &defaultVersion "1.10.2"
   enabled: true
-  # Serving config
   knativeServing:
-    version: *defaultVersion
-    namespace: knative-serving
     enabled: true
+    name: knative-serving
+    namespace: knative-serving
+    # Whatever is under .knativeIntegration.knativeServing.operatorSpec will be
+    # put directly to the KnativeServing CRD under .spec.
+    operatorSpec:
+      version: 1.10.2
+      ingress:
+        istio:
+          enabled: true
+          knative-ingress-gateway:
+            selector:
+              istio: ingressgateway
+            servers:
+              - port:
+                  number: 80
+                  name: http
+                  protocol: HTTP
+                hosts:
+                - "*"
+          knative-local-gateway:
+            selector:
+              istio: cluster-local-gateway
+            servers:
+              - port:
+                  number: 80
+                  name: http
+                  protocol: HTTP
+                hosts:
+                - "*"
+      config:
+        # Note: The configuration options may be copied out of
+        # the example blocks, found in each of the supported KNative ConfigMaps.
+        # For more information, visit official knative operator documentation:
+        # https://knative.dev/docs/install/operator/configuring-with-operator/
+        istio:
+          gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.istio-ingress.svc.cluster.local"
+          local-gateway.knative-serving.knative-local-gateway: "cluster-local-gateway.istio-ingress.svc.cluster.local"
+          external-gateways: |
+            - name: knative-ingress-gateway
+              namespace: knative-serving
+              service: istio-ingressgateway.istio-ingress.svc.cluster.local
+
+          local-gateways: |
+            - name: knative-local-gateway
+              namespace: knative-serving
+              service: cluster-local-gateway.istio-ingress.svc.cluster.local
+        domain: {}
+          # example.com: ""
+        # ------  Below is from previous definition, probably from Alin.
+        autoscaler:
+         stable-window: 60s
+         max-scale-up-rate: "10.0"
+        defaults:
+          container-concurrency: "1"
 
   # Eventing config
   knativeEventing:
-    version: *defaultVersion
-    namespace: knative-eventing
     enabled: false
+    name: knative-serving
+    namespace: knative-eventing
+    # Whatever is under .knativeIntegration.knativeEventing.operatorSpec will be
+    # put directly to the KnativeEventing CRD under .spec.
+    operatorSpec:
+      version: 1.10.2
 
   # Istio integration configuration
   istioIntegration:
     enabled: true
-    ingressGateway:
-      service: &ingressGatewayService "istio-ingressgateway.istio-system.svc.cluster.local"
-      selector: &ingressGatewaySelector
-        istio: ingressgateway
-    gateways:
-      # Attach to separate KNative ingress & local gateways
-      # - selector:
-      #     knative-ingress-gateway: *ingressGatewaySelector
-      #   binding:
-      #     gateway.knative-serving.knative-ingress-gateway: *ingressGatewayService
-      # - selector:
-      #     knative-local-gateway: *ingressGatewaySelector
-      #   binding:
-      #     local-gateway.knative-serving.knative-local-gateway: *ingressGatewayService
-
-      # Attach to Kubeflow gateway, as single ingress point for knative
-      - selector:
-          knative-ingress-gateway: *ingressGatewaySelector
-        binding:
-          gateway.kubeflow.kubeflow-gateway: *ingressGatewayService
-  # Setting ConfigMap values
-  # Warning: manually edited resources will be overwritten by operator values
-  config:
-    _example: |
-      # Note: The configuration options may be copied out of
-      # the example blocks, found in each of the supported KNative ConfigMaps.
-      # For more information, visit official knative operator documentation:
-      # https://knative.dev/docs/install/operator/configuring-with-operator/
-    domain:
-      example.com: ""
-      # prod.example.com: |
-      #   selector:
-      #     app: prod
-    autoscaler:
-      stable-window: 60s
-      max-scale-up-rate: "10.0"
-    defaults:
-      container-concurrency: "1"
-    deployment: {}
-    features: {}
-    gc: {}
-    istio: {}
-    leader: {}
-    logging: {}
-    network: {}
-    observability: {}
-    tracing: {}

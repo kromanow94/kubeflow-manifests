@@ -9,16 +9,13 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
+    namespace: knative-operator
     server: https://kubernetes.default.svc
   project: default
   sources:
-    - repoURL: https://github.com/knative/operator
-      targetRevision: knative-v1.11.0
-      path: config/default
-      kustomize:
-        images:
-          - "ko://knative.dev/operator/cmd/operator=gcr.io/knative-releases/knative.dev/operator/cmd/operator@sha256:0a3b5b4e84b8a97fc18826db74f4c3e615b8543a35e85d75c9fd2e8549286c23"
-          - "ko://knative.dev/operator/cmd/webhook=gcr.io/knative-releases/knative.dev/operator/cmd/webhook@sha256:be644ea95ffde47bb36131408c3ba6302bb4d59d1e3578d212affcd340275e00"
+    - chart: knative-operator
+      repoURL: https://raw.githubusercontent.com/kromanow94/knative-operator/main
+      targetRevision: v1.11.12
   ignoreDifferences:
     - group: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -34,3 +31,5 @@ spec:
         factor: 2
         maxDuration: 10m
       limit: 5
+    syncOptions:
+      - CreateNamespace=true
