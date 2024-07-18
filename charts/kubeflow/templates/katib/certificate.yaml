@@ -1,0 +1,24 @@
+{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: katib-webhook-cert
+spec:
+  isCA: true
+  commonName: {{ .Values.katib.controller.name }}.{{ .Release.Namespace }}.svc
+  dnsNames:
+    - {{ .Values.katib.controller.name }}.{{- .Release.Namespace }}.svc
+    - {{ .Values.katib.controller.name }}.{{- .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: katib-selfsigned-issuer
+  secretName: katib-webhook-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: katib-selfsigned-issuer
+spec:
+  selfSigned: {}
+{{- end }}
