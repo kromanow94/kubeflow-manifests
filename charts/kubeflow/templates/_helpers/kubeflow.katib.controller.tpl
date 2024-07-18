@@ -267,3 +267,34 @@ and
     .Values.katib.controller.podDisruptionBudget
 )}}
 {{- end }}
+
+{{/*
+Kubeflow Katib Controller certificate manager.
+*/}}
+{{- define "kubeflow.katib.controller.enabledWithCertManager" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.katib.controller.enabled" . | eq "true" )
+        (include "kubeflow.certManagerIntegration.enabled" . | eq "true" )
+)}}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.certIssuerName" -}}
+{{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "selfsigned-issuer" }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.tlsCertSecretName" -}}
+{{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "tls-certs" }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.validatingWebhookName" -}}
+{{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "validating" }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.mutatingWebhookName" -}}
+{{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "mutating" }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.certName" -}}
+{{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "cert" }}
+{{- end }}
