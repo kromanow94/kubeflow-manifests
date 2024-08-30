@@ -148,7 +148,7 @@ helm upgrade --install kubeflow kubeflow \
 # Create kubeflow-user-example-com profile for tests.
 # Default password for user user@example.com:
 # 12341234
-kubectl apply -f profile.kubeflow-user-example-com.yaml
+kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/profile.kubeflow-user-example-com.yaml"
 
 # oauth2-proxy #
 # When k8s is deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
