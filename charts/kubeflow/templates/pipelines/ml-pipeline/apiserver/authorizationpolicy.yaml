@@ -31,4 +31,10 @@ spec:
     - key: request.headers[{{ .Values.auth.userHeaderName }}]
       notValues: ['*']
 
+  # allow access by any trusted principal
+  # Please see the following for reference:
+  # https://github.com/kubeflow/manifests/issues/2747
+  - from:
+    - source:
+        requestPrincipals: ["*"]
 {{- end }}
