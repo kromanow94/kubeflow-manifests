@@ -1,12 +1,11 @@
-{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
-{{- if .Values.katib.istioIntegration.create }}
+{{- if (include "kubeflow.katib.ui.createIstioIntegrationObjects" .) -}}
 
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   labels:
-    {{- include "kubeflow.katib.labels" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.name" . }}
+    {{- include "kubeflow.katib.ui.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.ui.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   selector:
@@ -16,7 +15,8 @@ spec:
   - from:
     - source:
         namespaces:
-        - {{ .Values.katib.istioIntegration.ingressGatewayNamespace | default "istio-ingress" }}
+        # in upstream this is directly the istio-ingressgateway service account
+        # apps/katib/upstream/installs/katib-with-kubeflow/istio-authorizationpolicy.yaml
+        - {{ .Values.istioIntegration.ingressGatewayNamespace }}
 
-{{- end }}
 {{- end }}

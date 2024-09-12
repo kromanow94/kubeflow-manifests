@@ -61,6 +61,16 @@ Kubeflow Katib Controller object names.
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "katib-view" }}
 {{- end }}
 
+{{- define "kubeflow.katib.controller.configMapName" -}}
+{{/*
+katib-config ConfigMap name is hardcoded
+https://github.com/kubeflow/katib/blob/0e2ba6efc1bc18b1d1d72b90046598a00f02a2c3/pkg/controller.v1beta1/consts/const.go#L109
+https://github.com/kubeflow/katib/blob/0e2ba6efc1bc18b1d1d72b90046598a00f02a2c3/pkg/util/v1beta1/katibconfig/config.go#L164
+{{- printf "%s-%s" (include "kubeflow.katib.controller.name" .) "config" }}
+*/}}
+{{- printf "katib-config" }}
+{{- end }}
+
 {{/*
 Role Aggregation Rule Labels
 */}}
@@ -298,3 +308,25 @@ Kubeflow Katib Controller certificate manager.
 {{- define "kubeflow.katib.controller.certName" -}}
 {{ printf "%s-%s" (include "kubeflow.katib.controller.name" .) "cert" }}
 {{- end }}
+
+{{/*
+Kubeflow Katib Controller Admission Webhooks.
+*/}}
+{{- define "kubeflow.katib.controller.webhook.baseName" -}}
+{{ printf "katib.kubeflow.org" }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.mutatingWebhook.name" -}}
+{{ printf "%s" (include "kubeflow.katib.controller.webhook.baseName" .) }}
+{{- end }}
+
+{{- define "kubeflow.katib.controller.validatingWebhook.name" -}}
+{{ printf "%s" (include "kubeflow.katib.controller.webhook.baseName" .) }}
+{{- end }}
+
+{{/*
+{{- define "kubeflow.katib.controller.mutatingWebhook.experimentDefaulter.name" -}}
+{{ printf "%s.%s" "defaulter.experiment" (include "kubeflow.katib.controller.mutatingWebhook.name" .) }}
+{{- end }}
+*/}}
+

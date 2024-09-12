@@ -267,3 +267,11 @@ and
     .Values.katib.ui.podDisruptionBudget
 )}}
 {{- end }}
+
+{{- define "kubeflow.katib.ui.createIstioIntegrationObjects" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.katib.ui.enabled" . | eq "true" )
+        .Values.istioIntegration.enabled
+)}}
+{{- end }}

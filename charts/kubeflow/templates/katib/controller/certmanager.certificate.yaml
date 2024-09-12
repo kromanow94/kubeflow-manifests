@@ -9,7 +9,7 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   isCA: true
-  commonName: {{ .Values.katib.controller.name }}.{{ .Release.Namespace }}.svc
+  commonName: {{ include "kubeflow.katib.controller.svc.addressWithSvc" . }}
   dnsNames:
     - {{ include "kubeflow.katib.controller.svc.name" . }}
     - {{ include "kubeflow.katib.controller.svc.addressWithNs" . }}

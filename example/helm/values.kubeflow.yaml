@@ -19,6 +19,21 @@ pipelines:
         secretKeyRef:
           name: mlpipeline-minio-artifact
 
+katib:
+  dbmanager:
+    config:
+      db:
+        user:
+          secretKeyRef:
+            name: db-credentials
+        password:
+          secretKeyRef:
+            name: db-credentials
+            key: mysql-root-password
+        host:
+          secretKeyRef:
+            name: db-credentials
+
 notebooks:
   jupyterWebApp:
     spawnerFormDefaults:

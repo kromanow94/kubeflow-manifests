@@ -1,5 +1,5 @@
-{{- if (include "kubeflow.katib.enabled" . | eq "true") -}}
----
+{{- if (include "kubeflow.katib.enabled" .) -}}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,17 +13,48 @@ data:
     kind: Job
     spec:
       template:
+        metadata:
+          labels:
+            sidecar.istio.io/inject: 'false'
         spec:
           containers:
             - name: training-container
-              image: docker.io/kubeflowkatib/pytorch-mnist-cpu:v0.17.0-rc.0
+              image: busybox
+              env:
+                - name: TEST_PARAM1
+                  value: "${trialParameters.test1}"
+                - name: TEST_PARAM2
+                  value: "${trialParameters.test2}"
+                - name: TEST_PARAM3
+                  value: "${trialParameters.test3}"
+              command:
+                - sh
+                - -c
+              args:
+                - |
+                  sleep 10
+                  env
+                  accuracy=1
+          restartPolicy: Never
+  defaultTrialTemplate2.yaml: |-
+    apiVersion: batch/v1
+    kind: Job
+    spec:
+      template:
+        metadata:
+          labels:
+            sidecar.istio.io/inject: 'false'
+        spec:
+          containers:
+            - name: training-container
+              image: docker.io/kubeflowkatib/mxnet-mnist:v0.16.0
               command:
                 - "python3"
-                - "/opt/pytorch-mnist/mnist.py"
-                - "--epochs=1"
-                - "--batch-size=16"
+                - "/opt/mxnet-mnist/mnist.py"
+                - "--batch-size=64"
                 - "--lr=${trialParameters.learningRate}"
-                - "--momentum=${trialParameters.momentum}"
+                - "--num-layers=${trialParameters.numberLayers}"
+                - "--optimizer=${trialParameters.optimizer}"
           restartPolicy: Never
   # For ConfigMap templates double quotes must set in commands to correct parse JSON parameters in Trial Template (e.g nn_config, architecture)
   enasCPUTemplate: |-
@@ -31,10 +62,13 @@ data:
     kind: Job
     spec:
       template:
+        metadata:
+          labels:
+            sidecar.istio.io/inject: 'false'
         spec:
           containers:
             - name: training-container
-              image: docker.io/kubeflowkatib/enas-cnn-cifar10-cpu:v0.17.0-rc.0
+              image: docker.io/kubeflowkatib/enas-cnn-cifar10-cpu:v0.16.0
               command:
                 - python3
                 - -u
@@ -55,7 +89,7 @@ data:
             spec:
               containers:
                 - name: pytorch
-                  image: docker.io/kubeflowkatib/pytorch-mnist-cpu:v0.17.0-rc.0
+                  image: docker.io/kubeflowkatib/pytorch-mnist-cpu:v0.16.0
                   command:
                     - "python3"
                     - "/opt/pytorch-mnist/mnist.py"
@@ -69,11 +103,12 @@ data:
             spec:
               containers:
                 - name: pytorch
-                  image: docker.io/kubeflowkatib/pytorch-mnist-cpu:v0.17.0-rc.0
+                  image: docker.io/kubeflowkatib/pytorch-mnist-cpu:v0.16.0
                   command:
                     - "python3"
                     - "/opt/pytorch-mnist/mnist.py"
                     - "--epochs=1"
                     - "--lr=${trialParameters.learningRate}"
                     - "--momentum=${trialParameters.momentum}"
+
 {{- end }}

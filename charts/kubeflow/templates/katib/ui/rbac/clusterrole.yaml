@@ -34,4 +34,11 @@ rules:
       - pods/log
     verbs:
       - get
+  # the following only in multi-user mode
+  - apiGroups:
+      - authorization.k8s.io
+    resources:
+      - subjectaccessreviews
+    verbs:
+      - create
 {{- end }}

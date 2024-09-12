@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.katib.controller.enabled" . | eq "true") -}}
+{{- if (include "kubeflow.katib.controller.enabled" .) -}}
 
 {{- $autoscalingEnabled := include "kubeflow.katib.controller.autoscaling.enabled" . -}}
 {{- $replicas := include "kubeflow.katib.controller.autoscaling.minReplicas" . -}}
@@ -26,11 +26,10 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
-        sidecar.istio.io/inject: "false"
     spec:
       containers:
         - name: {{ include "kubeflow.katib.controller.baseName" . }}
-          image: {{ include "kubeflow.katib.controller.image" . }} # docker.io/kubeflowkatib/katib-controller
+          image: {{ include "kubeflow.katib.controller.image" . }}
           command: ["./katib-controller"]
           args:
             - --katib-config=/katib-config.yaml
@@ -74,8 +73,8 @@ spec:
         - name: cert
           secret:
             defaultMode: 420
-            secretName: katib-webhook-cert
+            secretName: {{ include "kubeflow.katib.controller.tlsCertSecretName" . }}
         - name: katib-config
           configMap:
-            name: katib-config
+            name: {{ include "kubeflow.katib.controller.configMapName" . }}
 {{- end }}

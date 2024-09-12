@@ -20,12 +20,12 @@ webhooks:
         name: {{ include "kubeflow.pipelines.cache.svc.name" .}}
         namespace: {{ include "kubeflow.namespace" . }}
         path: "/mutate"
-    failurePolicy: Ignore
     rules:
     - operations: [ "CREATE" ]
       apiGroups: [""]
       apiVersions: ["v1"]
       resources: ["pods"]
+    failurePolicy: Ignore
     sideEffects: None
     timeoutSeconds: 5
     objectSelector:
