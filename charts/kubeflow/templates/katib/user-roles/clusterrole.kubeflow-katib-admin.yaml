@@ -7,5 +7,5 @@ metadata:
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
-        {{- include "kubeflow.katib.kfNbAdminClusterRoleName" . | nindent 6 }}
+        {{- include "kubeflow.katib.kfNbAdminClusterRoleName" . | nindent 8 }}
 rules: []
