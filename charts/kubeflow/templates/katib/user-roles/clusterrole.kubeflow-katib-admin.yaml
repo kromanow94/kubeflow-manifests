@@ -1,11 +1,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-katib-admin
   labels:
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-admin: "true"
+    {{- include "kubeflow.kubeflowRoles.kubeflowAdminRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.kfNbAdminClusterRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
-        rbac.authorization.kubeflow.org/aggregate-to-kubeflow-katib-admin: "true"
+        {{- include "kubeflow.katib.kfNbAdminClusterRoleName" . | nindent 6 }}
 rules: []

@@ -1,9 +1,9 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kubeflow-katib-view
   labels:
-    rbac.authorization.kubeflow.org/aggregate-to-kubeflow-view: "true"
+    {{- include "kubeflow.kubeflowRoles.kubernetesViewRoleLabel" . | nindent 4 }}
+  name: {{ include "kubeflow.katib.kfNbViewClusterRoleName" . }}
 rules:
   - apiGroups:
       - kubeflow.org
