@@ -418,7 +418,7 @@ notebooks:
               # "{notebook-name}" is replaced with the Notebook name
               name: "{notebook-name}-workspace"
             spec:
-              #storageClassName: my-storage-class
+              # storageClassName: my-storage-class
               resources:
                 requests:
                   storage: 5Gi
@@ -433,7 +433,7 @@ notebooks:
 
         # a list of additional data volumes to be created and/or mounted
         value: []
-        #value:
+        # value:
         #  - mount: /home/jovyan/datavol-1
         #    newPvc:
         #      metadata:
@@ -463,7 +463,7 @@ notebooks:
 
         # the list of available affinity configs in the dropdown
         options: []
-        #options:
+        # options:
         #  - configKey: "dedicated_node_per_notebook"
         #    displayName: "Dedicated Node Per Notebook"
         #    affinity:
@@ -502,7 +502,7 @@ notebooks:
 
         # the list of available toleration groups in the dropdown
         options: []
-        #options:
+        # options:
         #  - groupKey: "group_1"
         #    displayName: "4 CPU 8Gb Mem at ~$X.XXX USD per day"
         #    tolerations:
@@ -553,7 +553,7 @@ notebooks:
         # the list of PodDefault names that are selected by default
         # (take care to ensure these PodDefaults exist in Profile Namespaces)
         value: []
-        #value:
+        # value:
         #  - my-pod-default
 
       ################################################################
@@ -864,7 +864,7 @@ katib:
       type: ClusterIP
     config:
       db:
-        existingSecretName: # katib-db-secrets
+        existingSecretName: #  katib-db-secrets
         driver:
           value: mysql
           secretKeyRef:
@@ -881,7 +881,7 @@ katib:
             name:
             key: port
         databaseName:
-          value: katib # Was postgres/mysql, shouldn't this go into a "katib" db?
+          value: katib #  Was postgres/mysql, shouldn't this go into a "katib" db?
           secretKeyRef:
             name:
             key: databaseName
@@ -1236,7 +1236,7 @@ pipelines:
 
   # ---
 
-  mlPipeline: # aka api-server
+  mlPipeline: #  aka api-server
     enabled: true
     image:
       repository: api-server
