@@ -3,7 +3,7 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.kubeflowRoles.kubernetesViewRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.kfNbViewClusterRoleName" . }}
+  name: {{ include "kubeflow.katib.viewClusterRoleName" . }}
 rules:
   - apiGroups:
       - kubeflow.org

@@ -3,9 +3,9 @@ kind: ClusterRole
 metadata:
   labels:
     {{- include "kubeflow.kubeflowRoles.kubeflowAdminRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.kfNbAdminClusterRoleName" . }}
+  name: {{ include "kubeflow.katib.adminClusterRoleName" . }}
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
-        {{- include "kubeflow.katib.kfNbAdminClusterRoleName" . | nindent 8 }}
+        {{- include "kubeflow.katib.adminClusterRoleLabel" . | nindent 8 }}
 rules: []

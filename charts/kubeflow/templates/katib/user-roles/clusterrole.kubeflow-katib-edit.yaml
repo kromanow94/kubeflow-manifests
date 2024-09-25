@@ -2,9 +2,9 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    {{- include "kubeflow.katib.kfNbAdminClusterRoleLabel" . | nindent 4 }}
+    {{- include "kubeflow.katib.adminClusterRoleLabel" . | nindent 4 }}
     {{- include "kubeflow.kubeflowRoles.kubeflowEditRoleLabel" . | nindent 4 }}
-  name: {{ include "kubeflow.katib.kfNbEditClusterRoleName" . }}
+  name: {{ include "kubeflow.katib.editClusterRoleName" . }}
 rules:
   - apiGroups:
       - kubeflow.org
