@@ -8,7 +8,6 @@ commonLabels:
 initdbScripts:
   create_katib_database.sh: |
     #!/bin/bash
-
     # MySQL login details
     MYSQL_PORT="${MYSQL_PORT:-3306}"           # Default to port 3306 if not set
     MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}"
@@ -25,4 +24,3 @@ initdbScripts:
     else
         echo "Database '${KATIB_DB_NAME}' already exists."
     fi
-

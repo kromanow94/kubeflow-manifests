@@ -49,23 +49,23 @@ Kubeflow Katib Controller object names.
 {{- include "kubeflow.katib.leaderElectionRoleName" . }}
 {{- end }}
 
-{{- define "kubeflow.katib.kfNbAdminClusterRoleName" -}}
+{{- define "kubeflow.katib.adminClusterRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "katib-admin" }}
 {{- end }}
 
-{{- define "kubeflow.katib.kfNbEditClusterRoleName" -}}
+{{- define "kubeflow.katib.editClusterRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "katib-edit" }}
 {{- end }}
 
-{{- define "kubeflow.katib.kfNbViewClusterRoleName" -}}
+{{- define "kubeflow.katib.viewClusterRoleName" -}}
 {{- printf "%s-%s" (include "kubeflow.fullname" .) "katib-view" }}
 {{- end }}
 
 {{/*
 Role Aggregation Rule Labels
 */}}
-{{- define "kubeflow.katib.kfNbAdminClusterRoleLabel" -}}
-{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.katib.kfNbAdminClusterRoleName" .) -}}
+{{- define "kubeflow.katib.adminClusterRoleLabel" -}}
+{{- include "kubeflow.aggregationRule.labelBase" (include "kubeflow.katib.adminClusterRoleName" .) -}}
 {{- end }}
 
 {{/*

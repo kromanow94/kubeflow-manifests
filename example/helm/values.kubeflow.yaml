@@ -26,6 +26,7 @@ katib:
         user:
           secretKeyRef:
             name: db-credentials
+            key: username
         password:
           secretKeyRef:
             name: db-credentials
@@ -33,6 +34,7 @@ katib:
         host:
           secretKeyRef:
             name: db-credentials
+            key: host
 
 notebooks:
   jupyterWebApp:
