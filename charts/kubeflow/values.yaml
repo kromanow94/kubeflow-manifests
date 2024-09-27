@@ -864,7 +864,7 @@ katib:
       type: ClusterIP
     config:
       db:
-        existingSecretName: #  katib-db-secrets
+        existingSecretName:
         driver:
           value: mysql
           secretKeyRef:
@@ -881,7 +881,7 @@ katib:
             name:
             key: port
         databaseName:
-          value: katib #  Was postgres/mysql, shouldn't this go into a "katib" db?
+          value: katib
           secretKeyRef:
             name:
             key: databaseName
@@ -1179,7 +1179,8 @@ pipelines:
 
   # ---
 
-  mlPipeline: #  aka api-server
+  mlPipeline:
+     # aka api-server
     enabled: true
     image:
       repository: api-server
