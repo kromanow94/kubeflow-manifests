@@ -418,7 +418,7 @@ notebooks:
               # "{notebook-name}" is replaced with the Notebook name
               name: "{notebook-name}-workspace"
             spec:
-              #storageClassName: my-storage-class
+              # storageClassName: my-storage-class
               resources:
                 requests:
                   storage: 5Gi
@@ -433,7 +433,7 @@ notebooks:
 
         # a list of additional data volumes to be created and/or mounted
         value: []
-        #value:
+        # value:
         #  - mount: /home/jovyan/datavol-1
         #    newPvc:
         #      metadata:
@@ -463,7 +463,7 @@ notebooks:
 
         # the list of available affinity configs in the dropdown
         options: []
-        #options:
+        # options:
         #  - configKey: "dedicated_node_per_notebook"
         #    displayName: "Dedicated Node Per Notebook"
         #    affinity:
@@ -502,7 +502,7 @@ notebooks:
 
         # the list of available toleration groups in the dropdown
         options: []
-        #options:
+        # options:
         #  - groupKey: "group_1"
         #    displayName: "4 CPU 8Gb Mem at ~$X.XXX USD per day"
         #    tolerations:
@@ -553,7 +553,7 @@ notebooks:
         # the list of PodDefault names that are selected by default
         # (take care to ensure these PodDefaults exist in Profile Namespaces)
         value: []
-        #value:
+        # value:
         #  - my-pod-default
 
       ################################################################
@@ -813,6 +813,168 @@ profilesController:
       app.kubernetes.io/part-of: "kubeflow-profile"
     extraNamespaceLabels:
 
+katib:
+  urlPrefix: /katib
+  enabled: true
+  controller:
+    enabled: true
+    name: katib-controller
+    image:
+      repository: kubeflowkatib/katib-controller
+      registryOverwrite:
+      tagOverwrite: v0.16.0
+      pullPolicyOverwrite:
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    service:
+      create: true
+      annotations:
+        prometheus.io/port: "8080"
+        prometheus.io/scheme: http
+        prometheus.io/scrape: "true"
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+  dbmanager:
+    enabled: true
+    name: katib-db-manager
+    image:
+      repository: kubeflowkatib/katib-db-manager
+      registryOverwrite:
+      tagOverwrite: v0.16.0
+      pullPolicyOverwrite:
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+    annotations:
+      sidecar.istio.io/inject: "false"
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    config:
+      db:
+        existingSecretName:
+        driver:
+          value: mysql
+          secretKeyRef:
+            name:
+            key: driver
+        host:
+          value: mysql.kubeflow.svc.cluster.local
+          secretKeyRef:
+            name:
+            key: host
+        port:
+          value: 3306
+          secretKeyRef:
+            name:
+            key: port
+        databaseName:
+          value: katib
+          secretKeyRef:
+            name:
+            key: databaseName
+        user:
+          value: katib
+          secretKeyRef:
+            name:
+            key: username
+        password:
+          value: katib1234
+          secretKeyRef:
+            name:
+            key: password
+  ui:
+    enabled: true
+    name: katib-ui
+    urlPrefix: /katib
+    image:
+      repository: kubeflowkatib/katib-ui
+      registryOverwrite:
+      tagOverwrite: v0.16.0
+      pullPolicyOverwrite:
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    service:
+      create: true
+      annotations:
+  istioIntegration:
+    create: true
+    enabled: true
+    authorizationMode: ingressgateway
+    gateway:
+      name: kubeflow-gateway
+  config:
+    init:
+      controller:
+        webhookPort: 8443
+        trialResources:
+          - Job.v1.batch
+          - TFJob.v1.kubeflow.org
+          - PyTorchJob.v1.kubeflow.org
+          - MPIJob.v1.kubeflow.org
+          - XGBoostJob.v1.kubeflow.org
+          - MXJob.v1.kubeflow.org
+    runtime:
+      metricsCollectors:
+        - kind: StdOut
+          image: docker.io/kubeflowkatib/file-metrics-collector:v0.16.0
+        - kind: File
+          image: docker.io/kubeflowkatib/file-metrics-collector:v0.16.0
+        - kind: TensorFlowEvent
+          image: docker.io/kubeflowkatib/tfevent-metrics-collector:v0.16.0
+          resources:
+            limits:
+              memory: 1Gi
+      suggestions:
+        - algorithmName: random
+          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.16.0
+        - algorithmName: tpe
+          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.16.0
+        - algorithmName: grid
+          image: docker.io/kubeflowkatib/suggestion-optuna:v0.16.0
+        - algorithmName: hyperband
+          image: docker.io/kubeflowkatib/suggestion-hyperband:v0.16.0
+        - algorithmName: bayesianoptimization
+          image: docker.io/kubeflowkatib/suggestion-skopt:v0.16.0
+        - algorithmName: cmaes
+          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.16.0
+        - algorithmName: sobol
+          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.16.0
+        - algorithmName: multivariate-tpe
+          image: docker.io/kubeflowkatib/suggestion-optuna:v0.16.0
+        - algorithmName: enas
+          image: docker.io/kubeflowkatib/suggestion-enas:v0.16.0
+          resources:
+            limits:
+              memory: 200Mi
+        - algorithmName: darts
+          image: docker.io/kubeflowkatib/suggestion-darts:v0.16.0
+        - algorithmName: pbt
+          image: docker.io/kubeflowkatib/suggestion-pbt:v0.16.0
+          persistentVolumeClaimSpec:
+            accessModes:
+              - ReadWriteMany
+            resources:
+              requests:
+                storage: 5Gi
+      earlyStoppings:
+        - algorithmName: medianstop
+          image: docker.io/kubeflowkatib/earlystopping-medianstop:v0.16.0
+
 # TODO: verify patches in apps/pipeline/upstream/base/installs/multi-user
 pipelines:
   enabled: true
@@ -1017,7 +1179,8 @@ pipelines:
 
   # ---
 
-  mlPipeline: # aka api-server
+  mlPipeline:
+     # aka api-server
     enabled: true
     image:
       repository: api-server

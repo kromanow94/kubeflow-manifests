@@ -4,3 +4,23 @@ auth:
   existingSecret: db-credentials
 commonLabels:
   sidecar.istio.io/inject: "false"
+
+initdbScripts:
+  create_katib_database.sh: |
+    #!/bin/bash
+    # MySQL login details
+    MYSQL_PORT="${MYSQL_PORT:-3306}"           # Default to port 3306 if not set
+    MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD}"
+    KATIB_DB_NAME="${KATIB_DB_NAME:-katib}"    # Default to 'katib' if not set
+
+    # Check if the specified database exists
+    DB_EXISTS=$(mysql -P "${MYSQL_PORT}" -uroot -p"${MYSQL_ROOT_PASSWORD}" -e "SHOW DATABASES LIKE '${KATIB_DB_NAME}';" | grep "${KATIB_DB_NAME}" > /dev/null; echo "$?")
+
+    # If the database does not exist, create it
+    if [ "$DB_EXISTS" -eq 1 ]; then
+        echo "Database '${KATIB_DB_NAME}' does not exist. Creating..."
+        mysql -P "${MYSQL_PORT}" -uroot -p"${MYSQL_ROOT_PASSWORD}" -e "CREATE DATABASE ${KATIB_DB_NAME};"
+        echo "Database '${KATIB_DB_NAME}' created successfully."
+    else
+        echo "Database '${KATIB_DB_NAME}' already exists."
+    fi
