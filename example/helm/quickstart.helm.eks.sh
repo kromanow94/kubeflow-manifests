@@ -33,7 +33,7 @@ EOF
 sleep 10
 set -x
 
-# Kubeflow Namespace #
+# Create namespaces #
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Namespace
@@ -41,6 +41,26 @@ metadata:
   labels:
     istio-injection: enabled
   name: kubeflow
+EOF
+
+# If we're using '.Values.knativeIntegration.knativeServing.enabled: true', this namespace
+# must exist before we deploy 'kubeflow' Helm Chart.
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+  name: knative-serving
+EOF
+
+# If we're using '.Values.knativeIntegration.knativeEventing.enabled: true', this namespace
+# must exist before we deploy 'kubeflow' Helm Chart.
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+  name: knative-eventing
 EOF
 
 # Create secret with database credentials for KFP and MySQL

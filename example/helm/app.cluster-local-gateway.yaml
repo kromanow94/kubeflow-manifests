@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: cluster-local-gateway
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: istio-ingress
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: gateway
+      repoURL: https://istio-release.storage.googleapis.com/charts
+      targetRevision: 1.20.2
+      helm:
+        valueFiles:
+          - $values/example/helm/values.cluster-local-gateway.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5
+    syncOptions:
+      - CreateNamespace=true
