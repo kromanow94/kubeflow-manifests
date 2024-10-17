@@ -20,7 +20,7 @@ spec:
         valueFiles:
           - $values/example/helm/values.argo-workflows.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: helmcharts
+      targetRevision: 47-simplify-knative-integration-and-add-cluster-local-gateway
       ref: values
   syncPolicy:
     automated:

@@ -14,13 +14,13 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: helmcharts
+      targetRevision: 47-simplify-knative-integration-and-add-cluster-local-gateway
       path: charts/kubeflow-crds
       helm:
         valueFiles:
           - $values/example/helm/values.kubeflow-crds.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: helmcharts
+      targetRevision: 47-simplify-knative-integration-and-add-cluster-local-gateway
       ref: values
   syncPolicy:
     automated:

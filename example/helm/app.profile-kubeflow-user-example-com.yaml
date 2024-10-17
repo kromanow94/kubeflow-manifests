@@ -13,7 +13,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-    targetRevision: helmcharts
+    targetRevision: 47-simplify-knative-integration-and-add-cluster-local-gateway
     path: example/helm
     directory:
       include: profile.kubeflow-user-example-com.yaml
