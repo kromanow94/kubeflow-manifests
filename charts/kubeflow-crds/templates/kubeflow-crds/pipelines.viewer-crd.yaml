@@ -1,0 +1,71 @@
+{{- if (include "kubeflowCrds.pipelines.viewerCrd.enabled" . | eq "true") -}}
+{{- if .Values.crds.minimized }}
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.pipelines.viewerCrd.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.pipelines.viewerCrd.fullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.pipelines.viewerCrd.group" . }}
+  names:
+    kind: Viewer
+    listKind: ViewerList
+    plural: {{ include "kubeflowCrds.pipelines.viewerCrd.pluralName" . }}
+    shortNames:
+    - vi
+    singular: {{ include "kubeflowCrds.pipelines.viewerCrd.singularName" . }}
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        required:
+        - spec
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+
+{{- else }}
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.pipelines.viewerCrd.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.pipelines.viewerCrd.fullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.pipelines.viewerCrd.group" . }}
+  names:
+    kind: Viewer
+    listKind: ViewerList
+    plural: {{ include "kubeflowCrds.pipelines.viewerCrd.pluralName" . }}
+    singular: {{ include "kubeflowCrds.pipelines.viewerCrd.singularName" . }}
+    shortNames:
+    - vi
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+            x-kubernetes-map-type: atomic
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+
+{{- end }}
+{{- end }}

@@ -10,6 +10,7 @@ kubectl wait --for=delete namespace/kubeflow-user-example-com --timeout=120s
 
 # Kubeflow #
 helm -n kubeflow uninstall kubeflow --wait
+helm -n kubeflow uninstall crds --wait
 
 # KServe #
 helm -n kubeflow uninstall kserve

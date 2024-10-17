@@ -1,0 +1,4 @@
+# '.crds.minimized: true' is the default for the kubeflow-crds Helm Chart.
+# It's here just for example.
+crds:
+  minimized: true

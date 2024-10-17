@@ -136,6 +136,14 @@ helm upgrade --install kserve "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kserve.yaml" \
     --wait
 
+# Kubeflow CRDs #
+helm upgrade --install kubeflow-crds ../../charts/kubeflow-crds \
+    --namespace kubeflow \
+    --repo https://kromanow94.github.io/kubeflow-manifests \
+    --version 0.2.0 \
+    --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kubeflow-crds.yaml" \
+    --wait
+
 # Kubeflow fatchart #
 helm upgrade --install kubeflow kubeflow \
     --namespace kubeflow \

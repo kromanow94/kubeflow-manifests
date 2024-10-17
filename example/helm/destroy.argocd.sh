@@ -9,6 +9,7 @@ kubectl -n argocd delete app profile-kubeflow-user-example-com
 
 # Kubeflow Instance #
 kubectl -n argocd delete app kubeflow
+kubectl -n argocd delete app crds
 
 # KServe #
 kubectl -n argocd delete app kserve
