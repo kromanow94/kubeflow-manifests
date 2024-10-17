@@ -1,6 +1,6 @@
 apiVersion: v2
-name: kubeflow
-description: A Helm chart for Kubeflow
+name: kubeflow-crds
+description: A Helm chart for Kubeflow CRDs
 
 # A chart can be either an 'application' or a 'library' chart.
 #

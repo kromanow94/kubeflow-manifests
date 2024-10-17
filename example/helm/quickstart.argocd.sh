@@ -50,6 +50,7 @@ kubectl wait pods --all -n kubeflow --for=condition=Ready --timeout 300s
 set -x
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.argo-workflows.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.istio-ingressgateway.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.crds.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kubeflow.yaml"
 set +x
 

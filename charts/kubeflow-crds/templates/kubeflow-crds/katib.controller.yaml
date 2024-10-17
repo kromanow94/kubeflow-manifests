@@ -1,0 +1,247 @@
+{{- if (include "kubeflowCrds.katib.controller.enabled" . | eq "true") -}}
+{{- if .Values.crds.minimized }}
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.experimentFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Experiment
+    plural: {{ include "kubeflowCrds.katib.controller.experimentPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.experimentSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.suggestionFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Suggestion
+    plural: {{ include "kubeflowCrds.katib.controller.suggestionPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.suggestionSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .spec.requests
+      name: Requested
+      type: string
+    - jsonPath: .status.suggestionCount
+      name: Assigned
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.trialFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Trial
+    plural: {{ include "kubeflowCrds.katib.controller.trialPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.trialSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+{{- else }}
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.experimentFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Experiment
+    plural: {{ include "kubeflowCrds.katib.controller.experimentPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.experimentSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.suggestionFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Suggestion
+    plural: {{ include "kubeflowCrds.katib.controller.suggestionPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.suggestionSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .spec.requests
+      name: Requested
+      type: string
+    - jsonPath: .status.suggestionCount
+      name: Assigned
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  labels:
+    {{- include "kubeflowCrds.katib.controller.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.katib.controller.trialFullName" . }}
+spec:
+  group: {{ include "kubeflowCrds.katib.controller.group" . }}
+  names:
+    categories:
+    - all
+    - kubeflow
+    - katib
+    kind: Trial
+    plural: {{ include "kubeflowCrds.katib.controller.trialPluralName" . }}
+    singular: {{ include "kubeflowCrds.katib.controller.trialSingularName" . }}
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[-1:].type
+      name: Type
+      type: string
+    - jsonPath: .status.conditions[-1:].status
+      name: Status
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+{{- end }}
+{{- end }}

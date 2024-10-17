@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: kubeflow-crds
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kubeflow
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      path: charts/kubeflow-crds
+      helm:
+        valueFiles:
+          - $values/example/helm/values.kubeflow-crds.yaml
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 10m
+      limit: 5

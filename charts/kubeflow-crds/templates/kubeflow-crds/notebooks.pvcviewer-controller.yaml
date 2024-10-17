@@ -1,29 +1,78 @@
+{{- if (include "kubeflowCrds.notebooks.pvcviewerController.enabled" . | eq "true") -}}
+
+{{- $ca := printf "%s/%s"
+  (include "kubeflowCrds.namespace" .)
+  (include "kubeflowCrds.notebooks.pvcviewerController.certName" .)
+-}}
+
+{{- if .Values.crds.minimized }}
+
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    cert-manager.io/inject-ca-from: kubeflow/pvcviewer-controller-cert
+    cert-manager.io/inject-ca-from: {{ $ca }}
     controller-gen.kubebuilder.io/version: v0.8.0
   labels:
-    app: pvcviewer
-  name: pvcviewers.kubeflow.org
+    {{- include "kubeflowCrds.notebooks.pvcviewerController.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.notebooks.pvcviewerController.fullName" . }}
 spec:
   conversion:
     strategy: Webhook
     webhook:
       clientConfig:
         service:
-          name: pvcviewer-controller-manager
-          namespace: kubeflow
+          name: {{ include "kubeflowCrds.notebooks.pvcviewerController.manager.name" . }}
+          namespace: {{ include "kubeflowCrds.namespace" . }}
           path: /convert
       conversionReviewVersions:
       - v1
-  group: kubeflow.org
+  group: {{ include "kubeflowCrds.notebooks.pvcviewerController.group" . }}
   names:
     kind: PVCViewer
     listKind: PVCViewerList
-    plural: pvcviewers
-    singular: pvcviewer
+    plural: {{ include "kubeflowCrds.notebooks.pvcviewerController.pluralName" . }}
+    singular: {{ include "kubeflowCrds.notebooks.pvcviewerController.singularName" . }}
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}
+
+{{- else }}
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: {{ $ca }}
+    controller-gen.kubebuilder.io/version: v0.8.0
+  labels:
+    {{- include "kubeflowCrds.notebooks.pvcviewerController.labels" . | nindent 4 }}
+  name: {{ include "kubeflowCrds.notebooks.pvcviewerController.fullName" . }}
+spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: {{ include "kubeflowCrds.notebooks.pvcviewerController.manager.name" . }}
+          namespace: {{ include "kubeflowCrds.namespace" . }}
+          path: /convert
+      conversionReviewVersions:
+      - v1
+  group: {{ include "kubeflowCrds.notebooks.pvcviewerController.group" . }}
+  names:
+    kind: PVCViewer
+    listKind: PVCViewerList
+    plural: {{ include "kubeflowCrds.notebooks.pvcviewerController.pluralName" . }}
+    singular: {{ include "kubeflowCrds.notebooks.pvcviewerController.singularName" . }}
   scope: Namespaced
   versions:
   - name: v1alpha1
@@ -3155,3 +3204,6 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+
+{{- end }}
+{{- end }}

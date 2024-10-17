@@ -135,6 +135,13 @@ helm upgrade --install kserve "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
     --values values.kserve.yaml \
     --wait
 
+# Kubeflow CRDs #
+helm upgrade --install kubeflow-crds \
+    --namespace kubeflow \
+    ../../charts/kubeflow-crds \
+    --values values.kubeflow-crds.yaml \
+    --wait
+
 # Kubeflow #
 helm upgrade --install kubeflow \
     --namespace kubeflow \
