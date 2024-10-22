@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_REVISION="${TARGET_REVISION:-helmcharts}"
+TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.3.0}"
 
 cat <<EOF
 This script will create 'kubeflow' namespace configured with istio injection and
@@ -156,7 +156,7 @@ helm upgrade --install knative-operator knative-operator \
 helm upgrade --install kubeflow-crds kubeflow-crds \
     --namespace kubeflow \
     --repo https://kromanow94.github.io/kubeflow-manifests \
-    --version 0.2.0 \
+    --version 0.3.0 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kubeflow-crds.yaml" \
     --wait
 
@@ -164,7 +164,7 @@ helm upgrade --install kubeflow-crds kubeflow-crds \
 helm upgrade --install kubeflow kubeflow \
     --namespace kubeflow \
     --repo https://kromanow94.github.io/kubeflow-manifests \
-    --version 0.2.0 \
+    --version 0.3.0 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kubeflow.yaml" \
     --wait
 
