@@ -30,6 +30,9 @@ helm -n metacontroller uninstall metacontroller --wait
 # Istio Ingress Gateway #
 helm -n istio-ingress uninstall istio-ingressgateway --wait
 
+# Istio Cluster Local Gateway #
+helm -n istio-ingress uninstall cluster-local-gateway --wait
+
 # Istio Discovery #
 helm -n istio-system uninstall istiod --wait
 

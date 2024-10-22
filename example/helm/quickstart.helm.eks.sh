@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-KNATIVE_OPERATOR_VERSION="${KNATIVE_OPERATOR_VERSION:-1.11.12}"
-KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL="${KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL:-https://github.com/knative/operator/releases/download/knative-v${KNATIVE_OPERATOR_VERSION}/knative-operator-${KNATIVE_OPERATOR_VERSION}.tgz}"
-
-KSERVE_VERSION="${KSERVE_VERSION:-v0.11.2}"
-KSERVE_HELM_CHART_ARCHIVE_URL="${KSERVE_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-${KSERVE_VERSION}.tgz}"
-KSERVE_CRD_HELM_CHART_ARCHIVE_URL="${KSERVE_CRD_HELM_CHART_ARCHIVE_URL:-https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/helm-chart-kserve-crd-${KSERVE_VERSION}.tgz}"
-
 cat <<EOF
 WARNING: This script is for reference only and will not work out of the box.
 Also, it assumes the script is run from a locally cloned git repository.
@@ -40,7 +33,7 @@ EOF
 sleep 10
 set -x
 
-# Kubeflow Namespace #
+# Create namespaces #
 kubectl apply -f - <<EOF
 apiVersion: v1
 kind: Namespace
@@ -48,6 +41,26 @@ metadata:
   labels:
     istio-injection: enabled
   name: kubeflow
+EOF
+
+# If we're using '.Values.knativeIntegration.knativeServing.enabled: true', this namespace
+# must exist before we deploy 'kubeflow' Helm Chart.
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+  name: knative-serving
+EOF
+
+# If we're using '.Values.knativeIntegration.knativeEventing.enabled: true', this namespace
+# must exist before we deploy 'kubeflow' Helm Chart.
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+  name: knative-eventing
 EOF
 
 # Create secret with database credentials for KFP and MySQL
@@ -117,6 +130,15 @@ helm upgrade --install istio-ingressgateway gateway \
     --values values.istio-ingressgateway.yaml \
     --wait
 
+# Istio Cluster Local Gateway #
+helm upgrade --install cluster-local-gateway gateway \
+    --namespace istio-ingress \
+    --create-namespace \
+    --repo https://istio-release.storage.googleapis.com/charts \
+    --version 1.20.2 \
+    --values values.cluster-local-gateway.yaml \
+    --wait
+
 # Metacontroller #
 helm upgrade --install metacontroller oci://ghcr.io/metacontroller/metacontroller-helm \
     --namespace metacontroller \
@@ -133,26 +155,18 @@ helm upgrade --install argo-workflows argo-workflows \
     --values values.argo-workflows.yaml \
     --wait
 
-
 # KNative Operator #
-kubectl apply -f namespace.knative-serving.yaml
-kubectl apply -f namespace.knative-eventing.yaml
-helm upgrade --install knative-operator "${KNATIVE_OPERATOR_HELM_CHART_ARCHIVE_URL}" \
-    --namespace knative \
+# Using the latest v1.13.0 operator version, results in a compatibility error
+# with underlying Kubernetes installation: "minKubernetesVersion >= 1.26"
+#
+# NOTE: the knative-operator Helm Repository mirror is maintained under 
+# kromanow94/knative-operator until this issue is resolved in upstream:
+# https://github.com/knative/operator/issues/1851
+helm upgrade --install knative-operator knative-operator \
+    --repo https://raw.githubusercontent.com/kromanow94/knative-operator/main \
+    --namespace knative-operator \
     --create-namespace \
-    --wait
-
-# KServe CRDs #
-helm upgrade --install kserve-crd "${KSERVE_CRD_HELM_CHART_ARCHIVE_URL}" \
-    --namespace kubeflow \
-    --create-namespace \
-    --wait
-
-# KServe #
-helm upgrade --install kserve "${KSERVE_HELM_CHART_ARCHIVE_URL}" \
-    --namespace kubeflow \
-    --create-namespace \
-    --values values.kserve.yaml \
+    --version v1.11.12 \
     --wait
 
 # Kubeflow CRDs #
@@ -165,6 +179,23 @@ helm upgrade --install kubeflow-crds ../../charts/kubeflow-crds \
 helm upgrade --install kubeflow ../../charts/kubeflow \
     --namespace kubeflow \
     --values values.kubeflow.eks.yaml \
+    --wait
+
+# Kserve CRD #
+helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd \
+    --namespace kserve \
+    --version v0.12.1 \
+    --create-namespace \
+    --wait
+
+# Kserve #
+# Kserve nedds to be installed after Kubeflow because Kubeflow Helm Chart provides
+# KnativeServing which instructs knative-operator to install serving.knative.dev CRDs.
+helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
+    --namespace kserve \
+    --create-namespace \
+    --version v0.12.1 \
+    --values values.kserve.yaml \
     --wait
 
 # Kubeflow Profile #

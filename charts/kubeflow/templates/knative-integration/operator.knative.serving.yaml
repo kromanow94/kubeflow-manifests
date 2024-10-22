@@ -1,69 +1,10 @@
-{{- if .Values.knativeIntegration.knativeServing.enabled }}
-{{- $gateways := .Values.knativeIntegration.istioIntegration.gateways -}}
-{{- $config := .Values.knativeIntegration.config -}}
+{{- if (include "kubeflow.knativeIntegration.knativeServing.enabled" .) }}
 
 apiVersion: operator.knative.dev/v1beta1
 kind: KnativeServing
 metadata:
-  name: knative-serving
+  name: {{ .Values.knativeIntegration.knativeServing.name }}
   namespace: {{ .Values.knativeIntegration.knativeServing.namespace }}
 spec:
-  version: {{ .Values.knativeIntegration.knativeServing.version | quote }}
-  ingress:
-    istio:
-      enabled: {{ .Values.knativeIntegration.istioIntegration.enabled }}
-      {{- range $i, $gateway := $gateways }}
-        {{- toYaml $gateway.selector | nindent 6 }}
-      {{- end }}
-  {{- if $config }}
-  config:
-    istio:
-      {{- range $i, $gateway := $gateways }}
-        {{- toYaml $gateway.binding | nindent 6 }}
-      {{- end }}
-    {{- with $config.domain }}
-    domain:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.autoscaler }}
-    autoscaler:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.defaults }}
-    defaults:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.deployment }}
-    deployment:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.features }}
-    features:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.gc }}
-    gc:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.leader }}
-    leader:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.logging }}
-    logging:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.network }}
-    network:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.observability }}
-    observability:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with $config.tracing }}
-    tracing:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-  {{- end }}
+  {{- toYaml .Values.knativeIntegration.knativeServing.operatorSpec | nindent 2 -}}
 {{- end }}

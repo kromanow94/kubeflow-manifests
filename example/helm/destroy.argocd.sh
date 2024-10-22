@@ -28,6 +28,9 @@ kubectl -n argocd delete app metacontroller
 # istio-ingressgateway #
 kubectl -n argocd delete app istio-ingressgateway
 
+# cluster-local-gateway #
+kubectl -n argocd delete app cluster-local-gateway
+
 # istiod #
 kubectl -n argocd delete app istiod
 
