@@ -13,14 +13,14 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   sources:
-    - chart: kubeflow
-      repoURL: https://kromanow94.github.io/kubeflow-manifests
-      targetRevision: 0.3.0
+    - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
+      targetRevision: helmcharts
+      path: charts/kubeflow
       helm:
         valueFiles:
           - $values/example/helm/values.kubeflow.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: kubeflow-0.3.0
+      targetRevision: helmcharts
       ref: values
   ignoreDifferences:
     - group: rbac.authorization.k8s.io

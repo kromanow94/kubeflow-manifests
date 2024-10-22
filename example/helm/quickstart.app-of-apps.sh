@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.3.0}"
+TARGET_REVISION="${TARGET_REVISION:-helmcharts}"
 
 cat <<EOF
 This script will install ArgoCD, configure it to enable health assessment
