@@ -1,5 +1,5 @@
 kserve:
-  version: &defaultVersion v0.11.2
+  version: &defaultVersion v0.12.1
   modelmeshVersion: &defaultModelMeshVersion v0.11.2
   agent:
     image: kserve/agent
@@ -10,13 +10,6 @@ kserve:
   storage:
     image: kserve/storage-initializer
     tag: *defaultVersion
-    enableModelcar: false
-    cpuModelcar: 10m
-    memoryModelcar: 15Mi
-    caBundleConfigMapName: ""
-    caBundleVolumeMountPath: "/etc/ssl/custom-certs"
-    storageSpecSecretName: storage-config
-    storageSecretNameAnnotation: serving.kserve.io/secretName
     s3:
       endpoint: "s3.eu-central-1.amazonaws.com"
       region: "eu-central-1"
@@ -27,9 +20,6 @@ kserve:
       # useVirtualBucket: ""
       # useAnonymousCredential: ""
       # CABundle: ""
-  metricsaggregator:
-    enableMetricAggregation: "false"
-    enablePrometheusScraping: "false"
   controller:
     deploymentMode: "Serverless"
     rbacProxyImage: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.1
@@ -49,47 +39,11 @@ kserve:
         # gateway: knative-serving/knative-ingress-gateway
         gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
         className: istio
-    nodeSelector: {}
-    tolerations: []
-    topologySpreadConstraints: []
-    affinity: {}
     image: kserve/kserve-controller
     tag: *defaultVersion
-    resources:
-      limits:
-        cpu: 100m
-        memory: 300Mi
-      requests:
-        cpu: 100m
-        memory: 300Mi
   modelmesh:
     enabled: false
-    controller:
-      nodeSelector: {}
-      tolerations: []
-      topologySpreadConstraints: []
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: control-plane
-                      operator: In
-                      values:
-                        - modelmesh-controller
-                topologyKey: topology.kubernetes.io/zone
-      image: kserve/modelmesh-controller
-      tag: *defaultModelMeshVersion
-    config:
-      modelmeshImage: kserve/modelmesh
-      modelmeshImageTag: *defaultModelMeshVersion
-      modelmeshRuntimeAdapterImage: kserve/modelmesh-runtime-adapter
-      modelmeshRuntimeAdapterImageTag: *defaultModelMeshVersion
-      restProxyImage: kserve/rest-proxy
-      restProxyImageTag: *defaultModelMeshVersion
-      podsPerRuntime: 2
+
   servingruntime:
     modelNamePlaceholder: "{{.Name}}"
     tensorflow:
