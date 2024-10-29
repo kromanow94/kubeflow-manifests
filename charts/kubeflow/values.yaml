@@ -748,6 +748,45 @@ notebooks:
       seccompProfile:
         type: RuntimeDefault
 
+  modelsWebApp:
+    enabled: true
+    image:
+      repository: kserve/models-web-app
+      registryOverwrite:
+      tagOverwrite: v0.10.0
+      pullPolicyOverwrite:
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    serviceAccount:
+      create: true
+      name:
+      annotations:
+    service:
+      create: true
+      annotations:
+      type: ClusterIP
+    rbac:
+      create: true
+    config:
+      urlPrefix: /models
+    nodeSelector:
+    tolerations:
+    affinity:
+    topologySpreadConstraints:
+    autoscaling:
+      # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+      enabled:
+      minReplicas:
+      maxReplicas:
+      targetCPUUtilizationPercentage:
+      targetMemoryUtilizationPercentage:
+
 profilesController:
   enabled: true
   kfam:

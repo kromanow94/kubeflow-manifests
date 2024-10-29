@@ -1,0 +1,25 @@
+{{- if (include "kubeflow.notebooks.modelsWebApp.enabled" . | eq "true") -}}
+
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "kubeflow.notebooks.modelsWebApp.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  gateways:
+  - {{ .Values.istioIntegration.gateway.name }}
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: {{ .Values.notebooks.modelsWebApp.config.urlPrefix }}/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: {{ include "kubeflow.notebooks.modelsWebApp.svc.name" . }}.{{ include "kubeflow.namespace" . }}.svc.cluster.local
+        port:
+          number: 80
+
+{{- end }}
