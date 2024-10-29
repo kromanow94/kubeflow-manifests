@@ -30,14 +30,11 @@ kserve:
       disableIstioVirtualHost: false
       disableIngressCreation: false
       localGateway:
-        gateway: kubeflow/kubeflow-gateway
-        gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
-        # gateway: knative-serving/knative-local-gateway
-        # gatewayService: knative-local-gateway.istio-system.svc.cluster.local
+        gateway: knative-serving/knative-local-gateway
+        gatewayService: cluster-local-gateway.istio-ingress.svc.cluster.local
       ingressGateway:
-        gateway: kubeflow/kubeflow-gateway
-        # gateway: knative-serving/knative-ingress-gateway
-        gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
+        gateway: knative-serving/knative-ingress-gateway
+        gatewayService: istio-ingressgateway.istio-ingress.svc.cluster.local
         className: istio
     image: kserve/kserve-controller
     tag: *defaultVersion
