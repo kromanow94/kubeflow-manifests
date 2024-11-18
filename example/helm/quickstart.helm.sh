@@ -138,6 +138,15 @@ helm upgrade --install argo-workflows argo-workflows \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.argo-workflows.yaml" \
     --wait
 
+# oauth2-proxy #
+helm upgrade --install oauth2-proxy oauth2-proxy \
+    --namespace oauth2-proxy \
+    --create-namespace \
+    --repo https://oauth2-proxy.github.io/manifests \
+    --version 6.24.1 \
+    --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.oauth2-proxy.yaml" \
+    --wait
+
 # KNative Operator #
 # Using the latest v1.13.0 operator version, results in a compatibility error
 # with underlying Kubernetes installation: "minKubernetesVersion >= 1.26"
@@ -191,17 +200,3 @@ helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
 # Default password for user user@example.com:
 # 12341234
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/profile.kubeflow-user-example-com.yaml"
-
-# oauth2-proxy #
-# When k8s is deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
-# minikube and so on), oauth2-proxy has to wait for CRB allowing access to OIDC
-# Discovery endpoint from anonymous user. This CRB is deployed by kubeflow helm
-# chart. See the following file for details:
-# charts/kubeflow/templates/istio-integration/clusterrolebinding.unauthenticated-oidc-viewer.yaml
-helm upgrade --install oauth2-proxy oauth2-proxy \
-    --namespace oauth2-proxy \
-    --create-namespace \
-    --repo https://oauth2-proxy.github.io/manifests \
-    --version 6.24.1 \
-    --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.oauth2-proxy.yaml" \
-    --wait

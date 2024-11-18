@@ -17,6 +17,10 @@ fullnameOverride: ""
 
 auth:
   userHeaderName: kubeflow-userid
+  groupsHeaderName: kubeflow-groups
+  authHeader:
+    name: Authorization
+    prefix: "Bearer "
   userIdPrefix: ""
 
 clusterDomain: cluster.local
@@ -1875,6 +1879,7 @@ istioIntegration:
     # https://kubernetes.default.svc.cluster.local/.well-known/openid-configuration
     inCluster: true
     userClaim: sub
+    groupsClaim: groups
     issuer: https://kubernetes.default.svc.cluster.local
     selfSigned:
       autoJwksDiscovery: true
@@ -1894,6 +1899,8 @@ istioIntegration:
           number: 80
           name: http
           protocol: HTTP
+  kubeflowJwksProxy:
+    enabled: true
 
 # Both .Values.dexIntegration.enabled and .Values.istioIntegration.enabled has
 # to be set to a boolean 'true' in order to create required dex integration
@@ -1933,6 +1940,16 @@ dexIntegration:
     ingress:
       class:
       annotations:
+
+# Automatically creates Istio VirtualService.
+oauth2ProxyIntegration:
+  enabled: true
+  urlPrefix: /oauth2
+  host: "*"
+  svc:
+    name: oauth2-proxy
+    port: 80
+    namespace: oauth2-proxy
 
 knativeIntegration:
   enabled: true

@@ -13,11 +13,11 @@ helm -n kubeflow uninstall kubeflow --wait
 helm -n kubeflow uninstall crds --wait
 
 # KServe #
-helm -n kubeflow uninstall kserve
-helm -n kubeflow uninstall kserve-crd
+helm -n kserve uninstall kserve
+helm -n kserve uninstall kserve-crd
 
 # Knative #
-helm -n knative uninstall knative-operator
+helm -n knative-operator uninstall knative-operator
 kubectl delete ns knative-serving
 kubectl delete ns knative-eventing
 
@@ -53,3 +53,5 @@ helm -n kubeflow uninstall mysql --wait
 
 # Kubeflow Namespace #
 kubectl delete namespace kubeflow
+
+kubectl delete ingress istio-ingressgateway -n istio-ingress
