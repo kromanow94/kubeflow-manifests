@@ -41,6 +41,10 @@ kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifest
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve.yaml"
 set +x
 
+set -x
+kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.oauth2-proxy.yaml"
+set +x
+
 # Wait until pods are created. This is not required since ArgoCD will be
 # eventually consistent but will bring the Kubeflow faster.
 echo "Sleeping 30 seconds until pods are created..."
@@ -63,14 +67,6 @@ kubectl wait pods --all --namespace kubeflow --for=condition=Ready --timeout 300
 
 set -x
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.profile-kubeflow-user-example-com.yaml"
-set +x
-
-# When deployed with in-cluster self-signed OIDC Issuer (kind, vcluster,
-# minikube and so on), oauth2-proxy has to wait for CRB allowing accessing OIDC
-# Discovery endpoint from anonymous user. This is condifured by kubeflow helm
-# chart.
-set -x
-kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.oauth2-proxy.yaml"
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be

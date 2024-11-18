@@ -49,6 +49,12 @@ Istio Integration object names.
 }}
 {{- end }}
 
+{{- define "kubeflow.istioIntegration.jwtRequire.authorizationPolicyName" -}}
+{{- printf "%s-jwt-require"
+  (include "kubeflow.fullname" .)
+}}
+{{- end }}
+
 {{/*
 Role Aggregation Rule Labels
 */}}
@@ -107,3 +113,21 @@ Istio Integration enable and create toggles.
     .Values.istioIntegration.ingressGatewayServiceAccountName
 }}
 {{- end }}
+
+{{- define "kubeflow.istioIntegration.kubeflowJwksProxy.name" -}}
+{{- printf "%s-jwks-proxy"
+  (include "kubeflow.fullname" .)
+}}
+{{- end -}}
+
+{{- define "kubeflow.istioIntegration.kubeflowJwksProxy.labels" -}}
+app.kubernetes.io/name: {{ include "kubeflow.istioIntegration.kubeflowJwksProxy.name" . }}
+{{- end -}}
+
+{{- define "kubeflow.istioIntegration.kubeflowJwksProxy.namespace" -}}
+{{ include "kubeflow.namespace" . }}
+{{- end -}}
+
+{{- define "kubeflow.istioIntegration.jwksUri" -}}
+http://{{ include "kubeflow.istioIntegration.kubeflowJwksProxy.name" . }}.{{ include "kubeflow.istioIntegration.kubeflowJwksProxy.namespace" . }}.svc.cluster.local/openid/v1/jwks
+{{- end -}}

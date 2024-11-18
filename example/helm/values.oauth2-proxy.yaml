@@ -12,7 +12,7 @@ extraArgs:
   - --login-url=/dex/auth
   - --redeem-url=http://dex.dex.svc.cluster.local:5556/dex/token
   - --oidc-jwks-url=http://dex.dex.svc.cluster.local:5556/dex/keys
-  - --skip-auth-route=/dex/.*
+  - --skip-auth-route=/dex/.*,^/metrics
   - --skip-provider-button=true # go directly to the configured provider
 
   - --cookie-name=kubeflow-oauth2-proxy
@@ -24,6 +24,7 @@ extraArgs:
   - --upstream=static://200 # without this the authenticated requests are getting 404
 
   - --redirect-url=/oauth2/callback
+  - --cookie-secure=false
 
   # This is fresh and fruity!
   # https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.6.0

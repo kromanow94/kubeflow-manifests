@@ -20,9 +20,17 @@ spec:
   provider:
     name: {{ .Values.istioIntegration.envoyExtAuthzHttpExtensionProviderName }}
   rules:
-    - to:
+    - when:
+      - key: request.headers[authorization]
+        notValues: ["*"]
+      to:
       - operation:
           notPaths:
+          # Exclude dex paths, otherwise users won't be able to log in.
+          - /dex/*
+          - /dex/**
+          - /oauth2/*
+          # Exclude paths which are safe to cache by Cloudflare.
           - /favicon*
           - /webcomponentsjs*
           - /vendor.bundle.js

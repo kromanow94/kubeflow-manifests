@@ -12,9 +12,19 @@ spec:
     matchLabels:
       {{- include "kubeflow.pipelines.ui.selectorLabels" . | nindent 6 }}
   rules:
+  # Allow all requests from the ingress gateway
   - from:
     - source:
-        namespaces:
-        - {{ .Values.istioIntegration.ingressGatewayNamespace }}
+        principals:
+        - {{ include "kubeflow.istioIntegration.istioIngressGateway.serviceAccountPrincipal" . }}
+  # Allow all requests with an `authorization` header but NOT a `kubeflow-userid` header.
+  # This is needed to allow Kubernetes JWTs to be passed to the KFP API.
+  - when:
+    - key: request.headers[authorization]
+      values:
+      - "*"
+    - key: request.headers[kubeflow-userid]
+      notValues:
+      - "*"
 
 {{- end }}

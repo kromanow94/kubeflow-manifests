@@ -27,6 +27,7 @@ spec:
   # NOTE(kromanow94) UPDATE!!!: It's needed, otherwise the KF Pipeline Steps
   # cannot reach ml-pipeline and appareantly it's needed to process the step...
   # For user workloads, which cannot use http headers for authentication
+  # Allow all requests that dont have a `kubeflow-userid` header.
   - when:
     - key: request.headers[{{ .Values.auth.userHeaderName }}]
       notValues: ['*']
