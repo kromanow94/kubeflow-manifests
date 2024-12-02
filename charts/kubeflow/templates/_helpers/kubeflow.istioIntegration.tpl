@@ -131,3 +131,10 @@ app.kubernetes.io/name: {{ include "kubeflow.istioIntegration.kubeflowJwksProxy.
 {{- define "kubeflow.istioIntegration.jwksUri" -}}
 http://{{ include "kubeflow.istioIntegration.kubeflowJwksProxy.name" . }}.{{ include "kubeflow.istioIntegration.kubeflowJwksProxy.namespace" . }}.svc.cluster.local/openid/v1/jwks
 {{- end -}}
+
+{{- define "kubeflow.istioIntegration.kubeflowJwksProxy.enabled" -}}
+{{- and
+  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
+  .Values.istioIntegration.kubeflowJwksProxy.enabled
+}}
+{{- end }}

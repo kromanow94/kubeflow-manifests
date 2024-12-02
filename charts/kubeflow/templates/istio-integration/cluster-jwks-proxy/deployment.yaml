@@ -1,4 +1,5 @@
-{{- if .Values.istioIntegration.kubeflowJwksProxy.enabled }}
+{{- if (include "kubeflow.istioIntegration.kubeflowJwksProxy.enabled" . | eq "true") -}}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
