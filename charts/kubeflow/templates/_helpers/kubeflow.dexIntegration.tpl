@@ -53,8 +53,9 @@ Dex Integration enable and create toggles.
 
 
 {{- define "kubeflow.dexIntegration.istio.enabled" -}}
-{{- and
-    (include "kubeflow.dexIntegration.enabled" . )
+{{- ternary true "" (
+    and
+    (include "kubeflow.dexIntegration.enabled" . | eq "true")
     .Values.istioIntegration.enabled
-}}
+)}}
 {{- end }}

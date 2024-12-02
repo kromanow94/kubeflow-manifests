@@ -1,4 +1,4 @@
-{{- if (include "kubeflow.notebooks.jupyterWebApp.enabled" . | eq "true" ) -}}
+{{- if (include "kubeflow.notebooks.volumesWebApp.enabled" . | eq "true" ) -}}
 
 apiVersion: v1
 kind: ConfigMap

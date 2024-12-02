@@ -1,6 +1,6 @@
 {{- define "kubeflow.oauth2ProxyIntegration.istio.enabled" -}}
-{{- ternary true "" (
-    and
-    .Values.istioIntegration.enabled
-)}}
+{{- and
+  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
+  .Values.oauth2ProxyIntegration.enabled
+}}
 {{- end }}
