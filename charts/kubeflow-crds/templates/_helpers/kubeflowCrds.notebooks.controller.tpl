@@ -54,3 +54,7 @@ Kubeflow Notebooks Controller enable and create toggles.
     .Values.notebooks.controller.enabled
 )}}
 {{- end }}
+
+{{- define "kubeflowCrds.notebooks.controller.certName" -}}
+{{ printf "%s-%s" (include "kubeflowCrds.notebooks.controller.name" .) "cert" }}
+{{- end }}

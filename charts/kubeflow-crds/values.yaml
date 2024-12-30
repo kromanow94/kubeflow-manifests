@@ -15,6 +15,10 @@ admissionWebhook:
 notebooks:
   enabled: true
   controller:
+    certManager:
+      enabled: false
+    webhook:
+      enabled: false
     enabled: true
   pvcviewerController:
     enabled: true
