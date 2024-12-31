@@ -16,6 +16,10 @@ spec:
     - name: monitoring-port
       port: 8080
       targetPort: 8080
+    - name: webhook-server
+      port: 443
+      protocol: TCP
+      targetPort: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
   selector:
     {{- include "kubeflow.trainingOperator.selectorLabels" . | nindent 4 }}
   sessionAffinity: None

@@ -73,7 +73,7 @@ helm upgrade --install cert-manager cert-manager \
     --namespace cert-manager \
     --create-namespace \
     --repo https://charts.jetstack.io \
-    --version v1.14.3 \
+    --version v1.14.5 \
     --values values.cert-manager.yaml \
     --wait
 
@@ -82,7 +82,7 @@ helm upgrade --install dex dex \
     --namespace dex \
     --create-namespace \
     --repo https://charts.dexidp.io \
-    --version 0.16.0 \
+    --version 0.17.1 \
     --values values.dex.yaml \
     --wait
 
@@ -91,14 +91,14 @@ helm upgrade --install istio-base base \
     --namespace istio-system \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --wait
 
 # Istio Discovery #
 helm upgrade --install istiod istiod \
     --namespace istio-system \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values values.istiod.yaml \
     --wait
 
@@ -107,7 +107,7 @@ helm upgrade --install istio-ingressgateway gateway \
     --namespace istio-ingress \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values values.istio-ingressgateway.yaml \
     --wait
 
@@ -116,7 +116,7 @@ helm upgrade --install cluster-local-gateway gateway \
     --namespace istio-ingress \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values values.cluster-local-gateway.yaml \
     --wait
 
@@ -174,7 +174,7 @@ helm upgrade --install kubeflow ../../charts/kubeflow \
 # Kserve CRD #
 helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd \
     --namespace kserve \
-    --version v0.12.1 \
+    --version v0.13.1 \
     --create-namespace \
     --wait
 
@@ -184,7 +184,7 @@ helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd \
 helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
     --namespace kserve \
     --create-namespace \
-    --version v0.12.1 \
+    --version v0.13.1 \
     --values values.kserve.yaml \
     --wait
 
@@ -193,3 +193,9 @@ helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
 # Default password for user user@example.com:
 # 12341234
 kubectl apply -f profile.kubeflow-user-example-com.yaml
+
+# Network Policies
+kubectl apply -f networkpolicy.kserve.yaml
+kubectl apply -f networkpolicy.kserve-models-web-app.yaml.yaml
+kubectl apply -f networkpolicy.default-allow-same-namespace.yaml
+kubectl apply -f networkpolicy.model-registry.yaml

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "kubeflow.admissionWebhook.name" . }}
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - {{ include "kubeflow.admissionWebhook.name" . }} # mutating webhook
+  # https://www.elastic.co/guide/en/cloud-on-k8s/1.1/k8s-webhook-network-policies.html
+  # The kubernetes api server must reach the webhook
+  ingress:
+    - ports:
+        - protocol: TCP
+          port: {{ include "kubeflow.admissionWebhook.svc.targetPort" . }}
+  policyTypes:
+    - Ingress

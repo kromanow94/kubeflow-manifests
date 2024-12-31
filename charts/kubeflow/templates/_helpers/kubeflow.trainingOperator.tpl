@@ -84,6 +84,10 @@ Kubeflow Training Operator Service.
 )}}
 {{- end }}
 
+{{- define "kubeflow.trainingOperator.svc.webhookServer.targetPort" -}}
+{{- .Values.trainingOperator.service.webhookServer.targetPort }}
+{{- end }}
+
 {{/*
 Kubeflow Training Operator object labels.
 */}}
@@ -250,5 +254,29 @@ and
     (include "kubeflow.trainingOperator.enabled" .)
     .Values.defaults.podDisruptionBudget
     .Values.trainingOperator.podDisruptionBudget
+)}}
+{{- end }}
+
+{{- define "kubeflow.trainingOperator.tlsCertSecretName" -}}
+{{- printf "training-operator-webhook-cert" }}
+{{- end }}
+
+{{- define "kubeflow.trainingOperator.certIssuerName" -}}
+{{ printf "%s-%s" (include "kubeflow.trainingOperator.name" .) "selfsigned-issuer" }}
+{{- end }}
+
+{{- define "kubeflow.trainingOperator.certName" -}}
+{{ printf "%s-%s" (include "kubeflow.trainingOperator.name" .) "cert" }}
+{{- end }}
+
+{{- define "kubeflow.trainingOperator.webhookName" -}}
+{{ print (include "kubeflow.trainingOperator.name" .) }}
+{{- end }}
+
+{{- define "kubeflow.trainingOperator.enabledWithCertManager" -}}
+{{- ternary true "" (
+    and
+        (include "kubeflow.trainingOperator.enabled" . | eq "true" )
+        (include "kubeflow.certManagerIntegration.enabled" . | eq "true" )
 )}}
 {{- end }}

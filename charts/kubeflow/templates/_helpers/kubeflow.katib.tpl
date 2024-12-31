@@ -101,6 +101,10 @@ Kubeflow Katib Controller Service.
 )}}
 {{- end }}
 
+{{- define "kubeflow.katib.controller.svc.webhook.targetPort" -}}
+{{- .Values.katib.config.init.controller.webhookPort }}
+{{- end }}
+
 {{/*
 Kubeflow Katib Controller object labels.
 */}}

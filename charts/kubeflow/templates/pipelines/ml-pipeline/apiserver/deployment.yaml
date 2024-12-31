@@ -60,6 +60,8 @@ spec:
           value: ml-pipeline-visualizationserver
         - name: VISUALIZATIONSERVICE_PORT
           value: "8888"
+        - name: LOG_LEVEL
+          value: "info"
         # ---
 
         - name: KUBEFLOW_USERID_HEADER

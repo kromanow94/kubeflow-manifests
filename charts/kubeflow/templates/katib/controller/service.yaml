@@ -16,7 +16,7 @@ spec:
   ports:
     - port: 443
       protocol: TCP
-      targetPort: 8443
+      targetPort: {{ include "kubeflow.katib.controller.svc.webhook.targetPort" . }}
       name: webhook
     - name: metrics
       port: 8080

@@ -23,6 +23,8 @@ spec:
     metadata:
       labels:
         {{- include "kubeflow.trainingOperator.selectorLabels" . | nindent 8 }}
+      annotations:
+        sidecar.istio.io/inject: "false"
 
     spec:
       containers:
@@ -34,12 +36,20 @@ spec:
         - /manager
 
         ports:
-        - containerPort: 8080
+          - containerPort: 8080
+          - containerPort: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
+            name: webhook-server
+            protocol: TCP
 
         {{- with .Values.trainingOperator.resources }}
         resources:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+
+        volumeMounts:
+          - mountPath: /tmp/k8s-webhook-server/serving-certs
+            name: cert
+            readOnly: true
 
         livenessProbe:
           httpGet:
@@ -102,5 +112,11 @@ spec:
       terminationGracePeriodSeconds:
         {{- . | nindent 8 }}
       {{- end }}
+
+      volumes:
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: {{ include "kubeflow.trainingOperator.tlsCertSecretName" . }}
 
 {{- end }}

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "kubeflow.pipelines.mlPipeline.name" . }}
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - {{ include "kubeflow.pipelines.mlPipeline.name" . }} # just the apiserver
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                  - kubeflow-profile
+        - namespaceSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - {{ include "kubeflow.istioIntegration.name" . }}
+  policyTypes:
+    - Ingress
