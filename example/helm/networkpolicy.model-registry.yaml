@@ -1,10 +1,16 @@
-commonLabels:
-  sidecar.istio.io/inject: "false"
-auth:
-  existingSecret: mlpipeline-minio-artifact
-networkPolicy:
-  allowExternalEgress: false
-  extraIngress:
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: model-registry
+  namespace: kubeflow
+spec:
+  podSelector:
+    matchExpressions:
+      - key: component
+        operator: In
+        values:
+          - model-registry-server
+  ingress:
     - from:
         - namespaceSelector:
             matchExpressions:
@@ -18,4 +24,10 @@ networkPolicy:
                 operator: In
                 values:
                   - istio-system
-        - podSelector: {} # allow all pods from the same namespace
+      ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 9090
+  policyTypes:
+    - Ingress

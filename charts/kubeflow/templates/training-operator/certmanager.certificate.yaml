@@ -1,0 +1,19 @@
+{{- if (include "kubeflow.trainingOperator.enabledWithCertManager" . )}}
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    {{- include "kubeflow.trainingOperator.labels" . | nindent 4 }}
+  name: {{ include "kubeflow.trainingOperator.certName" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
+spec:
+  commonName: {{ include "kubeflow.trainingOperator.svc.name" . }}
+  dnsNames:
+  - {{ include "kubeflow.trainingOperator.svc.name" . }}
+  issuerRef:
+    kind: Issuer
+    name: {{ include "kubeflow.trainingOperator.certIssuerName" . }}
+  secretName: {{ include "kubeflow.trainingOperator.tlsCertSecretName" . }}
+
+{{- end }}

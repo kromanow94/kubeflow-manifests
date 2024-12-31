@@ -1,2 +1,6 @@
 service:
   type: ClusterIP
+
+securityContext:
+  seccompProfile:
+    type: RuntimeDefault

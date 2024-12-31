@@ -14,7 +14,7 @@ metadata:
 spec:
   ports:
   - name: https
-    port: 8443
+    port: {{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" . }}
     protocol: TCP
     targetPort: https
   selector:

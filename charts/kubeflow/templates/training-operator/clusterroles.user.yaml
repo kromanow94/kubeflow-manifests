@@ -25,33 +25,51 @@ metadata:
   name: {{ include "kubeflow.trainingOperator.kfTrEditClusterRoleName" . }}
 rules:
 - apiGroups:
-  - kubeflow.org
+    - kubeflow.org
   resources:
-  - mpijobs
-  - tfjobs
-  - pytorchjobs
-  - mxjobs
-  - xgboostjobs
-  - paddlejobs
+    - mpijobs
+    - tfjobs
+    - pytorchjobs
+    - mxjobs
+    - xgboostjobs
+    - paddlejobs
   verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
+    - create
+    - delete
+    - get
+    - list
+    - patch
+    - update
+    - watch
 - apiGroups:
-  - kubeflow.org
+    - kubeflow.org
   resources:
-  - mpijobs/status
-  - tfjobs/status
-  - pytorchjobs/status
-  - mxjobs/status
-  - xgboostjobs/status
-  - paddlejobs/status
+    - mpijobs/status
+    - tfjobs/status
+    - pytorchjobs/status
+    - mxjobs/status
+    - xgboostjobs/status
+    - paddlejobs/status
   verbs:
-  - get
+    - get
+- apiGroups:
+    - ""
+  resources:
+    - persistentvolumeclaims
+  verbs:
+    - create
+    - delete
+    - get
+    - list
+    - watch
+- apiGroups:
+    - ""
+  resources:
+    - events
+  verbs:
+    - get
+    - list
+    - watch
 
 ---
 
@@ -64,28 +82,28 @@ metadata:
   name: {{ include "kubeflow.trainingOperator.kfTrViewClusterRoleName" . }}
 rules:
 - apiGroups:
-  - kubeflow.org
+    - kubeflow.org
   resources:
-  - mpijobs
-  - tfjobs
-  - pytorchjobs
-  - mxjobs
-  - xgboostjobs
-  - paddlejobs
+    - mpijobs
+    - tfjobs
+    - pytorchjobs
+    - mxjobs
+    - xgboostjobs
+    - paddlejobs
   verbs:
-  - get
-  - list
-  - watch
+    - get
+    - list
+    - watch
 - apiGroups:
-  - kubeflow.org
+    - kubeflow.org
   resources:
-  - mpijobs/status
-  - tfjobs/status
-  - pytorchjobs/status
-  - mxjobs/status
-  - xgboostjobs/status
-  - paddlejobs/status
+    - mpijobs/status
+    - tfjobs/status
+    - pytorchjobs/status
+    - mxjobs/status
+    - xgboostjobs/status
+    - paddlejobs/status
   verbs:
-  - get
+    - get
 
 {{- end }}

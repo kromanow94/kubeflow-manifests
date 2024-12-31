@@ -29,7 +29,7 @@ defaults:
   image:
     registry: docker.io
     # tag: "latest"
-    tag: v1.8.0
+    tag: v1.9.2
     pullPolicy: IfNotPresent
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -65,6 +65,7 @@ admissionWebhook:
     create: true
     annotations:
     type: ClusterIP
+    targetPort: 4443
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled:
@@ -126,7 +127,7 @@ centraldashboard:
   config:
     # This enables the automatic profile creation.
     enableRegistrationFlow: false
-    logoutURL: "/authservice/logout"
+    logoutURL: "/oauth2/sign_out"
     forceIFrame: true
     links:
       externalLinks:
@@ -135,82 +136,80 @@ centraldashboard:
           link: /jupyter/
           text: Notebooks
           icon: book
+
         - type: item
           link: /tensorboards/
           text: Tensorboards
           icon: assessment
+
         - type: item
           link: /volumes/
           text: Volumes
           icon: device:storage
-        - type: item
-          link: /models/
-          text: Endpoints
-          icon: kubeflow:models
+
         - type: item
           link: /katib/
-          text: Experiments (AutoML)
+          text: Katib Experiments
           icon: kubeflow:katib
+
         - type: item
-          text: Experiments (KFP)
-          link: /pipeline/#/experiments
-          icon: done-all
-        - type: item
-          link: /pipeline/#/pipelines
+          link: /kserve-endpoints/
+          text: KServe Endpoints
+          icon: kubeflow:models
+
+        - icon: kubeflow:pipeline-centered
+          items:
+            - type: item
+              text: Pipelines
+              link: /pipeline/#/pipelines
+
+            - type: item
+              text: Experiments
+              link: /pipeline/#/experiments
+
+            - type: item
+              text: Runs
+              link: /pipeline/#/runs
+
+            - type: item
+              text: Recurring Runs
+              link: /pipeline/#/recurringruns
+
+            - type: item
+              text: Artifacts
+              link: /pipeline/#/artifacts
+
+            - type: item
+              text: Executions
+              link: /pipeline/#/executions
           text: Pipelines
-          icon: kubeflow:pipeline-centered
-        - type: item
-          link: /pipeline/#/runs
-          text: Runs
-          icon: maps:directions-run
-        - type: item
-          link: /pipeline/#/recurringruns
-          text: Recurring Runs
-          icon: device:access-alarm
-        - type: item
-          link: /pipeline/#/artifacts
-          text: Artifacts
-          icon: editor:bubble-chart
-        - type: item
-          link: /pipeline/#/executions
-          text: Executions
-          icon: av:play-arrow
+          type: section
       quickLinks:
-        - text: Upload a pipeline
-          desc: Pipelines
-          link: /pipeline/
-        - text: View all pipeline runs
-          desc: Pipelines
-          link: /pipeline/#/runs
-        - text: Create a new Notebook server
-          desc: Notebook Servers
-          # NOTE(kromanow94): it's probably not needed to add namespace here...
-          # at least in multi user mode.
-          # TODO(kromanow94): check if this is needed...
-          # link: /jupyter/new?namespace=kubeflow
+        - text: Create a new Notebook
+          desc: Kubeflow Notebooks
           link: /jupyter/new
-        - text: View Katib Experiments
-          desc: Katib
-          link: /katib/
+        - text: Upload a Pipeline
+          desc: Kubeflow Pipelines
+          link: /pipeline/#/pipelines
+        - text: View Pipeline Runs
+          desc: Notebook Servers
+          link: /pipeline/#/runs
       documentationItems:
-        - text: Getting Started with Kubeflow
-          desc: Get your machine-learning workflow up and running on Kubeflow
-          link: https://www.kubeflow.org/docs/started/getting-started/
-        - text: MiniKF
-          desc: A fast and easy way to deploy Kubeflow locally
-          link: https://www.kubeflow.org/docs/distributions/minikf/
-        - text: Microk8s for Kubeflow
-          desc: Quickly get Kubeflow running locally on native hypervisors
-          link: https://www.kubeflow.org/docs/distributions/microk8s/kubeflow-on-microk8s/
-        - text: Kubeflow on GCP
-          desc: Running Kubeflow on Kubernetes Engine and Google Cloud Platform
-          link: https://www.kubeflow.org/docs/gke/
-        - text: Kubeflow on AWS
-          desc: Running Kubeflow on Elastic Container Service and Amazon Web Services
-          link: https://www.kubeflow.org/docs/aws/
-        - text: Requirements for Kubeflow
-          desc: Get more detailed information about using Kubeflow and its components
-          link: https://www.kubeflow.org/docs/started/requirements/
+        - text: Kubeflow Website
+          desc: The Kubeflow website
+          link: https://www.kubeflow.org/
+        - text: Kubeflow Pipelines Documentation
+          desc: Documentation for Kubeflow Pipelines
+          link: https://www.kubeflow.org/docs/components/pipelines/
+        - text: Kubeflow Notebooks Documentation
+          desc: Documentation for Kubeflow Notebooks
+          link: https://www.kubeflow.org/docs/components/notebooks/
+        - text: Kubeflow Training Operator Documentation
+          desc: Documentation for Kubeflow Training Operator
+          link: https://www.kubeflow.org/docs/components/training/"
+        - text: Katib Documentation
+          desc: Documentation for Katib
+          link: https://www.kubeflow.org/docs/components/katib/
 
 notebooks:
   enabled: true
@@ -308,15 +307,15 @@ notebooks:
       ################################################################
       image:
         # the default container image
-        value: kubeflownotebookswg/jupyter-scipy:v1.8.0
+        value: kubeflownotebookswg/jupyter-scipy:v1.9.2
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/jupyter-scipy:v1.8.0
-          - kubeflownotebookswg/jupyter-pytorch-full:v1.8.0
-          - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.8.0
-          - kubeflownotebookswg/jupyter-tensorflow-full:v1.8.0
-          - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.8.0
+          - kubeflownotebookswg/jupyter-scipy:v1.9.2
+          - kubeflownotebookswg/jupyter-pytorch-full:v1.9.2
+          - kubeflownotebookswg/jupyter-pytorch-cuda-full:v1.9.2
+          - kubeflownotebookswg/jupyter-tensorflow-full:v1.9.2
+          - kubeflownotebookswg/jupyter-tensorflow-cuda-full:v1.9.2
 
       ################################################################
       # VSCode-like Container Images (Group 1)
@@ -331,11 +330,11 @@ notebooks:
       ################################################################
       imageGroupOne:
         # the default container image
-        value: kubeflownotebookswg/codeserver-python:v1.8.0
+        value: kubeflownotebookswg/codeserver-python:v1.9.2
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/codeserver-python:v1.8.0
+          - kubeflownotebookswg/codeserver-python:v1.9.2
 
       ################################################################
       # RStudio-like Container Images (Group 2)
@@ -352,11 +351,11 @@ notebooks:
       ################################################################
       imageGroupTwo:
         # the default container image
-        value: kubeflownotebookswg/rstudio-tidyverse:v1.8.0
+        value: kubeflownotebookswg/rstudio-tidyverse:v1.9.2
 
         # the list of available container images in the dropdown
         options:
-          - kubeflownotebookswg/rstudio-tidyverse:v1.8.0
+          - kubeflownotebookswg/rstudio-tidyverse:v1.9.2
 
       ################################################################
       # CPU Resources
@@ -677,6 +676,8 @@ notebooks:
         create: true
         annotations:
         type: ClusterIP
+      webhook:
+        port: 9443
       resources:
         {}
         # limits:
@@ -757,7 +758,7 @@ notebooks:
     image:
       repository: kserve/models-web-app
       registryOverwrite:
-      tagOverwrite: v0.10.0
+      tagOverwrite: v0.13.0
       pullPolicyOverwrite:
     resources:
       {}
@@ -871,7 +872,7 @@ katib:
     image:
       repository: kubeflowkatib/katib-controller
       registryOverwrite:
-      tagOverwrite: v0.16.0
+      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -896,7 +897,7 @@ katib:
     image:
       repository: kubeflowkatib/katib-db-manager
       registryOverwrite:
-      tagOverwrite: v0.16.0
+      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -951,7 +952,7 @@ katib:
     image:
       repository: kubeflowkatib/katib-ui
       registryOverwrite:
-      tagOverwrite: v0.16.0
+      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     serviceAccount:
       create: true
@@ -980,40 +981,40 @@ katib:
     runtime:
       metricsCollectors:
         - kind: StdOut
-          image: docker.io/kubeflowkatib/file-metrics-collector:v0.16.0
+          image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0
         - kind: File
-          image: docker.io/kubeflowkatib/file-metrics-collector:v0.16.0
+          image: docker.io/kubeflowkatib/file-metrics-collector:v0.17.0
         - kind: TensorFlowEvent
-          image: docker.io/kubeflowkatib/tfevent-metrics-collector:v0.16.0
+          image: docker.io/kubeflowkatib/tfevent-metrics-collector:v0.17.0
           resources:
             limits:
               memory: 1Gi
       suggestions:
         - algorithmName: random
-          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.17.0
         - algorithmName: tpe
-          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-hyperopt:v0.17.0
         - algorithmName: grid
-          image: docker.io/kubeflowkatib/suggestion-optuna:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-optuna:v0.17.0
         - algorithmName: hyperband
-          image: docker.io/kubeflowkatib/suggestion-hyperband:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-hyperband:v0.17.0
         - algorithmName: bayesianoptimization
-          image: docker.io/kubeflowkatib/suggestion-skopt:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-skopt:v0.17.0
         - algorithmName: cmaes
-          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.17.0
         - algorithmName: sobol
-          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-goptuna:v0.17.0
         - algorithmName: multivariate-tpe
-          image: docker.io/kubeflowkatib/suggestion-optuna:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-optuna:v0.17.0
         - algorithmName: enas
-          image: docker.io/kubeflowkatib/suggestion-enas:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-enas:v0.17.0
           resources:
             limits:
               memory: 200Mi
         - algorithmName: darts
-          image: docker.io/kubeflowkatib/suggestion-darts:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-darts:v0.17.0
         - algorithmName: pbt
-          image: docker.io/kubeflowkatib/suggestion-pbt:v0.16.0
+          image: docker.io/kubeflowkatib/suggestion-pbt:v0.17.0
           persistentVolumeClaimSpec:
             accessModes:
               - ReadWriteMany
@@ -1022,7 +1023,7 @@ katib:
                 storage: 5Gi
       earlyStoppings:
         - algorithmName: medianstop
-          image: docker.io/kubeflowkatib/earlystopping-medianstop:v0.16.0
+          image: docker.io/kubeflowkatib/earlystopping-medianstop:v0.17.0
 
 # TODO: verify patches in apps/pipeline/upstream/base/installs/multi-user
 pipelines:
@@ -1031,7 +1032,7 @@ pipelines:
   # the container images are stored in a different registry.
   image:
     registry: gcr.io/ml-pipeline
-    tag: 2.0.5
+    tag: 2.3.0
     pullPolicy: IfNotPresent
   config:
     # If this is empty, the kfp backend will automatically configure that with:
@@ -1748,6 +1749,7 @@ tensorboard:
         create: true
         annotations:
         type: ClusterIP
+        targetPort: 8443
       resources:
         {}
         # limits:
@@ -1820,7 +1822,7 @@ trainingOperator:
   image:
     repository: kubeflow/training-operator
     registryOverwrite:
-    tagOverwrite: v1-855e096
+    tagOverwrite: v1-04f9f13
     pullPolicyOverwrite:
   resources:
     {}
@@ -1828,6 +1830,8 @@ trainingOperator:
     create: true
     annotations:
     type: ClusterIP
+    webhookServer:
+      targetPort: 9443
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled:

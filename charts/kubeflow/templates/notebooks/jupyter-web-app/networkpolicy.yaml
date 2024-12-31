@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app.kubernetes.io/component
+        operator: In
+        values:
+          - {{ include "kubeflow.notebooks.jupyterWebApp.name" . }}
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - {{ include "kubeflow.istioIntegration.name" . }}
+        - podSelector: {}
+  policyTypes:
+    - Ingress

@@ -142,6 +142,10 @@ Kubeflow Notebooks PVC Viewer Controller Service.
 )}}
 {{- end }}
 
+{{- define "kubeflow.notebooks.pvcviewerController.webhook.port" -}}
+{{- .Values.notebooks.pvcviewerController.manager.webhook.port }}
+{{- end }}
+
 {{/*
 Kubeflow Notebooks PVC Viewer Controller object labels.
 */}}

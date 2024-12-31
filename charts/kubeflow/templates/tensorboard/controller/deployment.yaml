@@ -41,6 +41,8 @@ spec:
         env:
         - name: ISTIO_GATEWAY
           value: {{ include "kubeflow.namespace" . }}/{{ .Values.istioIntegration.gateway.name }}
+        - name: ISTIO_HOST
+          value: "*"
         - name: RWO_PVC_SCHEDULING
           value: {{ .Values.tensorboard.controller.manager.config.rwoPvcScheduling | quote }}
         - name: TENSORBOARD_IMAGE
@@ -74,13 +76,13 @@ spec:
         imagePullPolicy: {{ include "kubeflow.tensorboard.controller.kubeRbacProxy.imagePullPolicy" . }}
 
         args:
-        - --secure-listen-address=0.0.0.0:8443
+        - --secure-listen-address=0.0.0.0:{{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" . }}
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
         - --v=0
 
         ports:
-        - containerPort: 8443
+        - containerPort: {{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" . }}
           name: https
           protocol: TCP
 
