@@ -35,7 +35,7 @@ spec:
         - --tlsKeyFile=/etc/webhook/certs/tls.key
 
         ports:
-        - containerPort: {{ include "kubeflow.admissionWebhook.svc.targetPort" . }}
+        - containerPort: {{ .Values.admissionWebhook.service.targetPort }}
           name: https-webhook
 
         {{- with .Values.admissionWebhook.resources }}

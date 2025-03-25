@@ -14,7 +14,7 @@ metadata:
 spec:
   ports:
     - name: https-webhook
-      port: {{ include "kubeflow.admissionWebhook.svc.targetPort" . }}
+      port: {{ .Values.admissionWebhook.service.port }}
       targetPort: https-webhook
   selector:
     {{- include "kubeflow.admissionWebhook.selectorLabels" . | nindent 4 }}

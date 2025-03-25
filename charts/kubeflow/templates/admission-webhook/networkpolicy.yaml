@@ -14,6 +14,6 @@ spec:
   ingress:
     - ports:
         - protocol: TCP
-          port: {{ include "kubeflow.admissionWebhook.svc.targetPort" . }}
+          port: {{ .Values.admissionWebhook.service.targetPort }}
   policyTypes:
     - Ingress
