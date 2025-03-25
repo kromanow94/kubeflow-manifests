@@ -42,3 +42,19 @@ notebooks:
       configurations:
         value:
           - access-ml-pipeline
+
+modelRegistry:
+  config:
+    db:
+      user:
+        secretKeyRef:
+          name: db-credentials
+          key: username
+      password:
+        secretKeyRef:
+          name: db-credentials
+          key: mysql-root-password
+      host:
+        secretKeyRef:
+          name: db-credentials
+          key: host

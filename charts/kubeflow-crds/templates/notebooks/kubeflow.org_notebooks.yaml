@@ -57,7 +57,7 @@ spec:
         type: object
         x-kubernetes-preserve-unknown-fields: true
     served: true
-    storage: true
+    storage: false
     subresources:
       status: {}
 
@@ -67,7 +67,7 @@ spec:
         type: object
         x-kubernetes-preserve-unknown-fields: true
     served: true
-    storage: true
+    storage: false
     subresources:
       status: {}
 

@@ -123,9 +123,6 @@ Kubeflow Admission Webhook Service.
     (include "kubeflow.admissionWebhook.name" .)
 )}}
 {{- end }}
-{{- define "kubeflow.admissionWebhook.svc.targetPort" -}}
-{{- .Values.admissionWebhook.service.targetPort }}
-{{- end }}
 
 {{/*
 Kubeflow Admission Webhook object labels.
