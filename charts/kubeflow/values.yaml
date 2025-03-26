@@ -1855,6 +1855,100 @@ trainingOperator:
   containerSecurityContext:
     allowPrivilegeEscalation: false
 
+modelRegistry:
+  enabled: true
+  rest:
+    image:
+      registry: docker.io
+      repository: kubeflow/model-registry
+      tag: v0.2.9
+      pullPolicy: IfNotPresent
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    containerSecurityContext:
+  grpc:
+    image:
+      registry: gcr.io
+      repository: tfx-oss-public/ml_metadata_store_server
+      tag: 1.14.0
+      pullPolicy: IfNotPresent
+    resources:
+      {}
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    containerSecurityContext:
+  service:
+    annotations:
+    type: ClusterIP
+    restPort: 8080
+    grpcPort: 9090
+  autoscaling:
+    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
+    enabled:
+    minReplicas:
+    maxReplicas:
+    targetCPUUtilizationPercentage:
+    targetMemoryUtilizationPercentage:
+  podDisruptionBudget: {}
+  podAnnotations:
+    # If Database in use is MySQL running incluster and MySQL has Istio Sidecar
+    # Disabled, the connection to MySQL Server must also run without sidecar.
+    # Related resources:
+    # https://istio.io/latest/about/faq/#mysql-with-mtls
+    # https://github.com/istio/istio/issues/10062
+    traffic.sidecar.istio.io/excludeOutboundPorts: "3306"
+  serviceAccount:
+    create: true
+    name:
+    annotations:
+  nodeSelector:
+  tolerations:
+  affinity:
+  topologySpreadConstraints:
+  config:
+    rest:
+      urlPrefix: /api/model_registry/
+    grpc:
+      urlPrefix: /ml_metadata.MetadataStoreService/
+    db:
+      existingSecretName:
+      user:
+        value: root
+        secretKeyRef:
+          name:
+          key: username
+      password:
+        value: mysql1234
+        secretKeyRef:
+          name:
+          key: password
+      host:
+        value: mysql
+        secretKeyRef:
+          name:
+          key: host
+      port:
+        value: 3306
+        secretKeyRef:
+          name:
+          key: port
+      dbName:
+        value: metadb_model_registry
+        secretKeyRef:
+          name:
+          key: dbName
+
 # if cert manager is not enabled, we have to use cache-deployer.
 # We currently don't support deployments without cert-manager.
 certManagerIntegration:
@@ -2018,97 +2112,3 @@ knativeIntegration:
     # put directly to the KnativeEventing CRD under .spec.
     operatorSpec:
       version: 1.10.2
-
-modelRegistry:
-  enabled: true
-  rest:
-    image:
-      registry: docker.io
-      repository: kubeflow/model-registry
-      tag: v0.2.9
-      pullPolicy: IfNotPresent
-    resources:
-      {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-
-    containerSecurityContext:
-  grpc:
-    image:
-      registry: gcr.io
-      repository: tfx-oss-public/ml_metadata_store_server
-      tag: 1.14.0
-      pullPolicy: IfNotPresent
-    resources:
-      {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-    containerSecurityContext:
-  service:
-    annotations:
-    type: ClusterIP
-    restPort: 8080
-    grpcPort: 9090
-  autoscaling:
-    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-    enabled:
-    minReplicas:
-    maxReplicas:
-    targetCPUUtilizationPercentage:
-    targetMemoryUtilizationPercentage:
-  podDisruptionBudget: {}
-  podAnnotations:
-    # If Database in use is MySQL running incluster and MySQL has Istio Sidecar
-    # Disabled, the connection to MySQL Server must also run without sidecar.
-    # Related resources:
-    # https://istio.io/latest/about/faq/#mysql-with-mtls
-    # https://github.com/istio/istio/issues/10062
-    traffic.sidecar.istio.io/excludeOutboundPorts: "3306"
-  serviceAccount:
-    create: true
-    name:
-    annotations:
-  nodeSelector:
-  tolerations:
-  affinity:
-  topologySpreadConstraints:
-  config:
-    rest:
-      urlPrefix: /api/model_registry/
-    grpc:
-      urlPrefix: /ml_metadata.MetadataStoreService/
-    db:
-      existingSecretName:
-      user:
-        value: root
-        secretKeyRef:
-          name:
-          key: username
-      password:
-        value: mysql1234
-        secretKeyRef:
-          name:
-          key: password
-      host:
-        value: mysql
-        secretKeyRef:
-          name:
-          key: host
-      port:
-        value: 3306
-        secretKeyRef:
-          name:
-          key: port
-      dbName:
-        value: metadb_model_registry
-        secretKeyRef:
-          name:
-          key: dbName
