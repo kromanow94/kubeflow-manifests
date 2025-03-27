@@ -1,15 +1,20 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.modelRegistry.name" . }}
-  namespace: {{ include "kubeflow.namespace" . }}
+  name: {{ include "kubeflow.pipelines.mlPipeline.name" . }}
 spec:
   podSelector:
     matchExpressions:
       - key: app.kubernetes.io/component
         operator: In
         values:
-          - {{ include "kubeflow.modelRegistry.name" . }}
+          - {{ include "kubeflow.pipelines.name" . }}
+      - key: app.kubernetes.io/subcomponent
+        operator: In
+        values:
+          - {{ include "kubeflow.pipelines.mlPipeline.name" . }}
   ingress:
     - from:
         - namespaceSelector:
@@ -24,10 +29,7 @@ spec:
                 operator: In
                 values:
                   - {{ .Values.istioIntegration.ingressGatewayNamespace }}
-      ports:
-        - port: {{ .Values.modelRegistry.service.restPort }}
-          protocol: TCP
-        - port: {{ .Values.modelRegistry.service.grpcPort }}
-          protocol: TCP
   policyTypes:
     - Ingress
+
+{{- end }}

@@ -14,9 +14,9 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 80
+    port: {{ .Values.tensorboard.tensorboardsWebApp.service.port }}
     protocol: TCP
-    targetPort: 5000
+    targetPort: {{ .Values.tensorboard.tensorboardsWebApp.service.targetPort }}
   selector:
     {{- include "kubeflow.tensorboard.tensorboardsWebApp.selectorLabels" . | nindent 4 }}
   sessionAffinity: None

@@ -1,15 +1,17 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: model-registry
-  namespace: kubeflow
+  name: {{ include "kubeflow.modelRegistry.name" . }}
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   podSelector:
     matchExpressions:
-      - key: component
+      - key: app.kubernetes.io/component
         operator: In
         values:
-          - model-registry-server
+          - {{ include "kubeflow.modelRegistry.name" . }}
   ingress:
     - from:
         - namespaceSelector:
@@ -23,11 +25,13 @@ spec:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - istio-system
+                  - {{ .Values.istioIntegration.ingressGatewayNamespace }}
       ports:
-        - protocol: TCP
-          port: 8080
-        - protocol: TCP
-          port: 9090
+        - port: {{ .Values.modelRegistry.service.restPort }}
+          protocol: TCP
+        - port: {{ .Values.modelRegistry.service.grpcPort }}
+          protocol: TCP
   policyTypes:
     - Ingress
+
+{{- end }}

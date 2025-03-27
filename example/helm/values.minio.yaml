@@ -17,5 +17,5 @@ networkPolicy:
               - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - istio-system
+                  - istio-ingress
         - podSelector: {} # allow all pods from the same namespace

@@ -888,6 +888,17 @@ katib:
         prometheus.io/port: "8080"
         prometheus.io/scheme: http
         prometheus.io/scrape: "true"
+
+      webhook:
+        port: 443
+        targetPort: 8443
+      metrics:
+        port: 8080
+        targetPort: 8080
+      healthz:
+        port: 18080
+        targetPort: 18080
+
     serviceAccount:
       create: true
       name:
@@ -970,8 +981,6 @@ katib:
       name: kubeflow-gateway
   config:
     init:
-      controller:
-        webhookPort: 8443
         trialResources:
           - Job.v1.batch
           - TFJob.v1.kubeflow.org
@@ -1179,7 +1188,8 @@ pipelines:
       annotations:
       type: ClusterIP
       # TODO: investigate if exposing port config to all services makes sense.
-      port: 8443
+      port: 443
+      targetPort: 8443
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
       # TODO: add PDB to all deployments.
@@ -1750,6 +1760,7 @@ tensorboard:
         create: true
         annotations:
         type: ClusterIP
+        port: 8443
         targetPort: 8443
       resources:
         {}
@@ -1795,6 +1806,8 @@ tensorboard:
       create: true
       annotations:
       type: ClusterIP
+      port: 80
+      targetPort: 5000
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
       enabled:
@@ -1948,6 +1961,9 @@ modelRegistry:
         secretKeyRef:
           name:
           key: dbName
+
+networkPolicies:
+  enabled: true
 
 # if cert manager is not enabled, we have to use cache-deployer.
 # We currently don't support deployments without cert-manager.

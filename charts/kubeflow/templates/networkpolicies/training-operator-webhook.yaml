@@ -1,7 +1,9 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.trainingOperator.name" . }}
+  name: {{ include "kubeflow.trainingOperator.name" . }}-webhook
 spec:
   podSelector:
     matchExpressions:
@@ -17,3 +19,5 @@ spec:
       port: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
   policyTypes:
   - Ingress
+
+{{- end }}

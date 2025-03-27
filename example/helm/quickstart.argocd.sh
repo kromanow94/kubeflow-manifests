@@ -69,11 +69,6 @@ set -x
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.profile-kubeflow-user-example-com.yaml"
 set +x
 
-# Network Policies
-set -x
-kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.networkpolicies.yaml"
-set +x
-
 # Wait until pods are created. This is not required since ArgoCD will be
 # eventually consistent but will bring the Kubeflow faster.
 echo "Sleeping 10 seconds until pods are created..."

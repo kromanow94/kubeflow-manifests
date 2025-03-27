@@ -22,7 +22,7 @@ spec:
     - destination:
         host: {{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.fqdn" . }}
         port:
-          number: 80
+          number: {{ .Values.tensorboard.tensorboardsWebApp.service.port }}
     headers:
       request:
         add:

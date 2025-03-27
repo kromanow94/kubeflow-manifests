@@ -31,7 +31,7 @@ spec:
         imagePullPolicy: {{ include "kubeflow.tensorboard.tensorboardsWebApp.imagePullPolicy" . }}
 
         ports:
-        - containerPort: 5000
+        - containerPort: {{ .Values.tensorboard.tensorboardsWebApp.service.targetPort }}
           protocol: TCP
 
         {{- with .Values.tensorboard.tensorboardsWebApp.resources }}

@@ -159,10 +159,6 @@ Kubeflow Tensorboard Tensorboards Web App Service.
 )}}
 {{- end }}
 
-{{- define "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" -}}
-{{- .Values.tensorboard.controller.kubeRbacProxy.service.targetPort }}
-{{- end }}
-
 {{/*
 Kubeflow Tensorboard Tensorboards Web App Security Context.
 */}}

@@ -13,7 +13,7 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   ports:
-    - port: 443
+    - port: {{ .Values.pipelines.cache.service.port }}
       targetPort: webhook-api
   selector:
     {{- include "kubeflow.pipelines.cache.selectorLabels" . | nindent 4 }}
@@ -37,7 +37,7 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   ports:
-    - port: 443
+    - port: {{ .Values.pipelines.cache.service.port }}
       targetPort: webhook-api
   selector:
     {{- include "kubeflow.pipelines.cache.selectorLabels" . | nindent 4 }}
