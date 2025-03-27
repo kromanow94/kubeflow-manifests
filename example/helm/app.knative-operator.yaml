@@ -18,7 +18,7 @@ spec:
       # kromanow94/knative-operator until this issue is resolved in upstream:
       # https://github.com/knative/operator/issues/1851
       repoURL: https://raw.githubusercontent.com/kromanow94/knative-operator/main
-      targetRevision: v1.11.12
+      targetRevision: v1.12.4
   ignoreDifferences:
     - group: rbac.authorization.k8s.io
       kind: ClusterRole

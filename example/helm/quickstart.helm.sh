@@ -158,7 +158,7 @@ helm upgrade --install knative-operator knative-operator \
     --repo https://raw.githubusercontent.com/kromanow94/knative-operator/main \
     --namespace knative-operator \
     --create-namespace \
-    --version v1.11.12 \
+    --version v1.12.4 \
     --wait
 
 # Kubeflow CRDs #
