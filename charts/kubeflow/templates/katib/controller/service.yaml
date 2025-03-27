@@ -14,16 +14,16 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
   ports:
-    - port: 443
+    - name: webhook
+      port: {{ .Values.katib.controller.service.webhook.port }}
+      targetPort: {{ .Values.katib.controller.service.webhook.targetPort }}
       protocol: TCP
-      targetPort: {{ include "kubeflow.katib.controller.svc.webhook.targetPort" . }}
-      name: webhook
     - name: metrics
-      port: 8080
-      targetPort: 8080
+      port: {{ .Values.katib.controller.service.metrics.port }}
+      targetPort: {{ .Values.katib.controller.service.metrics.targetPort }}
     - name: healthz
-      port: 18080
-      targetPort: 18080
+      port: {{ .Values.katib.controller.service.healthz.port }}
+      targetPort: {{ .Values.katib.controller.service.healthz.targetPort }}
   selector:
     {{- include "kubeflow.katib.controller.selectorLabels" . | nindent 4 }}
 {{- end }}

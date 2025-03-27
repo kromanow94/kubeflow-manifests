@@ -1,19 +1,23 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.pipelines.cache.name" . }}
+  name: {{ include "kubeflow.notebooks.pvcviewerController.name" . }}
 spec:
   podSelector:
     matchExpressions:
       - key: app.kubernetes.io/component
         operator: In
         values:
-          - {{ include "kubeflow.pipelines.cache.name" . }} # mutating webhook
+          - {{ include "kubeflow.notebooks.pvcviewerController.name" . }}
   # https://www.elastic.co/guide/en/cloud-on-k8s/1.1/k8s-webhook-network-policies.html
   # The kubernetes api server must reach the webhook
   ingress:
     - ports:
         - protocol: TCP
-          port: {{ .Values.pipelines.cache.service.port }}
+          port: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
   policyTypes:
     - Ingress
+
+{{- end }}

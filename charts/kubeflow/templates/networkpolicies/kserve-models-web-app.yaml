@@ -1,21 +1,25 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.katib.ui.name" . }}
+  name: {{ include "kubeflow.notebooks.modelsWebApp.name" . }}
 spec:
   podSelector:
     matchExpressions:
       - key: app.kubernetes.io/component
         operator: In
         values:
-          - {{ include "kubeflow.katib.ui.name" . }}
+          - {{ include "kubeflow.notebooks.modelsWebApp.name" . }}
   ingress:
     - from:
         - namespaceSelector:
             matchExpressions:
-              - key: app.kubernetes.io/component
+              - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - {{ include "kubeflow.istioIntegration.name" . }}
+                  - {{ .Values.istioIntegration.ingressGatewayNamespace }}
   policyTypes:
     - Ingress
+
+{{- end }}

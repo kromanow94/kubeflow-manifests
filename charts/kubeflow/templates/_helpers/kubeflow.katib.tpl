@@ -1,5 +1,5 @@
 {{/*
-Kubeflow Katib Controller object names.
+Kubeflow Katib object names.
 */}}
 {{- define "kubeflow.katib.baseName" -}}
 {{- printf "katib" }}
@@ -99,10 +99,6 @@ Kubeflow Katib Controller Service.
     .
     (include "kubeflow.katib.name" .)
 )}}
-{{- end }}
-
-{{- define "kubeflow.katib.controller.svc.webhook.targetPort" -}}
-{{- .Values.katib.config.init.controller.webhookPort }}
 {{- end }}
 
 {{/*

@@ -34,14 +34,14 @@ spec:
           args:
             - --katib-config=/katib-config.yaml
           ports:
-            - containerPort: {{ include "kubeflow.katib.controller.svc.webhook.targetPort" . }}
-              name: webhook
+            - name: webhook
+              containerPort: {{ .Values.katib.controller.service.webhook.targetPort }}
               protocol: TCP
-            - containerPort: 8080
-              name: metrics
+            - name: metrics
+              containerPort: {{ .Values.katib.controller.service.metrics.targetPort }}
               protocol: TCP
-            - containerPort: 18080
-              name: healthz
+            - name: healthz
+              containerPort: {{ .Values.katib.controller.service.healthz.targetPort }}
               protocol: TCP
           readinessProbe:
             httpGet:

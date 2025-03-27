@@ -1,19 +1,27 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
+{{/*
+Admission Webhook is also known as PodDefaults.
+*/}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.notebooks.pvcviewerController.name" . }}
+  name: {{ include "kubeflow.admissionWebhook.name" . }}
 spec:
   podSelector:
     matchExpressions:
       - key: app.kubernetes.io/component
         operator: In
         values:
-          - {{ include "kubeflow.notebooks.pvcviewerController.name" . }}
+          - {{ include "kubeflow.admissionWebhook.name" . }} # mutating webhook
   # https://www.elastic.co/guide/en/cloud-on-k8s/1.1/k8s-webhook-network-policies.html
   # The kubernetes api server must reach the webhook
   ingress:
     - ports:
         - protocol: TCP
-          port: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
+          port: {{ .Values.admissionWebhook.service.targetPort }}
   policyTypes:
     - Ingress
+
+{{- end }}

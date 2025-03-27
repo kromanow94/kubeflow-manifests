@@ -1,14 +1,20 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "kubeflow.katib.dbmanager.name" . }}
+  name: {{ include "kubeflow.pipelines.metadataGrpcServer.name" . }}
 spec:
   podSelector:
     matchExpressions:
       - key: app.kubernetes.io/component
         operator: In
         values:
-          - {{ include "kubeflow.katib.dbmanager.name" . }} # the metrics loggers write directly to this database
+          - {{ include "kubeflow.pipelines.name" . }}
+      - key: app.kubernetes.io/subcomponent
+        operator: In
+        values:
+          - {{ include "kubeflow.pipelines.metadataGrpcServer.name" . }}
   ingress:
     - from:
         - namespaceSelector:
@@ -20,3 +26,5 @@ spec:
         - podSelector: {} # allow all pods from the same namespace
   policyTypes:
     - Ingress
+
+{{- end }}

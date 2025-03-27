@@ -8,6 +8,7 @@ kind: Deployment
 metadata:
   labels:
     {{- include "kubeflow.tensorboard.controller.labels" . | nindent 4 }}
+    control-plane: controller-manager
   name: {{ include "kubeflow.tensorboard.controller.name" . }}
   namespace: {{ include "kubeflow.namespace" . }}
 spec:
@@ -18,6 +19,7 @@ spec:
   selector:
     matchLabels:
       {{- include "kubeflow.tensorboard.controller.selectorLabels" . | nindent 6 }}
+      control-plane: controller-manager
 
   template:
     metadata:
@@ -25,6 +27,7 @@ spec:
         kubectl.kubernetes.io/default-container: manager
       labels:
         {{- include "kubeflow.tensorboard.controller.selectorLabels" . | nindent 8 }}
+        control-plane: controller-manager
 
     spec:
       containers:
@@ -76,13 +79,13 @@ spec:
         imagePullPolicy: {{ include "kubeflow.tensorboard.controller.kubeRbacProxy.imagePullPolicy" . }}
 
         args:
-        - --secure-listen-address=0.0.0.0:{{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" . }}
+        - --secure-listen-address=0.0.0.0:{{ .Values.tensorboard.controller.kubeRbacProxy.service.targetPort }}
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
         - --v=0
 
         ports:
-        - containerPort: {{ include "kubeflow.tensorboard.tensorboardsWebApp.svc.targetPort" . }}
+        - containerPort: {{ .Values.tensorboard.controller.kubeRbacProxy.service.targetPort }}
           name: https
           protocol: TCP
 

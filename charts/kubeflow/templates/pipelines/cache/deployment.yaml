@@ -62,7 +62,7 @@ spec:
         - name: CACHE_NODE_RESTRICTIONS
           value: {{ .Values.pipelines.cache.config.cacheNodeRestrictions | quote }}
         - name: WEBHOOK_PORT
-          value: {{ .Values.pipelines.cache.service.port | quote }}
+          value: {{ .Values.pipelines.cache.service.targetPort | quote }}
 
         - name: NAMESPACE_TO_WATCH
           {{- if (include "kubeflow.deploymentMode.namespace" .) }}
@@ -74,7 +74,7 @@ spec:
           {{- end }}
 
         ports:
-        - containerPort: {{ .Values.pipelines.cache.service.port }}
+        - containerPort: {{ .Values.pipelines.cache.service.targetPort }}
           name: webhook-api
 
         {{- with .Values.pipelines.cache.resources }}

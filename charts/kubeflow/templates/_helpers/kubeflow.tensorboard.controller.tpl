@@ -83,12 +83,16 @@ Kubeflow Tensorboard Controller object names.
 {{- end }}
 
 {{/*
-Kubeflow Tensorboard Controller Service.
+Kubeflow Tensorboard Controller Manager Metrics Service.
 */}}
-{{- define "kubeflow.tensorboard.controller.kubeRbacProxy.svc.name" -}}
-{{ include "kubeflow.component.svc.name" (
-    include "kubeflow.tensorboard.controller.kubeRbacProxy.name" .
-)}}
+
+{{- define "kubeflow.tensorboard.controller.metricsService.svc.name" -}}
+{{- printf "%s-%s"
+    ( include "kubeflow.component.svc.name" (
+        include "kubeflow.tensorboard.controller.name" .
+    ))
+    "controller-manager-metrics-service"
+}}
 {{- end }}
 
 {{/*

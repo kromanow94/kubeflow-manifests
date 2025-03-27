@@ -193,9 +193,3 @@ helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
 # Default password for user user@example.com:
 # 12341234
 kubectl apply -f profile.kubeflow-user-example-com.yaml
-
-# Network Policies
-kubectl apply -f networkpolicy.kserve.yaml
-kubectl apply -f networkpolicy.kserve-models-web-app.yaml.yaml
-kubectl apply -f networkpolicy.default-allow-same-namespace.yaml
-kubectl apply -f networkpolicy.model-registry.yaml

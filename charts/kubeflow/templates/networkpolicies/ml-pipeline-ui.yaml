@@ -1,3 +1,5 @@
+{{- if (include "kubeflow.networkPolicies.enabled" .) -}}
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -8,14 +10,21 @@ spec:
       - key: app.kubernetes.io/component
         operator: In
         values:
+          - {{ include "kubeflow.pipelines.name" . }}
+      - key: app.kubernetes.io/subcomponent
+        operator: In
+        values:
+        values:
           - {{ include "kubeflow.pipelines.ui.name" . }}
   ingress:
     - from:
         - namespaceSelector:
             matchExpressions:
-              - key: app.kubernetes.io/component
+              - key: kubernetes.io/metadata.name
                 operator: In
                 values:
-                  - {{ include "kubeflow.istioIntegration.name" . }}
+                  - {{ .Values.istioIntegration.ingressGatewayNamespace }}
   policyTypes:
     - Ingress
+
+{{- end }}
