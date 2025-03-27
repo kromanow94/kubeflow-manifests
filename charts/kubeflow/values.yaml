@@ -1846,7 +1846,11 @@ trainingOperator:
     annotations:
     type: ClusterIP
     webhookServer:
+      port: 443
       targetPort: 9443
+    monitoring:
+      port: 8080
+      targetPort: 8080
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
     enabled:

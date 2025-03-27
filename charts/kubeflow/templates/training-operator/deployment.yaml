@@ -36,8 +36,8 @@ spec:
         - /manager
 
         ports:
-          - containerPort: 8080
-          - containerPort: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
+          - containerPort: {{ .Values.trainingOperator.service.monitoring.targetPort }}
+          - containerPort: {{ .Values.trainingOperator.service.webhookServer.targetPort }}
             name: webhook-server
             protocol: TCP
 

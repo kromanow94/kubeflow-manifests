@@ -14,12 +14,12 @@ metadata:
 spec:
   ports:
     - name: monitoring-port
-      port: 8080
-      targetPort: 8080
+      port: {{ .Values.trainingOperator.service.monitoring.port }}
+      targetPort: {{ .Values.trainingOperator.service.monitoring.targetPort }}
     - name: webhook-server
-      port: 443
+      port: {{ .Values.trainingOperator.service.webhookServer.port }}
       protocol: TCP
-      targetPort: {{ include "kubeflow.notebooks.pvcviewerController.webhook.port" . }}
+      targetPort: {{ .Values.trainingOperator.service.webhookServer.targetPort }}
   selector:
     {{- include "kubeflow.trainingOperator.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
