@@ -31,6 +31,10 @@ spec:
       jqPathExpressions:
         - .webhooks[] | .clientConfig.caBundle
       kind: MutatingWebhookConfiguration
+    - kind: Secret
+      name: training-operator-webhook-cert
+      jsonPointers:
+        - /data
   syncPolicy:
     automated:
       prune: true
@@ -43,6 +47,7 @@ spec:
       limit: 5
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
     managedNamespaceMetadata:
       labels:
         istio-injection: enabled
