@@ -2080,7 +2080,7 @@ knativeIntegration:
     # Whatever is under .knativeIntegration.knativeServing.operatorSpec will be
     # put directly to the KnativeServing CRD under .spec.
     operatorSpec:
-      version: 1.10.2
+      version: 1.12.4
       ingress:
         istio:
           enabled: true
