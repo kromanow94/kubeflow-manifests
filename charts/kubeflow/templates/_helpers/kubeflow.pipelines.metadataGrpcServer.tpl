@@ -81,11 +81,21 @@ Kubeflow Pipelines Metadata GRPC Server object labels.
 Kubeflow Pipelines Metadata GRPC Server container image settings.
 */}}
 {{- define "kubeflow.pipelines.metadataGrpcServer.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.metadataGrpcServer.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataGrpcServer.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataGrpcServer.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.metadataGrpcServer.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataGrpcServer.image
+)}}
 {{- end }}
 
 

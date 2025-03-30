@@ -46,12 +46,23 @@ Kubeflow Pipelines object labels.
 {{/*
 Kubeflow Pipelines container image settings.
 */}}
+
 {{- define "kubeflow.pipelines.image" -}}
-{{ include "kubeflow.component.image" (list .Values.defaults.image .Values.pipelines.image) }}
+{{- $default := index . 0 -}}
+{{- $pipelinesDefault := index . 1 -}}
+{{- $component := index . 2 -}}
+{{- $registry := default $default.registry (default $pipelinesDefault.registry $component.registryOverwrite) -}}
+{{- $repository := $component.repository -}}
+{{- $tag := default $pipelinesDefault.tag $component.tagOverwrite -}}
+{{- printf "%s/%s:%s" $registry $repository $tag }}
 {{- end }}
 
 {{- define "kubeflow.pipelines.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.defaults.image .Values.pipelines.image) }}
+{{- $default := index . 0 -}}
+{{- $pipelinesDefault := index . 1 -}}
+{{- $component := index . 2 -}}
+{{- $imagePullPolicy := default $default.pullPolicy (default $pipelinesDefault.pullPolicy $component.pullPolicyOverwrite) -}}
+{{- $imagePullPolicy }}
 {{- end }}
 
 {{/*

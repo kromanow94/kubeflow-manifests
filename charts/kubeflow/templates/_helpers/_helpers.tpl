@@ -244,19 +244,19 @@ https://github.com/helm/helm/issues/5358
 
 
 {{- define "kubeflow.component.image" -}}
-{{- $defaultImage := index . 0 -}}
-{{- $componentImage := index . 1 -}}
-{{- $registry := default $defaultImage.registry $componentImage.registryOverwrite -}}
-{{- $repository :=  $componentImage.repository -}}
-{{- $tag := default $defaultImage.tag $componentImage.tagOverwrite -}}
+{{- $default := index . 0 -}}
+{{- $component := index . 1 -}}
+{{- $registry := default $default.registry $component.registryOverwrite -}}
+{{- $repository :=  $component.repository -}}
+{{- $tag := $component.tag -}}
 {{- printf "%s/%s:%s" $registry $repository $tag }}
 {{- end }}
 
 {{- define "kubeflow.component.imagePullPolicy" -}}
-{{- $defaultImage := index . 0 -}}
-{{- $componentImage := index . 1 -}}
-{{- $pullPolicy := default $defaultImage.pullPolicy $componentImage.pullPolicyOverwrite -}}
-{{- $pullPolicy }}
+{{- $default := index . 0 -}}
+{{- $component := index . 1 -}}
+{{- $imagePullPolicy := default $default.pullPolicy $component.pullPolicyOverwrite -}}
+{{- $imagePullPolicy }}
 {{- end }}
 
 {{- define "kubeflow.component.serviceAccountName" -}}

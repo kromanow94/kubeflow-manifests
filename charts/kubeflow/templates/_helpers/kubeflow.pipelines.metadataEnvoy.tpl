@@ -66,11 +66,21 @@ Kubeflow Pipelines Metadata Envoy object labels.
 Kubeflow Pipelines Metadata Envoy container image settings.
 */}}
 {{- define "kubeflow.pipelines.metadataEnvoy.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.metadataEnvoy.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataEnvoy.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataEnvoy.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.metadataEnvoy.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataEnvoy.image
+)}}
 {{- end }}
 
 

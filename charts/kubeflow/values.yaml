@@ -28,8 +28,6 @@ clusterDomain: cluster.local
 defaults:
   image:
     registry: docker.io
-    # tag: "latest"
-    tag: v1.9.2
     pullPolicy: IfNotPresent
   autoscaling:
     # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -50,8 +48,8 @@ admissionWebhook:
   enabled: true
   image:
     repository: kubeflownotebookswg/poddefaults-webhook
+    tag: v1.9.2
     registryOverwrite:
-    tagOverwrite:
     pullPolicyOverwrite:
   resources:
     {}
@@ -91,8 +89,8 @@ centraldashboard:
   enabled: true
   image:
     repository: kubeflownotebookswg/centraldashboard
+    tag: v1.9.2
     registryOverwrite:
-    tagOverwrite:
     pullPolicyOverwrite:
   resources:
     {}
@@ -218,8 +216,8 @@ notebooks:
     enabled: true
     image:
       repository: kubeflownotebookswg/jupyter-web-app
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     resources:
       {}
@@ -579,8 +577,8 @@ notebooks:
     enabled: true
     image:
       repository: kubeflownotebookswg/notebook-controller
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     resources:
       {}
@@ -622,8 +620,8 @@ notebooks:
     enabled: true
     image:
       repository: kubeflownotebookswg/volumes-web-app
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     resources:
       {}
@@ -661,17 +659,18 @@ notebooks:
       secureCookies: true
       viewer:
         image:
-          repository: filebrowser
-          registryOverwrite: filebrowser
-          tagOverwrite: v2.23.0
+          repository: filebrowser/filebrowser
+          tag: v2.25.0
+          registryOverwrite: 
+          pullPolicyOverwrite: 
         serviceAccountName: default-editor
   pvcviewerController:
     enabled: true
     manager:
       image:
         repository: kubeflownotebookswg/pvcviewer-controller
+        tag: v1.9.2
         registryOverwrite:
-        tagOverwrite:
         pullPolicyOverwrite:
       service:
         create: true
@@ -695,8 +694,8 @@ notebooks:
     kubeRbacProxy:
       image:
         repository: kubebuilder/kube-rbac-proxy
+        tag: v0.13.1
         registryOverwrite: gcr.io
-        tagOverwrite: v0.13.1
         pullPolicyOverwrite:
       service:
         create: true
@@ -758,8 +757,8 @@ kserveModelsWebApp:
   enabled: true
   image:
     repository: kserve/models-web-app
+    tag: v0.13.0
     registryOverwrite:
-    tagOverwrite: v0.13.0
     pullPolicyOverwrite:
   resources:
     {}
@@ -780,7 +779,6 @@ kserveModelsWebApp:
   rbac:
     create: true
   config:
-    # urlPrefix: /models
     urlPrefix: /kserve-endpoints
   nodeSelector:
   tolerations:
@@ -799,8 +797,8 @@ profilesController:
   kfam:
     image:
       repository: kubeflownotebookswg/kfam
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     service:
       create: true
@@ -811,8 +809,8 @@ profilesController:
   manager:
     image:
       repository: kubeflownotebookswg/profile-controller
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     resources:
       {}
@@ -873,8 +871,8 @@ katib:
     name: katib-controller
     image:
       repository: kubeflowkatib/katib-controller
+      tag: v0.17.0
       registryOverwrite:
-      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -909,8 +907,8 @@ katib:
     name: katib-db-manager
     image:
       repository: kubeflowkatib/katib-db-manager
+      tag: v0.17.0
       registryOverwrite:
-      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
@@ -964,8 +962,8 @@ katib:
     urlPrefix: /katib
     image:
       repository: kubeflowkatib/katib-ui
+      tag: v0.17.0
       registryOverwrite:
-      tagOverwrite: v0.17.0
       pullPolicyOverwrite:
     serviceAccount:
       create: true
@@ -1039,12 +1037,15 @@ katib:
 # TODO: verify patches in apps/pipeline/upstream/base/installs/multi-user
 pipelines:
   enabled: true
-  # NOTE: The pipelines do not use the '.Values.defaults.image' values because
-  # the container images are stored in a different registry.
-  image:
-    registry: gcr.io/ml-pipeline
-    tag: 2.3.0
-    pullPolicy: IfNotPresent
+  # NOTE: The Kubeflow Pipelines subcomponents contains special handling. It
+  # will first apply the global .Values.defaults.image, then look for
+  # .Values.pipelines.defaults.image and lastly for .Values.pipelines.<component>.image.
+  # This is primarily useful for setting global registry or Pipelines Container Tag.
+  defaults:
+    image:
+      registry: gcr.io
+      tag: 2.3.0
+      pullPolicy: IfNotPresent
   config:
     # If this is empty, the kfp backend will automatically configure that with:
     # "minio://mlpipeline/v2/artifacts"
@@ -1169,11 +1170,10 @@ pipelines:
           name:
           key: conMaxLifetime
 
-  # TODO: cache looks like it's missing a lot of stuff...
   cache:
     enabled: true
     image:
-      repository: cache-server
+      repository: ml-pipeline/cache-server
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1188,12 +1188,10 @@ pipelines:
       create: true
       annotations:
       type: ClusterIP
-      # TODO: investigate if exposing port config to all services makes sense.
       port: 443
       targetPort: 8443
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-      # TODO: add PDB to all deployments.
       enabled:
       minReplicas:
       maxReplicas:
@@ -1245,7 +1243,7 @@ pipelines:
      # aka api-server
     enabled: true
     image:
-      repository: api-server
+      repository: ml-pipeline/api-server
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1280,17 +1278,13 @@ pipelines:
     topologySpreadConstraints:
     containerSecurityContext:
     config:
-      # WARNING: currently the secrets are provided with direct values
-      # to the deployment envs. This should be later improved to accept
-      # existing Secrets and existing ConfigMap.
-      #
       # always use KF Pipeline latest version?
       autoUpdatePipelineDefaultVersion: true
 
   persistenceAgent:
     enabled: true
     image:
-      repository: persistenceagent
+      repository: ml-pipeline/persistenceagent
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1331,7 +1325,7 @@ pipelines:
   scheduledWorkflow:
     enabled: true
     image:
-      repository: scheduledworkflow
+      repository: ml-pipeline/scheduledworkflow
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1371,7 +1365,7 @@ pipelines:
   ui:
     enabled: true
     image:
-      repository: frontend
+      repository: ml-pipeline/frontend
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1416,7 +1410,7 @@ pipelines:
   viewerCrd:
     enabled: true
     image:
-      repository: viewer-crd-controller
+      repository: ml-pipeline/viewer-crd-controller
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1456,7 +1450,7 @@ pipelines:
   metadataWriter:
     enabled: true
     image:
-      repository: metadata-writer
+      repository: ml-pipeline/metadata-writer
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1497,7 +1491,7 @@ pipelines:
   metadataEnvoy:
     enabled: true
     image:
-      repository: metadata-envoy
+      repository: ml-pipeline/metadata-envoy
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1514,20 +1508,12 @@ pipelines:
       type: ClusterIP
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-      # TODO: add PDB to all deployments.
       enabled:
       minReplicas:
       maxReplicas:
       targetCPUUtilizationPercentage:
       targetMemoryUtilizationPercentage:
     podDisruptionBudget: {}
-    # NOTE: metadata-envoy doesn't define any RBAC.
-    # rbac:
-    #   create: true
-    #   serviceAccount:
-    #     create: true
-    #     name:
-    #     annotations:
     serviceAccount:
       create: false
       name:
@@ -1542,8 +1528,8 @@ pipelines:
   metadataGrpcServer:
     enabled: true
     image:
-      registryOverwrite: gcr.io/tfx-oss-public
-      repository: ml_metadata_store_server
+      repository: tfx-oss-public/ml_metadata_store_server
+      registryOverwrite:
       tagOverwrite: 1.14.0
       pullPolicyOverwrite:
     resources:
@@ -1561,20 +1547,12 @@ pipelines:
       port: 8080
     autoscaling:
       # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-      # TODO: add PDB to all deployments.
       enabled:
       minReplicas:
       maxReplicas:
       targetCPUUtilizationPercentage:
       targetMemoryUtilizationPercentage:
     podDisruptionBudget: {}
-    # NOTE: metadata-envoy doesn't define any RBAC.
-    # rbac:
-    #   create: true
-    #   serviceAccount:
-    #     create: true
-    #     name:
-    #     annotations:
     serviceAccount:
       create: true
       name:
@@ -1590,7 +1568,7 @@ pipelines:
   visualization:
     enabled: true
     image:
-      repository: visualization-server
+      repository: ml-pipeline/visualization-server
       registryOverwrite:
       tagOverwrite:
       pullPolicyOverwrite:
@@ -1676,53 +1654,6 @@ pipelines:
     config:
       disableIstioSidecar: false
 
-  # ---
-  # TODO: check if this is used
-  kfam:
-    image:
-      repository: kubeflownotebookswg/kfam
-      registryOverwrite:
-      tagOverwrite:
-      pullPolicyOverwrite:
-    service:
-      create: true
-      annotations:
-      type: ClusterIP
-    config:
-      urlPrefix: /kfam
-  manager:
-    image:
-      repository: kubeflownotebookswg/profile-controller
-      registryOverwrite:
-      tagOverwrite:
-      pullPolicyOverwrite:
-    resources:
-      {}
-      # limits:
-      #   cpu: 100m
-      #   memory: 128Mi
-      # requests:
-      #   cpu: 100m
-      #   memory: 128Mi
-  autoscaling:
-    # If autoscaling is disabled, replica count for a component is equal to minReplicas.
-    enabled:
-    minReplicas:
-    maxReplicas:
-    targetCPUUtilizationPercentage:
-    targetMemoryUtilizationPercentage:
-  podDisruptionBudget: {}
-  rbac:
-    create: true
-  serviceAccount:
-    create: true
-    name:
-    annotations:
-  nodeSelector:
-  tolerations:
-  affinity:
-  topologySpreadConstraints:
-  containerSecurityContext:
 
 tensorboard:
   enabled: true
@@ -1731,8 +1662,8 @@ tensorboard:
     manager:
       image:
         repository: kubeflownotebookswg/tensorboard-controller
+        tag: v1.9.2
         registryOverwrite:
-        tagOverwrite:
         pullPolicyOverwrite:
       resources:
         {}
@@ -1748,14 +1679,14 @@ tensorboard:
         rwoPvcScheduling: "True"
         tensorboard:
           image:
-            repository: tensorflow
-            registryOverwrite: tensorflow
-            tagOverwrite: "2.5.1"
+            repository: tensorflow/tensorflow
+            registryOverwrite:
+            tag: "2.5.1"
     kubeRbacProxy:
       image:
         repository: kubebuilder/kube-rbac-proxy
+        tag: v0.8.0
         registryOverwrite: gcr.io
-        tagOverwrite: v0.8.0
         pullPolicyOverwrite:
       service:
         create: true
@@ -1798,8 +1729,8 @@ tensorboard:
     enabled: true
     image:
       repository: kubeflownotebookswg/tensorboards-web-app
+      tag: v1.9.2
       registryOverwrite:
-      tagOverwrite:
       pullPolicyOverwrite:
     resources:
       {}
@@ -1836,8 +1767,8 @@ trainingOperator:
   enabled: true
   image:
     repository: kubeflow/training-operator
+    tag: v1-04f9f13
     registryOverwrite:
-    tagOverwrite: v1-04f9f13
     pullPolicyOverwrite:
   resources:
     {}
@@ -1877,7 +1808,6 @@ modelRegistry:
   enabled: true
   rest:
     image:
-      registry: docker.io
       repository: kubeflow/model-registry
       tag: v0.2.9
       pullPolicy: IfNotPresent
@@ -1989,15 +1919,10 @@ istioIntegration:
   # * 'granular' will deploy multiple AuthorizationPolicies with CUSTOM action using auth provider,
   #   each for component that requires user id. This is an alternative way of setting authentication
   #   with istio. 'granular' is more secure but more complex.
-  #   If you want to use 'granular', please also use the 'profile' Helm Chart in
-  #   the same directory as 'kubeflow' Helm Chart which is already compliant
-  #   with the 'granular' authorizationMode.
+  #   NOTE: this is ultimately not supported and should be cleaned up.
   authorizationMode: ingressgateway
   m2m:
     enabled: true
-    # This will create CRB allowing access to
-    # https://kubernetes.default.svc.cluster.local/.well-known/openid-configuration
-    inCluster: true
     userClaim: sub
     groupsClaim: groups
     issuer: https://kubernetes.default.svc.cluster.local

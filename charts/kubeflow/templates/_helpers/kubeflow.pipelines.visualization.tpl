@@ -81,11 +81,22 @@ Kubeflow Pipelines Visualization object labels.
 Kubeflow Pipelines Visualization container image settings.
 */}}
 {{- define "kubeflow.pipelines.visualization.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.visualization.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.visualization.image
+)}}
+
 {{- end }}
 
 {{- define "kubeflow.pipelines.visualization.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.visualization.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.visualization.image
+)}}
 {{- end }}
 
 

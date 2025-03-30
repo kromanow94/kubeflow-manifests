@@ -113,11 +113,21 @@ pipelines.kubeflow.org/cache_enabled: "false"
 Kubeflow Pipelines Cache container image settings.
 */}}
 {{- define "kubeflow.pipelines.cache.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.cache.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.cache.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.cache.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.cache.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.cache.image
+)}}
 {{- end }}
 
 

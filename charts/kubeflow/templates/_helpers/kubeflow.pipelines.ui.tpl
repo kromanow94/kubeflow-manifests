@@ -101,11 +101,22 @@ Kubeflow Pipelines UI object labels.
 Kubeflow Pipelines UI container image settings.
 */}}
 {{- define "kubeflow.pipelines.ui.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.ui.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.ui.image
+)}}
+
 {{- end }}
 
 {{- define "kubeflow.pipelines.ui.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.ui.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.ui.image
+)}}
 {{- end }}
 
 
