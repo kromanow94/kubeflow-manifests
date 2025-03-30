@@ -91,13 +91,6 @@ Istio Integration enable and create toggles.
 }}
 {{- end }}
 
-{{- define "kubeflow.istioIntegration.m2m.inCluster" -}}
-{{- and
-  (include "kubeflow.istioIntegration.enabled" . | eq "true" )
-  .Values.istioIntegration.m2m.inCluster
-}}
-{{- end }}
-
 {{- define "kubeflow.istioIntegration.authorizationMode.granular" -}}
 {{- ternary true "" (eq .Values.istioIntegration.authorizationMode "granular") -}}
 {{- end }}

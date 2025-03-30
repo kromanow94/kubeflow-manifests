@@ -1,3 +1,8 @@
+{{/*
+Cache Deployer is currently not supported
+*/}}
+
+{{/*
 {{- if (include "kubeflow.pipelines.cache.enabled" . | eq "true") -}}
 
 apiVersion: v1
@@ -9,3 +14,4 @@ metadata:
   namespace: {{ include "kubeflow.namespace" . }}
 
 {{- end }}
+*/}}

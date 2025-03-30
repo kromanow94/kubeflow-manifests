@@ -130,7 +130,7 @@ Image configuration.
 */}}
 
 {{- define "kubeflow.modelRegistry.rest.image" -}}
-{{ include "kubeflow.component.image" (list .Values.modelRegistry.rest.image .Values.modelRegistry.rest.image) }}
+{{ include "kubeflow.component.image" (list .Values.defaults.image .Values.modelRegistry.rest.image) }}
 {{- end }}
 
 {{- define "kubeflow.modelRegistry.rest.imagePullPolicy" -}}

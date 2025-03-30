@@ -81,11 +81,21 @@ Kubeflow Pipelines Metadata Writer object labels.
 Kubeflow Pipelines Metadata Writer container image settings.
 */}}
 {{- define "kubeflow.pipelines.metadataWriter.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.metadataWriter.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataWriter.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.metadataWriter.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.metadataWriter.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.metadataWriter.image
+)}}
 {{- end }}
 
 

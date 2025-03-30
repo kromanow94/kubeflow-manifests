@@ -89,11 +89,21 @@ Kubeflow Pipelines Persistence Agent object labels.
 Kubeflow Pipelines Persistence Agent container image settings.
 */}}
 {{- define "kubeflow.pipelines.persistenceAgent.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.persistenceAgent.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.persistenceAgent.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.persistenceAgent.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.persistenceAgent.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.persistenceAgent.image
+)}}
 {{- end }}
 
 

@@ -89,11 +89,22 @@ Kubeflow Pipelines Scheduled Workflow object labels.
 Kubeflow Pipelines Scheduled Workflow container image settings.
 */}}
 {{- define "kubeflow.pipelines.scheduledWorkflow.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.scheduledWorkflow.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.scheduledWorkflow.image
+)}}
+
 {{- end }}
 
 {{- define "kubeflow.pipelines.scheduledWorkflow.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.scheduledWorkflow.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.scheduledWorkflow.image
+)}}
 {{- end }}
 
 

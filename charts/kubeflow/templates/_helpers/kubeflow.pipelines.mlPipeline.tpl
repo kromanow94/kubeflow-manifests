@@ -89,11 +89,21 @@ Kubeflow Pipelines ML Pipeline object labels.
 Kubeflow Pipelines ML Pipeline container image settings.
 */}}
 {{- define "kubeflow.pipelines.mlPipeline.image" -}}
-{{ include "kubeflow.component.image" (list .Values.pipelines.image .Values.pipelines.mlPipeline.image) }}
+{{- include "kubeflow.pipelines.image" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.mlPipeline.image
+)}}
 {{- end }}
 
 {{- define "kubeflow.pipelines.mlPipeline.imagePullPolicy" -}}
-{{ include "kubeflow.component.imagePullPolicy" (list .Values.pipelines.image .Values.pipelines.mlPipeline.image) }}
+{{- include "kubeflow.pipelines.imagePullPolicy" (
+    list
+    .Values.defaults.image
+    .Values.pipelines.defaults.image
+    .Values.pipelines.mlPipeline.image
+)}}
 {{- end }}
 
 

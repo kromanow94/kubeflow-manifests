@@ -48,7 +48,7 @@ spec:
         - name: DISABLE_ISTIO_SIDECAR
           value: {{ .Values.pipelines.profileController.config.disableIstioSidecar | quote }}
         - name: KFP_VERSION
-          value: {{ .Values.pipelines.image.tag | quote }}
+          value: {{ .Values.pipelines.defaults.image.tag | quote }}
         - name: KFP_DEFAULT_PIPELINE_ROOT
           value: {{ .Values.pipelines.config.defaultPipelineRoot | quote }}
         - name: CONTROLLER_PORT
