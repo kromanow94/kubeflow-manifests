@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.3}"
+TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.4}"
 
 cat <<EOF
 This script will install ArgoCD, configure it to enable health assessment
