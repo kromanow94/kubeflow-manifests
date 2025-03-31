@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.0}"
+TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.1}"
 
 cat <<EOF
 This script will check if ArgoCD is installed, install ArgoCD if not installed

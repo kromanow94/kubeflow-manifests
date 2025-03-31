@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.0}"
+TARGET_REVISION="${TARGET_REVISION:-kubeflow-0.5.0-rc.1}"
 
 cat <<EOF
 This script will create 'kubeflow' namespace configured with istio injection and
@@ -173,7 +173,7 @@ helm upgrade --install kubeflow-crds kubeflow-crds \
 helm upgrade --install kubeflow kubeflow \
     --namespace kubeflow \
     --repo https://kromanow94.github.io/kubeflow-manifests \
-    --version 0.5.0-rc.0 \
+    --version 0.5.0-rc.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kubeflow.yaml" \
     --wait
 
