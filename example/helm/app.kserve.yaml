@@ -14,7 +14,7 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/kserve/kserve
-      targetRevision: v0.11.2
+      targetRevision: v0.13.1
       path: charts/kserve-resources
       helm:
         valueFiles:

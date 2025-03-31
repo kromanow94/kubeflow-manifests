@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: dex
       repoURL: https://charts.dexidp.io
-      targetRevision: 0.16.0
+      targetRevision: 0.17.1
       helm:
         valueFiles:
           - $values/example/helm/values.dex.yaml

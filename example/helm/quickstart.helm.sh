@@ -75,7 +75,7 @@ helm upgrade --install cert-manager cert-manager \
     --namespace cert-manager \
     --create-namespace \
     --repo https://charts.jetstack.io \
-    --version v1.14.3 \
+    --version v1.14.5 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.cert-manager.yaml" \
     --wait
 
@@ -84,7 +84,7 @@ helm upgrade --install dex dex \
     --namespace dex \
     --create-namespace \
     --repo https://charts.dexidp.io \
-    --version 0.16.0 \
+    --version 0.17.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.dex.yaml" \
     --wait
 
@@ -93,14 +93,14 @@ helm upgrade --install istio-base base \
     --namespace istio-system \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --wait
 
 # Istio Discovery #
 helm upgrade --install istiod istiod \
     --namespace istio-system \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.istiod.yaml" \
     --wait
 
@@ -109,7 +109,7 @@ helm upgrade --install istio-ingressgateway gateway \
     --namespace istio-ingress \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.istio-ingressgateway.yaml" \
     --wait
 
@@ -118,7 +118,7 @@ helm upgrade --install cluster-local-gateway gateway \
     --namespace istio-ingress \
     --create-namespace \
     --repo https://istio-release.storage.googleapis.com/charts \
-    --version 1.20.2 \
+    --version 1.22.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.cluster-local-gateway.yaml" \
     --wait
 
