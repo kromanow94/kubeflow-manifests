@@ -20,7 +20,7 @@ spec:
         valueFiles:
           - $values/example/helm/values.cert-manager.yaml
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: kubeflow-0.5.0-rc.5
+      targetRevision: kubeflow-0.5.0
       ref: values
   syncPolicy:
     automated:
