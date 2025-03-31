@@ -37,8 +37,6 @@ kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifest
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.metacontroller.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.knative-namespaces.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.knative-operator.yaml"
-kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve-crd.yaml"
-kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve.yaml"
 set +x
 
 set -x
@@ -57,6 +55,8 @@ kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifest
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.cluster-local-gateway.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kubeflow-crds.yaml"
 kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kubeflow.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve-crd.yaml"
+kubectl apply -f "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/app.kserve.yaml"
 set +x
 
 # Wait until pods are created. This is not required since ArgoCD will be
