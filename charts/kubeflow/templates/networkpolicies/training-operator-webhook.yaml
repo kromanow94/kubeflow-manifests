@@ -3,7 +3,10 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
+  labels:
+    {{- include "kubeflow.networkPolicies.labels" . | nindent 4 }}
   name: {{ include "kubeflow.trainingOperator.name" . }}-webhook
+  namespace: {{ include "kubeflow.namespace" . }}
 spec:
   podSelector:
     matchExpressions:
