@@ -180,7 +180,7 @@ helm upgrade --install kubeflow kubeflow \
 # KServe CRDs #
 helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd \
     --namespace kserve \
-    --version v0.12.1 \
+    --version v0.13.1 \
     --create-namespace \
     --wait
 
@@ -190,7 +190,7 @@ helm upgrade --install kserve-crd oci://ghcr.io/kserve/charts/kserve-crd \
 helm upgrade --install kserve oci://ghcr.io/kserve/charts/kserve \
     --namespace kserve \
     --create-namespace \
-    --version v0.12.1 \
+    --version v0.13.1 \
     --values "https://raw.githubusercontent.com/kromanow94/kubeflow-manifests/${TARGET_REVISION}/example/helm/values.kserve.yaml" \
     --wait
 
