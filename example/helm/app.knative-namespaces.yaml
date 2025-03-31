@@ -13,7 +13,7 @@ spec:
   project: default
   sources:
     - repoURL: https://github.com/kromanow94/kubeflow-manifests.git
-      targetRevision: kubeflow-0.5.0-rc.2
+      targetRevision: kubeflow-0.5.0-rc.3
       path: example/helm
       directory:
         include: 'namespace.knative-*'
