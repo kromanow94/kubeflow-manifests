@@ -3,6 +3,19 @@ entries:
   kubeflow:
   - apiVersion: v2
     appVersion: 1.9.1
+    created: "2025-03-31T21:55:39.890518857Z"
+    description: A Helm chart for Kubeflow
+    digest: 0082d9dd34f78148dbfd512adf58610fd17e8f7b2bf785cb376c4bec5f93b3cf
+    maintainers:
+    - name: Kubeflow
+      url: https://github.com/kromanow94/kubeflow-manifests
+    name: kubeflow
+    type: application
+    urls:
+    - https://github.com/kromanow94/kubeflow-manifests/releases/download/kubeflow-0.5.0/kubeflow-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 1.9.1
     created: "2025-03-31T21:22:58.024689967Z"
     description: A Helm chart for Kubeflow
     digest: 0c0b95ddf41648e8cdce67b1182423dcac590bb3381ba9320aeefd178a5486f7
@@ -185,4 +198,4 @@ entries:
     urls:
     - https://github.com/kromanow94/kubeflow-manifests/releases/download/kubeflow-crds-0.3.0/kubeflow-crds-0.3.0.tgz
     version: 0.3.0
-generated: "2025-03-31T21:22:58.024793921Z"
+generated: "2025-03-31T21:55:39.890620286Z"
