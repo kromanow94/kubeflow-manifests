@@ -15,7 +15,7 @@ spec:
   sources:
     - chart: argo-workflows
       repoURL: https://argoproj.github.io/argo-helm
-      targetRevision: 0.17.1
+      targetRevision: 0.34.0
       helm:
         valueFiles:
           - $values/example/helm/values.argo-workflows.yaml
