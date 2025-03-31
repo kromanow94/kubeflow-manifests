@@ -151,7 +151,7 @@ helm upgrade --install metacontroller oci://ghcr.io/metacontroller/metacontrolle
 helm upgrade --install argo-workflows argo-workflows \
     --namespace kubeflow \
     --repo https://argoproj.github.io/argo-helm \
-    --version 0.17.1 \
+    --version 0.34.0 \
     --values values.argo-workflows.yaml \
     --wait
 

@@ -1,5 +1,5 @@
 images:
-  tag: v3.3.10
+  tag: v3.4.17
 
 controller:
   containerRuntimeExecutor: emissary
