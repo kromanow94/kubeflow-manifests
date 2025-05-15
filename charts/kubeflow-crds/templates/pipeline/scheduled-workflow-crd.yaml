@@ -15,8 +15,6 @@ spec:
     shortNames:
     - swf
     singular: {{ include "kubeflowCrds.pipelines.scheduledWorkflow.singularName" . }}
-    shortNames:
-    - swf
   scope: Namespaced
   versions:
   - name: v1beta1

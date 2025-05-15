@@ -17,7 +17,6 @@ spec:
       - key: app.kubernetes.io/subcomponent
         operator: In
         values:
-        values:
           - {{ include "kubeflow.pipelines.ui.name" . }}
   ingress:
     - from:
